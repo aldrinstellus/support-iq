@@ -109,7 +109,7 @@
 #### 2. Program Manager (Government)
 | Attribute | Value |
 |-----------|-------|
-| **Name** | Marcus Thompson |
+| **Name** | Jennifer Chen |
 | **Role** | Program Manager |
 | **Badge** | PM |
 | **URL** | `/demo/program-manager` |
@@ -133,7 +133,7 @@
 #### 3. Stakeholder Lead
 | Attribute | Value |
 |-----------|-------|
-| **Name** | Patricia Chen |
+| **Name** | Jessica Martinez |
 | **Role** | Stakeholder Lead |
 | **Badge** | LEAD |
 | **URL** | `/demo/stakeholder-lead` |
@@ -159,7 +159,7 @@
 #### 4. Project Manager (Software)
 | Attribute | Value |
 |-----------|-------|
-| **Name** | Michael Roberts |
+| **Name** | Dale Thompson |
 | **Role** | Project Manager |
 | **Badge** | PM |
 | **URL** | `/demo/project-manager` |
@@ -508,11 +508,11 @@ Base URL: http://localhost:3030
 
 Government Mode:
 ├── /demo/cor                    → COR (Alexa Johnson)
-├── /demo/program-manager        → Program Manager (Marcus Thompson)
-└── /demo/stakeholder-lead       → Stakeholder Lead (Patricia Chen)
+├── /demo/program-manager        → Program Manager (Jennifer Chen)
+└── /demo/stakeholder-lead       → Stakeholder Lead (Jessica Martinez)
 
 Project Mode:
-├── /demo/project-manager        → Project Manager (Michael Roberts)
+├── /demo/project-manager        → Project Manager (Dale Thompson)
 ├── /demo/service-team-lead      → Service Team Lead (Herbert Roberts)
 └── /demo/service-team-member    → Service Team Member (Molly Rivera)
 
