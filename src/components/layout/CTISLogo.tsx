@@ -2,7 +2,6 @@
 
 import Image from 'next/image';
 import { ModeSwitcher } from './ModeSwitcher';
-import { ClientOnly } from '@/components/ui/ClientOnly';
 
 /**
  * CTIS Logo Component
@@ -12,6 +11,8 @@ import { ClientOnly } from '@/components/ui/ClientOnly';
  *
  * V17 Mode Switcher - Government/Project mode toggle
  * V19 - Theme-aware logo switching using CSS (instant, no flicker)
+ * V20-OP3 - Removed ClientOnly wrapper; ModeSwitcher now handles hydration internally
+ *           with a proper skeleton that matches actual UI (fixes "empty line" bug)
  *
  * Both logos are preloaded and CSS controls visibility based on theme class.
  * This eliminates network lag and hydration flicker.
@@ -42,10 +43,9 @@ export const CTISLogo = () => {
         />
       </div>
 
-      {/* Mode Switcher - Government vs Project */}
-      <ClientOnly fallback={<div className="flex items-center gap-1 p-1 bg-background border border-border rounded-lg h-[34px]" />}>
-        <ModeSwitcher />
-      </ClientOnly>
+      {/* Mode Switcher - Government vs Project vs ATC */}
+      {/* No ClientOnly wrapper needed - ModeSwitcher handles hydration internally */}
+      <ModeSwitcher />
     </div>
   );
 };

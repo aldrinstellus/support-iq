@@ -8,22 +8,41 @@ interface ThemeToggleProps {
   className?: string;
 }
 
+/**
+ * ThemeToggle Component
+ *
+ * Toggles between dark and light theme.
+ *
+ * HYDRATION FIX (V20-OP3):
+ * - Skeleton is now a proper button element (not div) to match actual UI exactly
+ * - Uses identical styling to prevent any layout shift during hydration
+ * - Default shows Moon icon (dark theme) to match initial server render
+ */
 export function ThemeToggle({ className = '' }: ThemeToggleProps) {
   const { theme, toggleTheme, mounted } = useTheme();
 
-  // Show placeholder during SSR to avoid hydration mismatch
+  // Common button styles - extracted to ensure skeleton matches actual button exactly
+  const buttonClass = `relative flex items-center justify-center w-8 h-8 rounded-lg bg-muted/50 hover:bg-muted transition-colors ${className}`;
+
+  // Show skeleton during SSR - MUST be a button with identical styling
+  // Default to Moon (dark theme) to match initial server render (html has class="dark")
   if (!mounted) {
     return (
-      <div className={`relative flex items-center justify-center w-8 h-8 rounded-lg bg-muted/50 ${className}`}>
+      <button
+        className={buttonClass}
+        title="Switch to light mode"
+        aria-label="Switch to light mode"
+        disabled
+      >
         <Moon className="w-4 h-4 text-muted-foreground" />
-      </div>
+      </button>
     );
   }
 
   return (
     <button
       onClick={toggleTheme}
-      className={`relative flex items-center justify-center w-8 h-8 rounded-lg bg-muted/50 hover:bg-muted transition-colors ${className}`}
+      className={buttonClass}
       title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
       aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
     >

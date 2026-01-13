@@ -23,11 +23,12 @@ export function PersonaProvider({
   children: ReactNode;
   initialPersonaId?: PersonaType;
 }) {
-  const { currentMode } = useMode();
+  const { currentMode, setMode } = useMode();
   const [currentPersona, setCurrentPersona] = useState<Persona>(getDefaultPersona(currentMode));
   const [isTransitioning, setIsTransitioning] = useState(false);
 
   // Load persona on mount - URL persona takes priority over localStorage
+  // HYDRATION FIX (V20-OP3): Also sync ModeContext when persona is loaded from URL
   useEffect(() => {
     console.log('[PersonaContext] Loading persona - initialPersonaId:', initialPersonaId, 'currentMode:', currentMode);
 
@@ -39,6 +40,14 @@ export function PersonaProvider({
       if (persona) {
         setCurrentPersona(persona);
         localStorage.setItem(PERSONA_STORAGE_KEY, persona.id);
+
+        // CRITICAL FIX: Sync ModeContext with persona's mode when loaded from URL
+        // This ensures ModeSwitcher highlights the correct mode button
+        if (persona.mode !== currentMode) {
+          console.log('[PersonaContext] Syncing mode from persona:', persona.mode);
+          setMode(persona.mode);
+        }
+
         console.log('[PersonaContext] Loaded persona from URL:', persona.id, 'mode:', persona.mode);
         return;
       }
@@ -61,7 +70,7 @@ export function PersonaProvider({
     setCurrentPersona(defaultPersona);
     localStorage.setItem(PERSONA_STORAGE_KEY, defaultPersona.id);
     console.log('[PersonaContext] Using default persona:', defaultPersona.id);
-  }, [currentMode, initialPersonaId]); // Re-run when mode or initialPersonaId changes
+  }, [currentMode, initialPersonaId, setMode]); // Re-run when mode or initialPersonaId changes
 
   // Change persona with transition
   const setPersona = useCallback(
