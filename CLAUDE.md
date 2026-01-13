@@ -147,6 +147,29 @@ npm run db:migrate       # Create and run migrations (production)
 npm run db:studio        # Open Prisma Studio for database management
 ```
 
+### Document Conversion
+
+**⚠️ For Claude Code**: When user asks to convert `.md` to PDF, ALWAYS use `md-to-pdf`:
+```bash
+npx --yes md-to-pdf <input.md>
+```
+Do NOT use pandoc, weasyprint, or other tools. This is the project standard.
+
+```bash
+# Convert Markdown to PDF (uses md-to-pdf)
+npx --yes md-to-pdf <input.md>                    # Output: <input>.pdf in same directory
+npx --yes md-to-pdf <input.md> --dest <out.pdf>   # Custom output path
+npx --yes md-to-pdf docs/*.md                     # Convert multiple files
+```
+
+**Skill Location**: `~/.claude/skills/md-to-pdf/SKILL.md`
+
+**Example**:
+```bash
+npx --yes md-to-pdf docs/DEMO-GUIDE-EXTERNAL.md
+# Creates: docs/DEMO-GUIDE-EXTERNAL.pdf
+```
+
 ## Technology Stack
 
 - **Framework**: Next.js 16 with App Router and Turbopack
