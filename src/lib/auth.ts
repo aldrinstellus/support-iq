@@ -3,6 +3,20 @@ import Google from 'next-auth/providers/google';
 import Credentials from 'next-auth/providers/credentials';
 import type { NextAuthConfig } from 'next-auth';
 
+// Generate a fallback secret for demo/development when AUTH_SECRET is not set
+// This allows the app to run without auth configured, but auth features won't work
+const getAuthSecret = () => {
+  if (process.env.AUTH_SECRET) return process.env.AUTH_SECRET;
+  if (process.env.NODE_ENV === 'development') {
+    console.warn('[Auth] AUTH_SECRET not set, using fallback for development');
+    return 'dev-fallback-secret-do-not-use-in-production';
+  }
+  // For production without AUTH_SECRET, return a deterministic fallback
+  // This prevents crashes but auth won't work properly
+  console.warn('[Auth] AUTH_SECRET not set in production - auth features disabled');
+  return 'fallback-secret-auth-disabled';
+};
+
 // Demo users for development/testing
 const DEMO_USERS = [
   {
@@ -130,6 +144,8 @@ export const authConfig: NextAuthConfig = {
     strategy: 'jwt',
     maxAge: 30 * 24 * 60 * 60, // 30 days
   },
+  secret: getAuthSecret(),
+  trustHost: true, // Trust the host header for Vercel deployments
   debug: process.env.NODE_ENV === 'development',
 };
 
