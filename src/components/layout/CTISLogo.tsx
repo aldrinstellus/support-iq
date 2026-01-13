@@ -29,7 +29,8 @@ export const CTISLogo = () => {
           alt="CTIS Logo"
           width={160}
           height={40}
-          className="h-10 w-auto object-contain dark:block hidden"
+          className="h-10 object-contain dark:block hidden"
+          style={{ width: 'auto' }}
           priority
         />
         {/* Light theme logo - shown when .light class is on html */}
@@ -38,7 +39,8 @@ export const CTISLogo = () => {
           alt="CTIS Logo"
           width={160}
           height={40}
-          className="h-10 w-auto object-contain dark:hidden block"
+          className="h-10 object-contain dark:hidden block"
+          style={{ width: 'auto' }}
           priority
         />
       </div>
