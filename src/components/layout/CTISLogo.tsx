@@ -22,27 +22,29 @@ export const CTISLogo = () => {
   return (
     <div className="flex-shrink-0 px-3 pt-3 pb-3 space-y-2">
       {/* CTIS Logo - Both versions rendered, CSS controls visibility */}
-      <div className="flex items-center justify-center py-2 relative h-10">
+      <div className="flex items-center justify-center py-2">
         {/* Dark theme logo - shown when .dark class is on html */}
-        <Image
-          src="/ctis-logo-dark.png"
-          alt="CTIS Logo"
-          width={160}
-          height={40}
-          className="h-10 object-contain dark:block hidden"
-          style={{ width: 'auto' }}
-          priority
-        />
+        <div className="relative h-10 w-40 dark:block hidden">
+          <Image
+            src="/ctis-logo-dark.png"
+            alt="CTIS Logo"
+            fill
+            className="object-contain"
+            sizes="160px"
+            priority
+          />
+        </div>
         {/* Light theme logo - shown when .light class is on html */}
-        <Image
-          src="/ctis-logo.png"
-          alt="CTIS Logo"
-          width={160}
-          height={40}
-          className="h-10 object-contain dark:hidden block"
-          style={{ width: 'auto' }}
-          priority
-        />
+        <div className="relative h-10 w-40 dark:hidden block">
+          <Image
+            src="/ctis-logo.png"
+            alt="CTIS Logo"
+            fill
+            className="object-contain"
+            sizes="160px"
+            priority
+          />
+        </div>
       </div>
 
       {/* Mode Switcher - Government vs Project vs ATC */}
