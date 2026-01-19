@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
+import { isSupabaseAvailable } from '@/lib/supabase';
 
 /**
  * Health Check Endpoint
@@ -7,17 +7,22 @@ import { prisma } from '@/lib/prisma';
  * Used by monitoring systems and load balancers to verify service health.
  * Checks application uptime, memory usage, and database connectivity.
  *
+ * Database checks:
+ * - Supabase JS (primary): Used for DSQ schema operations
+ * - Prisma (optional): Used for NextAuth and legacy features
+ *
  * Returns:
  * - 200 OK: Service is healthy
- * - 503 Service Unavailable: Service is unhealthy (database disconnected)
+ * - 503 Service Unavailable: Service is unhealthy
  */
 export async function GET() {
   const checks = {
     uptime: process.uptime(),
     timestamp: Date.now(),
     environment: process.env.NODE_ENV || 'development',
-    version: '19.0.0',
-    database: 'unknown' as 'connected' | 'disconnected' | 'unknown',
+    version: '1.0.0',
+    supabase: 'unknown' as 'connected' | 'disconnected' | 'not_configured',
+    prisma: 'unknown' as 'connected' | 'disconnected' | 'not_configured',
     memory: {
       heapUsed: Math.round(process.memoryUsage().heapUsed / 1024 / 1024), // MB
       heapTotal: Math.round(process.memoryUsage().heapTotal / 1024 / 1024), // MB
@@ -25,26 +30,49 @@ export async function GET() {
     },
   };
 
-  try {
-    // Check database connection with a simple query
-    await prisma.$queryRaw`SELECT 1`;
-    checks.database = 'connected';
+  let isHealthy = true;
+  const messages: string[] = [];
 
+  // Check Supabase connection (primary database for DSQ schema)
+  if (isSupabaseAvailable()) {
+    checks.supabase = 'connected';
+    messages.push('Supabase connected');
+  } else {
+    checks.supabase = 'not_configured';
+    messages.push('Supabase not configured');
+    // Supabase is required for DSQ operations
+    isHealthy = false;
+  }
+
+  // Check Prisma connection (optional - for NextAuth/legacy features)
+  if (process.env.DATABASE_URL) {
+    try {
+      const { prisma } = await import('@/lib/prisma');
+      await prisma.$queryRaw`SELECT 1`;
+      checks.prisma = 'connected';
+      messages.push('Prisma connected');
+    } catch (error) {
+      checks.prisma = 'disconnected';
+      messages.push('Prisma disconnected');
+      console.warn('[Health Check] Prisma connection failed (optional):', error);
+      // Prisma is optional - don't mark unhealthy
+    }
+  } else {
+    checks.prisma = 'not_configured';
+    messages.push('Prisma not configured (optional)');
+  }
+
+  if (isHealthy) {
     return NextResponse.json({
       status: 'healthy',
       checks,
-      message: 'All systems operational',
+      message: messages.join(', '),
     });
-  } catch (error) {
-    checks.database = 'disconnected';
-
-    console.error('[Health Check] Database connection failed:', error);
-
+  } else {
     return NextResponse.json({
       status: 'unhealthy',
       checks,
-      message: 'Database connection failed',
-      error: error instanceof Error ? error.message : 'Unknown error',
+      message: messages.join(', '),
     }, { status: 503 });
   }
 }
