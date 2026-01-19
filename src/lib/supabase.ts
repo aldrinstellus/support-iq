@@ -347,7 +347,7 @@ export function subscribeToTickets(
     .on(
       'postgres_changes',
       { event: '*', schema: 'dsq', table: 'tickets' },
-      (payload) => callback(payload as { eventType: string; new: Dsq.Ticket; old: Dsq.Ticket })
+      (payload) => callback(payload as unknown as { eventType: string; new: Dsq.Ticket; old: Dsq.Ticket })
     )
     .subscribe();
 }
@@ -374,7 +374,7 @@ export function subscribeToConversationMessages(
         table: 'conversation_messages',
         filter: `conversation_id=eq.${conversationId}`,
       },
-      (payload) => callback(payload.new as Dsq.ConversationMessage)
+      (payload) => callback((payload as unknown as { new: Dsq.ConversationMessage }).new)
     )
     .subscribe();
 }
