@@ -132,7 +132,8 @@ export async function createTicket(ticket: Dsq.TicketInsert) {
   if (!supabase) {
     throw new Error('[Supabase] Client not available');
   }
-  return supabase.from('dsq.tickets').insert(ticket as any).select().single();
+  // @ts-expect-error - Schema typing for cross-schema tables
+  return supabase.from('dsq.tickets').insert(ticket).select().single();
 }
 
 /**
@@ -142,7 +143,8 @@ export async function updateTicket(id: string, updates: Partial<Dsq.Ticket>) {
   if (!supabase) {
     throw new Error('[Supabase] Client not available');
   }
-  return supabase.from('dsq.tickets').update(updates as any).eq('id', id).select().single();
+  // @ts-expect-error - Schema typing for cross-schema tables
+  return supabase.from('dsq.tickets').update(updates).eq('id', id).select().single();
 }
 
 // =============================================================================
@@ -190,7 +192,8 @@ export async function createCustomer(customer: Dsq.CustomerInsert) {
   if (!supabase) {
     throw new Error('[Supabase] Client not available');
   }
-  return supabase.from('dsq.customers').insert(customer as any).select().single();
+  // @ts-expect-error - Schema typing for cross-schema tables
+  return supabase.from('dsq.customers').insert(customer).select().single();
 }
 
 // =============================================================================
