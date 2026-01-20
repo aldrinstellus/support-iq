@@ -7,6 +7,53 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.1.0] - 2026-01-20
+
+### 🎉 Floating Mode Switcher Release
+
+**Overview**: Moved the mode switcher from sidebar to top-right floating dropdown with amazing animations.
+
+### Added
+
+#### FloatingModeSwitcher Component
+- **Location**: `src/components/layout/FloatingModeSwitcher.tsx`
+- **Features**:
+  - Floating dropdown positioned at top-right next to theme toggle
+  - Mode-specific gradient colors (Blue=Government, Green=Project, Orange=ATC)
+  - Glow effects on hover matching mode colors
+  - Framer Motion animations (spring, scale, rotate)
+  - Responsive design (mobile/tablet/desktop breakpoints)
+  - Click outside to close
+  - Escape key to close
+  - Accessible with ARIA labels
+
+#### Mode Configurations
+- **Government**: Federal & public sector workflows (Building2 icon, blue gradient)
+- **Project**: Project management & teams (Users icon, green gradient)
+- **ATC**: SME - Small & Medium Enterprises (Landmark icon, orange gradient)
+
+### Changed
+- Moved mode switcher from sidebar header to top-right floating position
+- Sidebar toggle now solo on top-left
+- Theme toggle aligned with mode switcher on top-right
+- ATC description changed from "Air traffic control operations" to "SME"
+- ATC icon changed from Briefcase to Landmark
+
+### Responsive Breakpoints
+| Element | Mobile (<640px) | Tablet/Desktop (≥640px) |
+|---------|-----------------|-------------------------|
+| Button padding | px-2 py-1.5 | px-3 py-2 |
+| Icon size | 3.5x3.5 | 4x4 |
+| Label text | 10px | 12px |
+| Dropdown width | 224px (14rem) | 256px (16rem) |
+
+### Files Modified
+- `src/components/layout/FloatingModeSwitcher.tsx` (new)
+- `src/components/chat/InteractiveChatWithFloatingInput.tsx`
+- `src/components/layout/Sidebar.tsx`
+
+---
+
 ## [Unreleased]
 
 ### Fixed (2025-11-20 - Phase 1)

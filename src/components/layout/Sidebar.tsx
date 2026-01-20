@@ -7,7 +7,6 @@ import { usePathname, useRouter } from 'next/navigation';
 import { Avatar } from '@/components/ui/Avatar';
 import { usePersona } from '@/hooks/use-persona';
 import { useConversation } from '@/contexts/ConversationContext';
-import { ModeSwitcher } from './ModeSwitcher';
 
 interface SidebarProps {
   isOpen?: boolean;
@@ -75,11 +74,6 @@ export function Sidebar({
           isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
         } transition-opacity duration-200`}
       >
-
-      {/* Mode Switcher - Government / Project / ATC */}
-      <div className="flex-shrink-0 px-3 pt-3 pb-2 border-b border-border">
-        <ModeSwitcher />
-      </div>
 
       {/* Scrollable Middle Section: Conversations + Quick Actions */}
       <div className="flex-1 overflow-y-auto">

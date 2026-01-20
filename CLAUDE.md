@@ -32,14 +32,22 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-**Enterprise AI Support V20-OP3** - Unified Multi-Mode System with ATC/Government/Project Personas. Opus 3 development branch.
+**Support IQ (dSQ)** - AI-Enhanced Customer Support for Digital Workplace AI. Unified Multi-Mode System with ATC/Government/Project Personas.
 
-**Version**: 20.0.0
-**Port**: 3030
-**Browser Tab**: EAS V20-OP3
-**Status**: Development - Opus 3 Branch
-**Base**: Cloned from V20-OP2
-**GitHub**: https://github.com/aldrinstellus/atc-support-v20-op3
+**Version**: 1.1.0
+**Port**: 3003
+**Browser Tab**: dSQ | Support Portal
+**Status**: Production - Deployed on Vercel
+**GitHub**: https://github.com/aldrinstellus/support-iq
+**Production URL**: https://support-iq-pearl.vercel.app
+
+### Key Features (v1.1.0)
+- **FloatingModeSwitcher**: Top-right dropdown with animated mode switching
+- **3 Modes**: Government, Project, ATC (SME)
+- **10 Personas**: Role-based interfaces across all modes
+- **Supabase Integration**: 15 tables with 100% embedding coverage
+- **Theme Toggle**: Dark/light mode with smooth animations
+- **Fully Responsive**: Mobile, tablet, and desktop breakpoints
 
 ## 📚 Documentation Structure
 

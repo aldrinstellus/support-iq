@@ -9,6 +9,7 @@ import { useSidebar } from '@/contexts/SidebarContext';
 import { useQuickAction } from '@/contexts/QuickActionContext';
 import { getDashboardWidgets } from '@/config/dashboard-widgets';
 import { ThemeToggle } from '@/components/layout/ThemeToggle';
+import { FloatingModeSwitcher } from '@/components/layout/FloatingModeSwitcher';
 
 export function InteractiveChatWithFloatingInput() {
   const { currentPersona, isHydrated } = usePersona();
@@ -86,8 +87,8 @@ export function InteractiveChatWithFloatingInput() {
         }
       `}</style>
 
-      {/* Top Controls - Sidebar Toggle & Theme Toggle */}
-      <div className="absolute top-4 left-4 z-20 flex items-center gap-2">
+      {/* Top Left - Sidebar Toggle */}
+      <div className="absolute top-4 left-4 z-20">
         <button
           onClick={toggleSidebar}
           className="flex items-center justify-center rounded-lg border border-border bg-card p-2 hover:bg-muted transition-all"
@@ -99,6 +100,11 @@ export function InteractiveChatWithFloatingInput() {
             <PanelLeft className="h-5 w-5 text-muted-foreground" />
           )}
         </button>
+      </div>
+
+      {/* Top Right - Mode Switcher & Theme Toggle */}
+      <div className="absolute top-4 right-4 z-20 flex items-center gap-2">
+        <FloatingModeSwitcher />
         <ThemeToggle />
       </div>
 
