@@ -12,7 +12,7 @@ import { ThemeToggle } from '@/components/layout/ThemeToggle';
 import { FloatingModeSwitcher } from '@/components/layout/FloatingModeSwitcher';
 
 export function InteractiveChatWithFloatingInput() {
-  const { currentPersona, isHydrated } = usePersona();
+  const { currentPersona, isHydrated: _isHydrated } = usePersona();
   const { sidebarOpen, toggleSidebar } = useSidebar();
   const { quickActionQuery, setQuickActionQuery } = useQuickAction();
   const [isPaletteOpen, setIsPaletteOpen] = useState(false);

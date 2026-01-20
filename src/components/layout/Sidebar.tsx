@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useMemo, useCallback } from 'react';
+import { useState, useMemo, useCallback } from 'react';
 import { Plus, Check, Trash2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { usePathname, useRouter } from 'next/navigation';

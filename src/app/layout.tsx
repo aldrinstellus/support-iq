@@ -10,7 +10,7 @@ import { SessionProvider } from "@/components/auth/SessionProvider";
 
 // Helper function to format version for display
 // Extracts suffix from package name (e.g., "atc-support-v20-op2" → "V20-OP2")
-function getVersionDisplay(version: string, packageName: string): string {
+function _getVersionDisplay(version: string, packageName: string): string {
   const parts = version.split('.');
   const major = parts[0];
 
@@ -21,7 +21,8 @@ function getVersionDisplay(version: string, packageName: string): string {
   return `V${major}${suffix}`;
 }
 
-const versionDisplay = getVersionDisplay(packageJson.version, packageJson.name);
+// Version display available for future use (e.g., in browser tab or footer)
+const _versionDisplay = _getVersionDisplay(packageJson.version, packageJson.name);
 
 export const metadata: Metadata = {
   title: "dSQ | Support Portal",
