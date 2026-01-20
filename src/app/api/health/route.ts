@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { isSupabaseAvailable } from '@/lib/supabase';
+import packageJson from '../../../../package.json';
 
 /**
  * Health Check Endpoint
@@ -20,7 +21,7 @@ export async function GET() {
     uptime: process.uptime(),
     timestamp: Date.now(),
     environment: process.env.NODE_ENV || 'development',
-    version: '1.0.0',
+    version: packageJson.version,
     supabase: 'unknown' as 'connected' | 'disconnected' | 'not_configured',
     prisma: 'unknown' as 'connected' | 'disconnected' | 'not_configured',
     memory: {
