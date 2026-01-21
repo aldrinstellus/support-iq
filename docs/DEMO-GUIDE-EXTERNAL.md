@@ -1,8 +1,8 @@
 # Enterprise AI Support - Demo Guide
 
-**Version**: V20-OP3
-**Last Updated**: January 13, 2026
-**Live Demo**: https://atc-support-v20-op3.vercel.app
+**Version**: v1.1.0
+**Last Updated**: January 21, 2026
+**Live Demo**: https://support-iq-pearl.vercel.app
 
 ---
 
@@ -267,8 +267,8 @@ These 4 questions work across all 10 personas and return appropriate widgets:
 
 For questions about this demo or to schedule a detailed walkthrough:
 
-**Demo URL**: https://atc-support-v20-op3.vercel.app
+**Demo URL**: https://support-iq-pearl.vercel.app
 
 ---
 
-*This document covers V20-OP3 with all 10 personas across 3 modes, verified January 13, 2026.*
+*This document covers Support IQ v1.1.0 with all 10 personas across 3 modes, verified January 21, 2026.*
