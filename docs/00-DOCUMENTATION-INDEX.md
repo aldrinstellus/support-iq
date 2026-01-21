@@ -1,8 +1,10 @@
-# 📚 Enterprise AI Support V14 - Documentation Index
+# 📚 Support IQ (dSQ) - Documentation Index
 
-**Version**: 14.0.0
-**Status**: ✅ Production-Ready (100/100 Score)
-**Last Updated**: October 14, 2025
+**Version**: 1.1.0
+**Status**: ✅ Production - Deployed on Vercel
+**Last Updated**: January 21, 2026
+**Production URL**: https://support-iq-pearl.vercel.app
+**GitHub**: https://github.com/aldrinstellus/support-iq
 
 ---
 
