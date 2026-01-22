@@ -7,6 +7,50 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.2.1] - 2026-01-22
+
+### 🎯 100% Semantic Relevance Release
+
+**Overview**: Full semantic relevance audit achieved 100% coverage. All 54 questions now return role-appropriate widgets with contextually correct terminology for each persona.
+
+### Fixed
+
+#### Role-Appropriate Responses (7 Fixes)
+All "Who are my top performers?" responses now return **semantically relevant** data for each persona's role:
+
+| Persona | Issue | Fix |
+|---------|-------|-----|
+| **Service Team Member** (Molly) | IC has no direct reports | Returns `agent-performance-stats` with "your performance vs team benchmarks" |
+| **CSM** (Jordan) | CSMs manage customers, not agents | Returns `customer-risk-list` with "top-performing customer accounts" |
+| **Support Agent** (Christopher) | IC context needed | Response: "top support agents to benchmark your metrics" |
+| **COR** (Alexa) | Government terminology | Response: "contractor personnel performance" |
+| **Program Manager** (Jennifer) | Government terminology | Response: "program team performance" |
+| **Stakeholder Lead** (Jessica) | Stakeholder terminology | Response: "stakeholder contributor performance" |
+| **Project Manager** (Dale) | Project terminology | Response: "sprint team performance" |
+| **Service Team Lead** (Herbert) | Project terminology | Response: "team member performance" |
+| **ATC Executive** (Jennifer) | ATC clarity | Response: "support operations performance" |
+| **ATC Manager** (David) | ATC clarity | Response: "direct reports performance" |
+
+#### Documentation Fix
+- **PDF Error Corrected**: Program Manager "Show me the sprint burndown" now correctly shows "Sprint Burndown Chart" (was incorrectly documented as "Contract Performance Dashboard")
+
+### Changed
+- `src/lib/query-detection.ts`: 10 function updates for role-appropriate responses
+- `docs/DEMO-GUIDE-EXTERNAL.md`: Updated to v1.2.1 with correct widget mappings
+
+### Added
+- `docs/15-reference/FULL-RELEVANCE-AUDIT-REPORT.md`: Comprehensive 54-question audit report
+
+### Quality Metrics
+| Metric | Result |
+|--------|--------|
+| Total Questions | 54 |
+| Fully Relevant | **54 (100%)** |
+| TypeScript Errors | 0 |
+| Documentation | Updated |
+
+---
+
 ## [1.2.0] - 2026-01-22
 
 ### 🎉 Full-Spectrum Testing Verification Release

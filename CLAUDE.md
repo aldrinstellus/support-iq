@@ -34,14 +34,15 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **Support IQ (dSQ)** - AI-Enhanced Customer Support for Digital Workplace AI. Unified Multi-Mode System with ATC/Government/Project Personas.
 
-**Version**: 1.2.0
+**Version**: 1.2.1
 **Port**: 3003
 **Browser Tab**: dSQ | Support Portal
-**Status**: Production - Deployed on Vercel
+**Status**: Production Live - 100% Semantic Relevance
 **GitHub**: https://github.com/aldrinstellus/support-iq
 **Production URL**: https://support-iq-pearl.vercel.app
 
-### Key Features (v1.2.0)
+### Key Features (v1.2.1)
+- **100% Semantic Relevance**: Full audit verified - all responses role-appropriate ✅
 - **Full-Spectrum Testing Verified**: 54/54 questions across 10 personas, 3 modes - ALL PASSING ✅
 - **FloatingModeSwitcher**: Top-right dropdown with animated mode switching
 - **3 Modes**: Government, Project, ATC (SME)

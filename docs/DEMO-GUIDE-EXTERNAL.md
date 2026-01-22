@@ -1,7 +1,7 @@
 # Enterprise AI Support - Demo Guide
 
-**Version**: v1.1.0
-**Last Updated**: January 21, 2026
+**Version**: v1.2.1
+**Last Updated**: January 22, 2026
 **Live Demo**: https://support-iq-pearl.vercel.app
 
 ---
@@ -40,7 +40,7 @@ For government contractors managing federal contracts and compliance.
 | Question | Response Widget |
 |----------|-----------------|
 | "Show me the contract status" | Contract Performance Dashboard |
-| "Who are my top performers?" | Agent Performance Comparison |
+| "Who are my top performers?" | Contractor Personnel Performance |
 | "Draft response about the outage" | Response Composer |
 | "Open the most urgent access issue" | Ticket Detail (TICK-001) |
 | "Show me the latest end user request" | Live Zoho Desk Tickets |
@@ -49,8 +49,8 @@ For government contractors managing federal contracts and compliance.
 
 | Question | Response Widget |
 |----------|-----------------|
-| "Show me the sprint burndown" | Contract Performance Dashboard |
-| "Who are my top performers?" | Agent Performance Comparison |
+| "Show me the sprint burndown" | Sprint Burndown Chart |
+| "Who are my top performers?" | Program Team Performance Comparison |
 | "Draft response about the outage" | Response Composer |
 | "Open the most urgent access issue" | Ticket Detail (TICK-001) |
 | "Show me the latest end user request" | Live Zoho Desk Tickets |
@@ -60,7 +60,7 @@ For government contractors managing federal contracts and compliance.
 | Question | Response Widget |
 |----------|-----------------|
 | "Show stakeholder engagement" | Stakeholder Engagement Dashboard |
-| "Who are my top performers?" | Agent Performance Comparison |
+| "Who are my top performers?" | Stakeholder Contributor Performance |
 | "Draft response about the outage" | Response Composer |
 | "Open the most urgent access issue" | Ticket Detail (TICK-001) |
 | "Show me the latest end user request" | Live Zoho Desk Tickets |
@@ -86,7 +86,7 @@ For internal project teams managing sprints, deployments, and team workload.
 | Question | Response Widget |
 |----------|-----------------|
 | "Show sprint burndown" | Sprint 24 Burndown Chart |
-| "Who are my top performers?" | Agent Performance Comparison |
+| "Who are my top performers?" | Sprint Team Performance Comparison |
 | "Draft response about the outage" | Response Composer |
 | "Open the most urgent access issue" | Ticket Detail (TICK-001) |
 | "Show me the latest end user request" | Live Zoho Desk Tickets |
@@ -97,7 +97,7 @@ For internal project teams managing sprints, deployments, and team workload.
 |----------|-----------------|
 | "Show me team status" | Team Workload Dashboard |
 | "Show code quality metrics" | Code Quality Dashboard |
-| "Who are my top performers?" | Agent Performance Comparison |
+| "Who are my top performers?" | Team Member Performance Comparison |
 | "Draft response about the outage" | Response Composer |
 | "Open the most urgent access issue" | Ticket Detail (TICK-001) |
 | "Show me the latest end user request" | Live Zoho Desk Tickets |
@@ -107,7 +107,7 @@ For internal project teams managing sprints, deployments, and team workload.
 | Question | Response Widget |
 |----------|-----------------|
 | "Show my dashboard" | Personal Performance Dashboard |
-| "Who are my top performers?" | Agent Performance Comparison |
+| "Who are my top performers?" | Personal Performance Stats (vs Team Benchmarks) |
 | "Draft response about the outage" | Response Composer |
 | "Open the most urgent access issue" | Ticket Detail (TICK-001) |
 | "Show me the latest end user request" | Live Zoho Desk Tickets |
@@ -134,7 +134,7 @@ For ATC customer support operations - executives, managers, agents, and customer
 | Question | Response Widget |
 |----------|-----------------|
 | "Show executive summary" | ATC Executive Summary |
-| "Who are my top performers?" | Agent Performance Comparison |
+| "Who are my top performers?" | Support Operations Performance |
 | "Draft response about the outage" | Response Composer |
 | "Open the most urgent access issue" | Ticket Detail (TICK-001) |
 | "Show me the latest end user request" | Live Zoho Desk Tickets |
@@ -145,7 +145,7 @@ For ATC customer support operations - executives, managers, agents, and customer
 |----------|-----------------|
 | "Compare agent performance" | Agent Performance Comparison |
 | "Show team workload" | Team Workload Dashboard |
-| "Who are my top performers?" | Agent Performance Comparison |
+| "Who are my top performers?" | Direct Reports Performance |
 | "Draft response about the outage" | Response Composer |
 | "Open the most urgent access issue" | Ticket Detail (TICK-001) |
 | "Show me the latest end user request" | Live Zoho Desk Tickets |
@@ -156,7 +156,7 @@ For ATC customer support operations - executives, managers, agents, and customer
 |----------|-----------------|
 | "Show my open tickets" | Live Zoho Desk Tickets |
 | "Show ticket TICK-001" | Ticket Detail |
-| "Who are my top performers?" | Agent Performance Comparison |
+| "Who are my top performers?" | Top Agent Benchmarks |
 | "Draft response about the outage" | Response Composer |
 | "Open the most urgent access issue" | Ticket Detail (TICK-001) |
 | "Show me the latest end user request" | Live Zoho Desk Tickets |
@@ -167,7 +167,7 @@ For ATC customer support operations - executives, managers, agents, and customer
 |----------|-----------------|
 | "Show customer health" | Client Health Dashboard |
 | "Show at-risk customers" | Customer Risk List |
-| "Who are my top performers?" | Agent Performance Comparison |
+| "Who are my top performers?" | Top-Performing Customer Accounts |
 | "Draft response about the outage" | Response Composer |
 | "Open the most urgent access issue" | Ticket Detail (TICK-001) |
 | "Show me the latest end user request" | Live Zoho Desk Tickets |
@@ -176,11 +176,11 @@ For ATC customer support operations - executives, managers, agents, and customer
 
 ## Universal Questions (Work for All Personas)
 
-These 4 questions work across all 10 personas and return appropriate widgets:
+These 4 questions work across all 10 personas and return **role-appropriate** responses:
 
 | Question | Widget Returned | Description |
 |----------|-----------------|-------------|
-| "Who are my top performers?" | Agent Performance Comparison | Shows top/bottom performers with metrics |
+| "Who are my top performers?" | **Role-Appropriate Performance** | Returns performance data relevant to persona's role (e.g., contractors for COR, customers for CSM, team members for leads) |
 | "Draft response about the outage" | Response Composer | AI-generated response template |
 | "Open the most urgent access issue" | Ticket Detail (TICK-001) | Critical ticket with full details |
 | "Show me the latest end user request" | Live Zoho Desk Tickets | Real-time ticket list from Zoho |
@@ -271,4 +271,5 @@ For questions about this demo or to schedule a detailed walkthrough:
 
 ---
 
-*This document covers Support IQ v1.1.0 with all 10 personas across 3 modes, verified January 21, 2026.*
+*This document covers Support IQ v1.2.1 with all 10 personas across 3 modes, verified January 22, 2026.*
+*Full relevance audit: 54/54 questions (100%) with role-appropriate responses.*

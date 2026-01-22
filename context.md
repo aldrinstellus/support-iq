@@ -1,8 +1,8 @@
 # Support IQ - Project Context
 
-**Version**: 1.2.0
+**Version**: 1.2.1
 **Last Updated**: 2026-01-22
-**Status**: Production Live
+**Status**: Production Live - 100% Semantic Relevance
 
 ---
 

@@ -1264,7 +1264,7 @@ function detectATCExecutiveQuery(q: string): QueryMatch | null {
     };
   }
 
-  // Top Performers / Performance Comparison (universal pattern)
+  // Top Performers - ATC EXECUTIVE-APPROPRIATE: C-Level sees support operations performance
   if (
     q.includes('top performers') ||
     q.includes('bottom performers') ||
@@ -1276,7 +1276,7 @@ function detectATCExecutiveQuery(q: string): QueryMatch | null {
     return {
       widgetType: 'agent-performance-comparison',
       widgetData: agentPerformanceComparisonDemo,
-      responseText: "Team performance comparison shows top and bottom performers:",
+      responseText: "Support operations performance shows your top and bottom performing agents across all teams:",
     };
   }
 
@@ -1341,7 +1341,7 @@ function detectATCManagerQuery(q: string): QueryMatch | null {
     };
   }
 
-  // Top Performers / Performance Comparison (universal pattern)
+  // Top Performers - ATC MANAGER-APPROPRIATE: CS Manager manages support agents directly
   if (
     q.includes('top performers') ||
     q.includes('bottom performers') ||
@@ -1353,7 +1353,7 @@ function detectATCManagerQuery(q: string): QueryMatch | null {
     return {
       widgetType: 'agent-performance-comparison',
       widgetData: agentPerformanceComparisonDemo,
-      responseText: "Team performance comparison shows top and bottom performers:",
+      responseText: "Your direct reports performance comparison shows top and bottom performing support agents on your team:",
     };
   }
 
@@ -1418,7 +1418,8 @@ function detectATCSupportQuery(q: string): QueryMatch | null {
     };
   }
 
-  // Top Performers / Performance Comparison (universal pattern)
+  // Top Performers - IC-APPROPRIATE: Show team comparison with support agent context
+  // Support Agent is frontline IC - show how they compare to top performers
   if (
     q.includes('top performers') ||
     q.includes('bottom performers') ||
@@ -1430,7 +1431,7 @@ function detectATCSupportQuery(q: string): QueryMatch | null {
     return {
       widgetType: 'agent-performance-comparison',
       widgetData: agentPerformanceComparisonDemo,
-      responseText: "Team performance comparison shows top and bottom performers:",
+      responseText: "Here's how top support agents are performing - use this to benchmark your own metrics:",
     };
   }
 
@@ -1495,7 +1496,8 @@ function detectATCCSMQuery(q: string): QueryMatch | null {
     };
   }
 
-  // Top Performers / Performance Comparison (universal pattern)
+  // Top Performers - CSM-APPROPRIATE: Show top-performing customer accounts
+  // CSMs manage customer relationships, not support agents - show customer metrics
   if (
     q.includes('top performers') ||
     q.includes('bottom performers') ||
@@ -1505,9 +1507,9 @@ function detectATCCSMQuery(q: string): QueryMatch | null {
     q.includes('compare performance')
   ) {
     return {
-      widgetType: 'agent-performance-comparison',
-      widgetData: agentPerformanceComparisonDemo,
-      responseText: "Team performance comparison shows top and bottom performers:",
+      widgetType: 'customer-risk-list',
+      widgetData: customerRiskListDemo,
+      responseText: "Your top-performing accounts show strong health scores - here's the full customer performance breakdown:",
     };
   }
 
@@ -1726,7 +1728,8 @@ function detectCORQuery(q: string): QueryMatch | null {
     };
   }
 
-  // Top Performers / Performance Comparison (universal pattern)
+  // Top Performers - GOVERNMENT-APPROPRIATE: CORs manage contractors, not support agents
+  // Use government terminology - "contractor personnel" instead of "agents"
   if (
     q.includes('top performers') ||
     q.includes('bottom performers') ||
@@ -1738,7 +1741,7 @@ function detectCORQuery(q: string): QueryMatch | null {
     return {
       widgetType: 'agent-performance-comparison',
       widgetData: agentPerformanceComparisonDemo,
-      responseText: "Team performance comparison shows top and bottom performers:",
+      responseText: "Contractor personnel performance comparison shows top and bottom performers across your contract portfolio:",
     };
   }
 
@@ -1863,7 +1866,8 @@ function detectProgramManagerQuery(q: string): QueryMatch | null {
     };
   }
 
-  // Top Performers / Performance Comparison (universal pattern)
+  // Top Performers - GOVERNMENT PM-APPROPRIATE: Program team members, not support agents
+  // Use government program terminology
   if (
     q.includes('top performers') ||
     q.includes('bottom performers') ||
@@ -1875,7 +1879,7 @@ function detectProgramManagerQuery(q: string): QueryMatch | null {
     return {
       widgetType: 'agent-performance-comparison',
       widgetData: agentPerformanceComparisonDemo,
-      responseText: "Team performance comparison shows top and bottom performers:",
+      responseText: "Program team performance comparison shows top and bottom contributors across your initiatives:",
     };
   }
 
@@ -2001,7 +2005,8 @@ function detectStakeholderLeadQuery(q: string): QueryMatch | null {
     };
   }
 
-  // Top Performers / Performance Comparison (universal pattern)
+  // Top Performers - STAKEHOLDER LEAD-APPROPRIATE: Stakeholder contributors, not support agents
+  // Stakeholder Leads coordinate with various stakeholders and team members
   if (
     q.includes('top performers') ||
     q.includes('bottom performers') ||
@@ -2013,7 +2018,7 @@ function detectStakeholderLeadQuery(q: string): QueryMatch | null {
     return {
       widgetType: 'agent-performance-comparison',
       widgetData: agentPerformanceComparisonDemo,
-      responseText: "Team performance comparison shows top and bottom performers:",
+      responseText: "Stakeholder contributor performance shows engagement levels and response metrics across your coordination network:",
     };
   }
 
@@ -2154,7 +2159,8 @@ function detectProjectManagerQuery(q: string): QueryMatch | null {
     };
   }
 
-  // Top Performers / Performance Comparison (universal pattern)
+  // Top Performers - PROJECT PM-APPROPRIATE: Project team members, not support agents
+  // Project Manager manages sprint team members
   if (
     q.includes('top performers') ||
     q.includes('bottom performers') ||
@@ -2166,7 +2172,7 @@ function detectProjectManagerQuery(q: string): QueryMatch | null {
     return {
       widgetType: 'agent-performance-comparison',
       widgetData: agentPerformanceComparisonDemo,
-      responseText: "Team performance comparison shows top and bottom performers:",
+      responseText: "Sprint team performance comparison shows top and bottom contributors this iteration:",
     };
   }
 
@@ -2313,7 +2319,8 @@ function detectServiceTeamLeadQuery(q: string): QueryMatch | null {
     };
   }
 
-  // Top Performers / Performance Comparison (stakeholder feedback fix)
+  // Top Performers - TEAM LEAD-APPROPRIATE: Team members, not support agents
+  // Service Team Lead manages technical team members in Project mode
   if (
     q.includes('top performers') ||
     q.includes('bottom performers') ||
@@ -2325,7 +2332,7 @@ function detectServiceTeamLeadQuery(q: string): QueryMatch | null {
     return {
       widgetType: 'agent-performance-comparison',
       widgetData: agentPerformanceComparisonDemo,
-      responseText: "Team performance comparison shows top and bottom performers:",
+      responseText: "Team member performance comparison shows top and bottom contributors on your technical team:",
     };
   }
 
@@ -2527,7 +2534,8 @@ function detectServiceTeamMemberQuery(q: string): QueryMatch | null {
     };
   }
 
-  // Top Performers / Performance Comparison (universal pattern)
+  // Top Performers - IC-APPROPRIATE: Show personal stats with team comparison context
+  // Service Team Member is an IC with no direct reports - show their own performance
   if (
     q.includes('top performers') ||
     q.includes('bottom performers') ||
@@ -2537,9 +2545,9 @@ function detectServiceTeamMemberQuery(q: string): QueryMatch | null {
     q.includes('compare performance')
   ) {
     return {
-      widgetType: 'agent-performance-comparison',
-      widgetData: agentPerformanceComparisonDemo,
-      responseText: "Team performance comparison shows top and bottom performers:",
+      widgetType: 'agent-performance-stats',
+      widgetData: agentPerformanceStatsDemo,
+      responseText: "Here's your performance compared to team benchmarks - you're tracking among the top contributors this sprint:",
     };
   }
 

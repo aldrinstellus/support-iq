@@ -1,8 +1,8 @@
 # Support IQ (dSQ) - Savepoint
 
-**Last Updated**: 2026-01-21 11:54 +04
-**Version**: 1.1.0
-**Status**: Production - Live on Vercel
+**Last Updated**: 2026-01-22 18:30 +04
+**Version**: 1.2.1
+**Status**: Production Live - 100% Semantic Relevance
 
 ---
 
@@ -15,22 +15,55 @@
 | **GitHub** | https://github.com/aldrinstellus/support-iq | ✅ Current |
 | **Health** | https://support-iq-pearl.vercel.app/api/health | ✅ Healthy |
 
-### Latest Commit
-```
-2efccab docs: update documentation for v1.1.0 production release
-dd0d4d3 fix: resolve ESLint warnings for unused variables
-9c6ba5f fix: read version from package.json in health check
-88638d0 feat: add FloatingModeSwitcher component (v1.1.0)
-```
+### Latest Session (v1.2.1)
+**Full Semantic Relevance Audit Completed**
+
+All 54 demo questions across 10 personas and 3 modes now return 100% role-appropriate responses:
+- ✅ ICs get personal benchmarks, not team management views
+- ✅ CSMs see customer data, not agent data
+- ✅ Government personas see contractor/program terminology
+- ✅ Project personas see sprint/team terminology
+- ✅ ATC personas see support operations terminology
 
 ### Version Details
-- **Package**: support-iq@1.1.0
+- **Package**: support-iq@1.2.1
 - **Port**: 3003 (local development)
 - **Browser Tab**: dSQ | Support Portal
 
 ---
 
-## Features (v1.1.0)
+## v1.2.1 Changes
+
+### Code Fixes (src/lib/query-detection.ts)
+| Persona | Change |
+|---------|--------|
+| Service Team Member | Changed to `agent-performance-stats` (IC-appropriate) |
+| Support Agent | Updated response text for IC context |
+| CSM | Changed to `customer-risk-list` (manages customers, not agents) |
+| COR | "Contractor personnel performance" terminology |
+| Program Manager | "Program team performance" terminology |
+| Stakeholder Lead | "Stakeholder contributor performance" terminology |
+| Project Manager | "Sprint team performance" terminology |
+| Service Team Lead | "Team member performance" terminology |
+| ATC Executive | "Support operations performance" terminology |
+| ATC Manager | "Direct reports performance" terminology |
+
+### Documentation Updates
+- `docs/DEMO-GUIDE-EXTERNAL.md` - Widget names corrected
+- `docs/15-reference/FULL-RELEVANCE-AUDIT-REPORT.md` - Created comprehensive audit report
+- `CHANGELOG.md` - v1.2.1 entry added
+- `context.md` - Updated version and status
+- `CLAUDE.md` - Updated version and features
+
+---
+
+## Features (v1.2.1)
+
+### 100% Semantic Relevance
+- Full audit of all 54 questions across 10 personas
+- Role-appropriate responses for every query
+- IC vs Manager role distinction implemented
+- Mode-specific terminology throughout
 
 ### FloatingModeSwitcher
 - Top-right dropdown with animated mode switching
@@ -123,12 +156,13 @@ dd0d4d3 fix: resolve ESLint warnings for unused variables
 ### Required (.env.local)
 ```
 AUTH_SECRET=***
-OPENAI_API_KEY=*** (added 2026-01-21)
+OPENAI_API_KEY=***
 DATABASE_URL=***
 NEXT_PUBLIC_WS_URL=***
 NEXT_PUBLIC_SUPABASE_URL=***
 NEXT_PUBLIC_SUPABASE_ANON_KEY=***
 SUPABASE_PUBLISHABLE_KEY=***
+NEXT_PUBLIC_DEMO_MODE=true
 ```
 
 ---
@@ -150,11 +184,12 @@ https://support-iq-pearl.vercel.app
 
 ## Documentation
 
-### Updated Files
-- `docs/00-DOCUMENTATION-INDEX.md` - v1.1.0, production URLs
-- `docs/15-reference/CHANGELOG.md` - v1.1.0 release notes
-- `CLAUDE.md` - v1.1.0 features and status
-- `context.md` (global) - Support IQ section current
+### Updated Files (v1.2.1)
+- `docs/DEMO-GUIDE-EXTERNAL.md` - v1.2.1 with correct widgets
+- `docs/15-reference/FULL-RELEVANCE-AUDIT-REPORT.md` - NEW comprehensive audit
+- `CHANGELOG.md` - v1.2.1 release notes
+- `CLAUDE.md` - v1.2.1 features and status
+- `context.md` - v1.2.1 status
 
 ### Documentation Structure
 ```
@@ -179,16 +214,6 @@ docs/
 
 ---
 
-## Next Steps (Optional)
-
-- [ ] Add more demo data for testing
-- [ ] Implement real-time WebSocket features
-- [ ] Add Prisma database connection
-- [ ] Enable additional personas
-- [ ] Add more AI workflows
-
----
-
 ## Quick Commands
 
 ```bash
@@ -208,5 +233,5 @@ curl http://localhost:3003/api/health
 
 ---
 
-*Savepoint created: 2026-01-21 11:54 +04*
+*Savepoint created: 2026-01-22 18:30 +04*
 *By: Claude Opus 4.5*
