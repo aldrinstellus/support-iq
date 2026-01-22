@@ -1,7 +1,7 @@
 # Support IQ (dSQ) - Savepoint
 
-**Last Updated**: 2026-01-22 19:15 +04
-**Version**: 1.2.1
+**Last Updated**: 2026-01-22 20:00 +04
+**Version**: 1.2.2
 **Status**: Production Live - Full Spectrum Verified ✅
 
 ---
@@ -14,26 +14,41 @@
 | **Vercel** | https://support-iq-pearl.vercel.app | ✅ Live |
 | **GitHub** | https://github.com/aldrinstellus/support-iq | ✅ Current |
 | **Health** | https://support-iq-pearl.vercel.app/api/health | ✅ Healthy |
+| **Parent App** | https://digitalworkplace-ai.vercel.app | ✅ Linked |
 
-### Latest Session (v1.2.1)
-**Full Spectrum Analysis Completed - 100% Verified**
+### Latest Session (v1.2.2)
+**Full Spectrum Save - Documentation Accuracy Release**
 
-All 54 demo questions across 10 personas and 3 modes verified via parallel analysis:
-- ✅ ICs get personal benchmarks, not team management views
-- ✅ CSMs see customer data, not agent data
-- ✅ Government personas see contractor/program terminology
-- ✅ Project personas see sprint/team terminology
-- ✅ ATC personas see support operations terminology
+Fixed documentation discrepancies to align with actual code implementation:
+- ✅ Test report header corrected: Government 3 personas/15 questions
+- ✅ Test report header corrected: ATC 23 questions (was 22)
+- ✅ Mode assignments corrected across all docs
+- ✅ All 54 questions verified and passing
+- ✅ Production deployed and live
 
-### Full Spectrum Analysis Report
-- `docs/15-reference/FULL-SPECTRUM-ANALYSIS-v1.2.1.md` - Comprehensive verification
-- 3 parallel agents analyzed Government/Project/ATC modes simultaneously
-- All 54 questions verified semantically correct
+### Full Spectrum Test Reports
+- `docs/15-reference/FULL-SPECTRUM-TEST-REPORT-v1.2.1.md` - Comprehensive test results
+- `docs/15-reference/FULL-SPECTRUM-ANALYSIS-v1.2.1.md` - Parallel verification
+- All documentation aligned with `query-detection.ts` implementation
 
 ### Version Details
-- **Package**: support-iq@1.2.1
+- **Package**: support-iq@1.2.2
 - **Port**: 3003 (local development)
 - **Browser Tab**: dSQ | Support Portal
+- **Commit**: f8883a3
+
+---
+
+## v1.2.2 Changes
+
+### Documentation Corrections
+| File | Fix |
+|------|-----|
+| Test Report | Government: 3 personas, 15 questions (was 5/25) |
+| Test Report | ATC: 23 questions (was 22) |
+| context.md | Service Team Lead/Member moved to Project Mode |
+| SAVEPOINT.md | Mode assignments corrected |
+| CLAUDE.md | Demo URLs corrected by mode |
 
 ---
 
@@ -189,12 +204,13 @@ https://support-iq-pearl.vercel.app
 
 ## Documentation
 
-### Updated Files (v1.2.1)
+### Updated Files (v1.2.2)
 - `docs/DEMO-GUIDE-EXTERNAL.md` - v1.2.1 with correct widgets
-- `docs/15-reference/FULL-RELEVANCE-AUDIT-REPORT.md` - NEW comprehensive audit
-- `CHANGELOG.md` - v1.2.1 release notes
-- `CLAUDE.md` - v1.2.1 features and status
-- `context.md` - v1.2.1 status
+- `docs/15-reference/FULL-SPECTRUM-TEST-REPORT-v1.2.1.md` - Corrected persona counts
+- `CHANGELOG.md` - v1.2.2 release notes
+- `CLAUDE.md` - v1.2.2 features and status
+- `context.md` - v1.2.2 status with correct mode assignments
+- `SAVEPOINT.md` - Full spectrum save
 
 ### Documentation Structure
 ```
@@ -238,5 +254,6 @@ curl http://localhost:3003/api/health
 
 ---
 
-*Savepoint created: 2026-01-22 18:30 +04*
+*Savepoint created: 2026-01-22 20:00 +04*
+*Version: 1.2.2 - Full Spectrum Save*
 *By: Claude Opus 4.5*

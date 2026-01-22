@@ -7,6 +7,38 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.2.2] - 2026-01-22
+
+### 📝 Documentation Accuracy Release
+
+**Overview**: Corrected persona-to-mode assignments across all documentation to match the actual code implementation in `query-detection.ts`.
+
+### Fixed
+
+#### Documentation Corrections
+| File | Issue | Fix |
+|------|-------|-----|
+| **Test Report** | Government: 5 personas, 25 questions | Corrected to 3 personas, 15 questions |
+| **Test Report** | ATC: 22 questions | Corrected to 23 questions |
+| **context.md** | Service Team Lead/Member in Government | Moved to Project Mode |
+| **SAVEPOINT.md** | Incorrect mode assignments | Aligned with code |
+| **CLAUDE.md** | Demo URLs under wrong modes | Corrected |
+
+#### Correct Mode Assignments (Verified Against Code)
+| Mode | Personas | Questions |
+|------|----------|-----------|
+| **Government** | COR, Program Manager, Stakeholder Lead | 15 |
+| **Project** | Project Manager, Service Team Lead, Service Team Member | 16 |
+| **ATC (SME)** | Executive, Manager, Support Agent, CSM | 23 |
+| **Total** | 10 personas | 54 unique |
+
+### Deployment
+- **Production**: https://support-iq-pearl.vercel.app ✅
+- **GitHub**: https://github.com/aldrinstellus/support-iq ✅
+- **Parent App Link**: https://digitalworkplace-ai.vercel.app → Support IQ button ✅
+
+---
+
 ## [1.2.1] - 2026-01-22
 
 ### 🎯 Full Spectrum Verified Release

@@ -1,8 +1,9 @@
 # Support IQ - Project Context
 
-**Version**: 1.2.1
+**Version**: 1.2.2
 **Last Updated**: 2026-01-22
 **Status**: Production Live - Full Spectrum Verified ✅
+**Deployed**: https://support-iq-pearl.vercel.app
 
 ---
 
