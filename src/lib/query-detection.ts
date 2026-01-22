@@ -1599,10 +1599,12 @@ function detectCORQuery(q: string): QueryMatch | null {
   }
 
   // PRIORITY 0: Contract Status (MUST be checked BEFORE deliverables pattern)
+  // Matches: "Show me the contract status", "contract status", "current contract status"
   if (
     (q.includes('current') && q.includes('contract') && q.includes('status')) ||
     (q.includes('contract status') && !q.includes('deliverable')) ||
-    (q.includes('show') && q.includes('contract') && q.includes('current'))
+    (q.includes('show') && q.includes('contract') && q.includes('current')) ||
+    (q.includes('show') && q.includes('contract') && q.includes('status'))
   ) {
     return {
       widgetType: 'contract-performance-dashboard',
@@ -1799,6 +1801,19 @@ function detectCORQuery(q: string): QueryMatch | null {
 // ============================================================================
 
 function detectProgramManagerQuery(q: string): QueryMatch | null {
+  // Sprint Burndown (matches demo guide: "Show me the sprint burndown")
+  if (
+    q.includes('burndown') ||
+    q.includes('sprint progress') ||
+    (q.includes('sprint') && (q.includes('status') || q.includes('track')))
+  ) {
+    return {
+      widgetType: 'sprint-burndown-chart',
+      widgetData: sprintBurndownDemo,
+      responseText: "Sprint 24 velocity tracking shows current progress against commitment:",
+    };
+  }
+
   // Program Health → Stakeholder Engagement Dashboard
   if (
     q.includes('program health') ||

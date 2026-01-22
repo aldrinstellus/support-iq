@@ -105,7 +105,7 @@ const conversationEntries: ConversationEntry[] = [
   // Q8: Churn Risk Analysis
   {
     id: 'q8-churn-risk',
-    triggers: ['churn risk', 'at-risk clients', 'risk analysis', 'clients at risk'],
+    triggers: ['churn risk', 'at-risk clients', 'at-risk customers', 'risk analysis', 'clients at risk', 'customers at risk', 'customer risk'],
     userQuery: 'Show me clients at churn risk.',
     aiResponse: "Here's the churn risk assessment identifying accounts requiring intervention:",
     widgetType: 'customer-risk-list',
