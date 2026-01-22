@@ -93,12 +93,14 @@ When enabled:
 
 ## Universal Demo Questions
 
-These questions work across ALL personas:
+These questions work across ALL personas with **role-appropriate responses**:
 
-1. **"Who are my top performers?"** → Agent Performance Comparison widget
-2. **"Draft response about the outage"** → Response Composer widget
-3. **"Open the most urgent access issue"** → Ticket Detail widget (TICK-001)
-4. **"Show me the latest end user request"** → Ticket List widget (Live Zoho)
+| Question | Widget | Role Variations |
+|----------|--------|-----------------|
+| "Who are my top performers?" | Performance widget | Managers: team comparison; ICs: personal benchmarks; CSM: customer accounts |
+| "Draft response about the outage" | Response Composer | Professional draft template |
+| "Open the most urgent access issue" | Ticket Detail | TICK-001 critical access issue |
+| "Show me the latest end user request" | Ticket List | Live Zoho Desk feed |
 
 ---
 
@@ -140,12 +142,21 @@ npm run dev:support    # If configured
 
 ---
 
-## Recent Updates (v1.2.0)
+## Recent Updates (v1.2.2)
 
-- **Full-Spectrum Testing**: 54/54 questions verified across all personas
-- **ATC CSM Fix**: Added missing "at-risk customers" trigger patterns
-- **Demo Mode Verified**: All widgets render correctly in demo mode
-- **Documentation Updated**: CLAUDE.md, CHANGELOG.md refreshed
+### Full Spectrum Audit Results
+| Mode | Personas | Questions | Status |
+|------|----------|-----------|--------|
+| **Government** | 3 | 15 | ✅ 15/15 PASS |
+| **Project** | 3 | 16 | ✅ 16/16 PASS |
+| **ATC (SME)** | 4 | 23 | ✅ 23/23 PASS |
+| **TOTAL** | **10** | **54** | **✅ 54/54 PASS** |
+
+### Key Verifications
+- **100% Widget Match**: All queries trigger expected widgets
+- **100% Semantic Match**: All responses use role-appropriate terminology
+- **IC vs Manager**: Service Team Member & Support Agent get personal stats
+- **Customer-Focus**: CSM returns customer data, not agent data
 
 ---
 
@@ -153,8 +164,9 @@ npm run dev:support    # If configured
 
 **Maintainer**: Aldo (aldrinstellus)
 **Documentation**: See `/docs/` for SDLC-compliant documentation
+**Audit Report**: `docs/15-reference/FULL-SPECTRUM-AUDIT-REPORT-v1.2.2.md`
 **Issues**: Report via GitHub Issues
 
 ---
 
-*Last verified: 2026-01-22*
+*Last verified: 2026-01-22 - Full Spectrum Audit Complete*

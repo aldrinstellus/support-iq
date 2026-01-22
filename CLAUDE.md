@@ -42,17 +42,27 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 **GitHub**: https://github.com/aldrinstellus/support-iq
 **Production URL**: https://support-iq-pearl.vercel.app
 
-### Key Features (v1.2.1)
-- **Full Spectrum Verified**: Parallel analysis of all 54 questions - 100% semantically correct ✅
-- **100% Semantic Relevance**: All responses role-appropriate for each persona ✅
-- **Full-Spectrum Testing Verified**: 54/54 questions across 10 personas, 3 modes - ALL PASSING ✅
+### Key Features (v1.2.2)
+- **Full Spectrum Audit**: 54/54 questions verified with parallel agents - 100% PASS ✅
+- **100% Widget Match**: All queries trigger expected widgets per Demo Guide ✅
+- **100% Semantic Match**: All responses use role-appropriate terminology ✅
+- **IC vs Manager Distinction**: Service Team Member & Support Agent get personal stats ✅
+- **Customer-Focus Role**: CSM returns customer data, not agent data ✅
 - **FloatingModeSwitcher**: Top-right dropdown with animated mode switching
 - **3 Modes**: Government, Project, ATC (SME)
 - **10 Personas**: Role-based interfaces across all modes
 - **Demo Mode**: Pre-configured widget responses with `NEXT_PUBLIC_DEMO_MODE=true`
-- **Supabase Integration**: 15 tables with 100% embedding coverage
+- **Supabase Integration**: 15 DSQ tables + 348 knowledge items with 100% embedding coverage
 - **Theme Toggle**: Dark/light mode with smooth animations
 - **Fully Responsive**: Mobile, tablet, and desktop breakpoints
+
+### Full Spectrum Audit Results (v1.2.2)
+| Mode | Personas | Questions | Status |
+|------|----------|-----------|--------|
+| **Government** | 3 | 15 | ✅ 15/15 PASS |
+| **Project** | 3 | 16 | ✅ 16/16 PASS |
+| **ATC (SME)** | 4 | 23 | ✅ 23/23 PASS |
+| **TOTAL** | **10** | **54** | **✅ 54/54 PASS** |
 
 ## 📚 Documentation Structure
 
