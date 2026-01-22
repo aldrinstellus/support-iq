@@ -85,12 +85,12 @@ All 54 demo questions across 10 personas and 3 modes verified via parallel analy
 **Government Mode:**
 - cor (Contract Officer Representative)
 - program-manager
-- service-team-lead
-- service-team-member
 - stakeholder-lead
 
 **Project Mode:**
 - project-manager
+- service-team-lead (Technical Team Lead)
+- service-team-member (Individual Contributor)
 
 ### Theme System
 - Dark/Light mode toggle

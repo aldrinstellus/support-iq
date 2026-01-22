@@ -53,19 +53,19 @@ When enabled:
 
 ## Personas by Mode
 
-### Government Mode (5 personas)
+### Government Mode (3 personas)
 | Persona | URL | Role |
 |---------|-----|------|
 | COR (Alexa Johnson) | `/demo/cor` | Contract Officer Representative |
 | Program Manager (Jennifer Chen) | `/demo/program-manager` | Federal Program Management |
-| Service Team Lead (Herbert Roberts) | `/demo/service-team-lead` | Team Operations Lead |
-| Service Team Member (Molly Rivera) | `/demo/service-team-member` | Individual Contributor |
 | Stakeholder Lead (Jessica Martinez) | `/demo/stakeholder-lead` | Stakeholder Management |
 
-### Project Mode (1 persona)
+### Project Mode (3 personas)
 | Persona | URL | Role |
 |---------|-----|------|
 | Project Manager (Dale Thompson) | `/demo/project-manager` | Agile/Sprint Management |
+| Service Team Lead (Herbert Roberts) | `/demo/service-team-lead` | Technical Team Lead |
+| Service Team Member (Molly Rivera) | `/demo/service-team-member` | Individual Contributor |
 
 ### ATC Mode (4 personas)
 | Persona | URL | Role |

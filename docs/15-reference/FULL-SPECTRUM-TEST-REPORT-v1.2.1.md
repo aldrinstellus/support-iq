@@ -16,9 +16,9 @@ This report documents comprehensive full-spectrum testing of all 54 demo questio
 
 | Mode | Personas | Questions | Widget Match | Semantic Match | Status |
 |------|----------|-----------|--------------|----------------|--------|
-| **Government** | 5 | 25 | 25/25 (100%) | 25/25 (100%) | ✅ PASS |
+| **Government** | 3 | 15 | 15/15 (100%) | 15/15 (100%) | ✅ PASS |
 | **Project** | 3 | 16 | 16/16 (100%) | 16/16 (100%) | ✅ PASS |
-| **ATC (SME)** | 4 | 22 | 22/22 (100%) | 22/22 (100%) | ✅ PASS |
+| **ATC (SME)** | 4 | 23 | 23/23 (100%) | 23/23 (100%) | ✅ PASS |
 | **Universal** | 10 | 40 | 40/40 (100%) | 40/40 (100%) | ✅ PASS |
 | **TOTAL** | **10** | **54 unique** | **100%** | **100%** | ✅ **VERIFIED** |
 

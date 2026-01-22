@@ -125,12 +125,12 @@ atc-support-v20-op3/
 **Demo Pages** (Government Mode):
 - **Contract Officer Representative**: http://localhost:3030/demo/cor
 - **Program Manager**: http://localhost:3030/demo/program-manager
-- **Service Team Lead**: http://localhost:3030/demo/service-team-lead
-- **Service Team Member**: http://localhost:3030/demo/service-team-member
 - **Stakeholder Lead**: http://localhost:3030/demo/stakeholder-lead
 
 **Demo Pages** (Project Mode):
 - **Project Manager**: http://localhost:3030/demo/project-manager
+- **Service Team Lead**: http://localhost:3030/demo/service-team-lead
+- **Service Team Member**: http://localhost:3030/demo/service-team-member
 
 **API Health Check**: http://localhost:3030/api/health
 
