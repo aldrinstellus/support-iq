@@ -7,6 +7,7 @@ import { FeedbackProvider } from "@/contexts/FeedbackContext";
 // import { FeedbackWidget } from "@/components/feedback";
 // import { DemoModeIndicator } from "@/components/demo/DemoModeIndicator";
 import { SessionProvider } from "@/components/auth/SessionProvider";
+import { TrackingWrapper } from "@/components/providers/TrackingWrapper";
 
 // Helper function to format version for display
 // Extracts suffix from package name (e.g., "atc-support-v20-op2" → "V20-OP2")
@@ -57,17 +58,19 @@ export default function RootLayout({
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
       </head>
       <body className="h-screen overflow-hidden bg-background font-sans antialiased">
-        <SessionProvider>
-          <ThemeProvider>
-            <ModeProvider>
-              <FeedbackProvider>
-                {children}
-                {/* <FeedbackWidget /> - Hidden for demo, see docs/06-features/FEEDBACK-WIDGET.md */}
-                {/* <DemoModeIndicator /> */}
-              </FeedbackProvider>
-            </ModeProvider>
-          </ThemeProvider>
-        </SessionProvider>
+        <TrackingWrapper>
+          <SessionProvider>
+            <ThemeProvider>
+              <ModeProvider>
+                <FeedbackProvider>
+                  {children}
+                  {/* <FeedbackWidget /> - Hidden for demo, see docs/06-features/FEEDBACK-WIDGET.md */}
+                  {/* <DemoModeIndicator /> */}
+                </FeedbackProvider>
+              </ModeProvider>
+            </ThemeProvider>
+          </SessionProvider>
+        </TrackingWrapper>
       </body>
     </html>
   );
