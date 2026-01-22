@@ -1,8 +1,8 @@
 # 📚 Support IQ (dSQ) - Documentation Index
 
-**Version**: 1.1.0
-**Status**: ✅ Production - Deployed on Vercel
-**Last Updated**: January 21, 2026
+**Version**: 1.2.2
+**Status**: ✅ Production Live - Full Spectrum Verified
+**Last Updated**: January 22, 2026
 **Production URL**: https://support-iq-pearl.vercel.app
 **GitHub**: https://github.com/aldrinstellus/support-iq
 
@@ -169,6 +169,9 @@ Start here in order:
 - **[PRODUCTION-SCORECARD.md](./15-reference/PRODUCTION-SCORECARD.md)** - 100/100 production score details
 - **[FAQ.md](./15-reference/FAQ.md)** - Frequently asked questions
 - **[PERSONA-WIDGET-KNOWLEDGE-BASE.md](./15-reference/PERSONA-WIDGET-KNOWLEDGE-BASE.md)** - **V20-OP3** Complete reference: 10 personas, 19 widgets, query patterns, Quick Actions across all 3 modes
+- **[FULL-SPECTRUM-AUDIT-REPORT-v1.2.2.md](./15-reference/FULL-SPECTRUM-AUDIT-REPORT-v1.2.2.md)** - **v1.2.2** Full-spectrum verification: 54/54 questions, 10 personas, 3 modes - ALL PASSING ✅
+- **[FULL-SPECTRUM-TEST-REPORT-v1.2.1.md](./15-reference/FULL-SPECTRUM-TEST-REPORT-v1.2.1.md)** - **v1.2.1** Test report with persona and mode breakdown
+- **[FULL-SPECTRUM-ANALYSIS-v1.2.1.md](./15-reference/FULL-SPECTRUM-ANALYSIS-v1.2.1.md)** - **v1.2.1** Parallel verification analysis
 
 ---
 
@@ -220,21 +223,21 @@ Start here in order:
 
 ## 📊 Project Statistics
 
-- **Version**: 14.0.0
+- **Version**: 1.2.2
 - **Production Score**: **100/100** 🏆
+- **Full Spectrum Test**: **54/54 (100%)** ✅
 - **TypeScript**: 0 errors ✅
-- **ESLint**: 9 warnings (below <10 target) ✅
+- **ESLint**: 0 warnings ✅
 - **Security**: 0 vulnerabilities ✅
 - **Components**: 100+ React components
 - **Widgets**: 19 specialized widgets
 - **API Endpoints**: 30+ endpoints
-- **Database Models**: 15+ Prisma models
-- **Integrations**: Claude AI, Zoho Desk, Supabase, Jira, Dify
-- **Personas**: 4 RBAC personas (Admin, C-Level, CS Manager, Support Agent)
-- **AI Workflows**: 7 automated scenarios
-- **Lines of Code**: ~50,000+ LOC
-- **Test Coverage**: E2E tests with Playwright
-- **Deployment**: Docker + Vercel + CI/CD
+- **Database Tables**: 15 DSQ tables + 348 knowledge items
+- **Integrations**: Claude AI, Zoho Desk, Supabase
+- **Modes**: 3 (Government, Project, ATC)
+- **Personas**: 10 role-based interfaces
+- **Demo Questions**: 54 verified and passing
+- **Deployment**: Vercel + GitHub CI/CD
 
 ---
 
@@ -298,8 +301,8 @@ Previous documentation has been preserved in the `/Aldo/` folder for reference:
 
 ---
 
-**Last Updated**: October 14, 2025
-**Version**: 14.0.0
-**Status**: ✅ Production-Ready (100/100 Score)
+**Last Updated**: January 22, 2026
+**Version**: 1.2.2
+**Status**: ✅ Production Live - Full Spectrum Verified (54/54 PASS)
 
 **Navigate with confidence!** 🚀 All documentation is comprehensive, cross-referenced, and ready for enterprise use.

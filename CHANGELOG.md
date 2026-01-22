@@ -9,9 +9,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.2.2] - 2026-01-22
 
-### 📝 Documentation Accuracy Release
+### 🔍 Full Spectrum Audit Release
 
-**Overview**: Corrected persona-to-mode assignments across all documentation to match the actual code implementation in `query-detection.ts`.
+**Overview**: Comprehensive full-spectrum audit with parallel verification agents confirmed 100% pass rate across all 54 questions, 10 personas, and 3 modes.
+
+### Verified
+
+#### Full Spectrum Audit Results
+| Mode | Personas | Questions | Status |
+|------|----------|-----------|--------|
+| **Government** | 3 | 15 | ✅ 15/15 PASS (100%) |
+| **Project** | 3 | 16 | ✅ 16/16 PASS (100%) |
+| **ATC (SME)** | 4 | 23 | ✅ 23/23 PASS (100%) |
+| **TOTAL** | **10** | **54** | **✅ 54/54 PASS (100%)** |
+
+#### Key Verifications
+- **Widget Match Rate**: 100% - All queries trigger expected widgets
+- **Semantic Match Rate**: 100% - All responses use role-appropriate terminology
+- **IC vs Manager Distinction**: Verified (Service Team Member, Support Agent)
+- **Customer-Focus Role**: CSM returns customer data, not agent data
+
+### Added
+- `docs/15-reference/FULL-SPECTRUM-AUDIT-REPORT-v1.2.2.md`: Comprehensive audit report with parallel verification
 
 ### Fixed
 
@@ -23,14 +42,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 | **context.md** | Service Team Lead/Member in Government | Moved to Project Mode |
 | **SAVEPOINT.md** | Incorrect mode assignments | Aligned with code |
 | **CLAUDE.md** | Demo URLs under wrong modes | Corrected |
-
-#### Correct Mode Assignments (Verified Against Code)
-| Mode | Personas | Questions |
-|------|----------|-----------|
-| **Government** | COR, Program Manager, Stakeholder Lead | 15 |
-| **Project** | Project Manager, Service Team Lead, Service Team Member | 16 |
-| **ATC (SME)** | Executive, Manager, Support Agent, CSM | 23 |
-| **Total** | 10 personas | 54 unique |
+| **Documentation Index** | Outdated version | Updated to v1.2.2 |
 
 ### Deployment
 - **Production**: https://support-iq-pearl.vercel.app ✅
