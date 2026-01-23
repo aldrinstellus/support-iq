@@ -6,6 +6,8 @@ import {
   sentimentAnalysisDemo,
   customerRiskListDemo,
   analyticsDashboardDemo,
+  executiveSummaryDemo,
+  teamWorkloadDashboardDemo,
 } from '@/data/demo-widget-data';
 import {
   clientHealthDashboardDemo,
@@ -26,6 +28,26 @@ export interface ConversationEntry {
 }
 
 const conversationEntries: ConversationEntry[] = [
+  // Q0: Executive Summary (CSM perspective)
+  {
+    id: 'q0-executive-summary',
+    triggers: ['executive summary', 'executive overview', 'summary', 'overview', 'show me the executive'],
+    userQuery: 'Show me the executive summary.',
+    aiResponse: "Here's the executive summary of your customer success portfolio:",
+    widgetType: 'executive-summary',
+    widgetData: executiveSummaryDemo,
+  },
+
+  // Q0b: Team Workload Balance
+  {
+    id: 'q0b-team-workload',
+    triggers: ['team workload', 'workload balance', 'team workload balance', 'workload distribution', 'team capacity'],
+    userQuery: 'Show my team workload balance.',
+    aiResponse: "Here's the workload distribution across your customer success team:",
+    widgetType: 'team-workload-dashboard',
+    widgetData: teamWorkloadDashboardDemo,
+  },
+
   // Q1: Client Health Scores
   {
     id: 'q1-health-scores',

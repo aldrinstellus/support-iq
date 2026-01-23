@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { usePathname } from 'next/navigation';
 import { Sidebar } from '@/components/layout/Sidebar';
 import { QuickActionProvider, useQuickAction } from '@/contexts/QuickActionContext';
@@ -24,7 +24,8 @@ function HydrationGate({ children }: { children: React.ReactNode }) {
 
 function DemoLayoutContent({ children }: { children: React.ReactNode }) {
   const { setQuickActionQuery } = useQuickAction();
-  const { clearAllConversations } = useConversation();
+  const { clearAllConversations, clearPersonaConversation } = useConversation();
+  const { currentPersona } = usePersona();
 
   // HYDRATION FIX: Always start with consistent default, load from localStorage in useEffect
   const [sidebarOpen, setSidebarOpen] = useState(true);
@@ -62,9 +63,11 @@ function DemoLayoutContent({ children }: { children: React.ReactNode }) {
     setQuickActionQuery(query);
   };
 
-  const handleNewConversation = () => {
-    window.location.reload();
-  };
+  const handleNewConversation = useCallback(() => {
+    // Clear current persona's conversation
+    clearPersonaConversation(currentPersona.id);
+    console.log('[DemoLayout] Started new conversation for persona:', currentPersona.id);
+  }, [clearPersonaConversation, currentPersona.id]);
 
   const handleResetData = () => {
     if (confirm('Reset all conversation data? This will clear all messages across all personas.')) {

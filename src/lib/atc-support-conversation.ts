@@ -136,7 +136,7 @@ const conversationEntries: ConversationEntry[] = [
   // Q10: Performance Stats
   {
     id: 'q10-performance',
-    triggers: ['my performance', 'my stats', 'performance stats', 'how am i doing'],
+    triggers: ['my performance', 'my stats', 'performance stats', 'how am i doing', 'personal performance', 'my personal performance', 'show my performance'],
     userQuery: 'Show me my performance stats.',
     aiResponse: "Here's your comprehensive performance summary for this week:",
     widgetType: 'agent-performance-stats',

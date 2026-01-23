@@ -19,6 +19,7 @@ interface ConversationContextType {
   messagesByPersona: Record<string, Message[]>;
   setMessagesByPersona: React.Dispatch<React.SetStateAction<Record<string, Message[]>>>;
   clearAllConversations: () => void;
+  clearPersonaConversation: (personaId: string) => void;
 }
 
 const ConversationContext = createContext<ConversationContextType | undefined>(undefined);
@@ -71,8 +72,17 @@ export function ConversationProvider({ children }: { children: ReactNode }) {
     }
   };
 
+  const clearPersonaConversation = (personaId: string) => {
+    setMessagesByPersona(prev => {
+      const updated = { ...prev };
+      delete updated[personaId];
+      console.log('[ConversationContext] Cleared conversation for persona:', personaId);
+      return updated;
+    });
+  };
+
   return (
-    <ConversationContext.Provider value={{ messagesByPersona, setMessagesByPersona, clearAllConversations }}>
+    <ConversationContext.Provider value={{ messagesByPersona, setMessagesByPersona, clearAllConversations, clearPersonaConversation }}>
       {children}
     </ConversationContext.Provider>
   );

@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect, useMemo, useCallback, forwardRef, useImperativeHandle } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { Send, Copy, Check, RotateCw, ThumbsUp, ThumbsDown, Download } from 'lucide-react';
+import ReactMarkdown from 'react-markdown';
 import { detectWidgetQuery, type PersonaId, type QueryMatch } from '@/lib/query-detection';
 import { WidgetRenderer } from '@/components/widgets/WidgetRenderer';
 import { useQuickAction } from '@/contexts/QuickActionContext';
@@ -499,14 +500,20 @@ export const InteractiveChat = forwardRef<InteractiveChatRef, InteractiveChatPro
                       <div className="bg-gradient-to-br from-primary/8 via-accent/15 to-chart-3/10 rounded-2xl border border-primary/25 shadow-md overflow-hidden">
                         {/* Message Content */}
                         <div className="px-4 py-3">
-                          <p className="text-sm whitespace-pre-wrap text-foreground">
-                            {message.isTyping && typingMessageId === message.id
-                              ? displayedText[message.id] || ''
-                              : message.content}
-                            {message.isTyping && typingMessageId === message.id && (
-                              <span className="inline-block w-0.5 h-4 bg-primary ml-0.5 animate-pulse" />
+                          <div className="text-sm text-foreground prose prose-sm dark:prose-invert max-w-none prose-p:my-1 prose-ul:my-1 prose-li:my-0.5 prose-headings:my-2">
+                            {message.isTyping && typingMessageId === message.id ? (
+                              <>
+                                <ReactMarkdown>
+                                  {displayedText[message.id] || ''}
+                                </ReactMarkdown>
+                                <span className="inline-block w-0.5 h-4 bg-primary ml-0.5 animate-pulse" />
+                              </>
+                            ) : (
+                              <ReactMarkdown>
+                                {message.content || ''}
+                              </ReactMarkdown>
                             )}
-                          </p>
+                          </div>
                         </div>
 
                         {/* Action Bar Footer - Only show when typing is complete */}
