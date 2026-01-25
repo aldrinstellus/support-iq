@@ -1496,8 +1496,8 @@ function detectATCCSMQuery(q: string): QueryMatch | null {
     };
   }
 
-  // Top Performers - CSM-APPROPRIATE: Show top-performing customer accounts
-  // CSMs manage customer relationships, not support agents - show customer metrics
+  // Top Performers - Per Demo Guide: CSM sees Agent Performance Comparison
+  // Shows support agent performance for customer success context
   if (
     q.includes('top performers') ||
     q.includes('bottom performers') ||
@@ -1507,9 +1507,9 @@ function detectATCCSMQuery(q: string): QueryMatch | null {
     q.includes('compare performance')
   ) {
     return {
-      widgetType: 'customer-risk-list',
-      widgetData: customerRiskListDemo,
-      responseText: "Your top-performing accounts show strong health scores - here's the full customer performance breakdown:",
+      widgetType: 'agent-performance-comparison',
+      widgetData: agentPerformanceComparisonDemo,
+      responseText: "Support agent performance comparison shows top and bottom performers supporting your accounts:",
     };
   }
 
@@ -1804,16 +1804,17 @@ function detectCORQuery(q: string): QueryMatch | null {
 // ============================================================================
 
 function detectProgramManagerQuery(q: string): QueryMatch | null {
-  // Sprint Burndown (matches demo guide: "Show me the sprint burndown")
+  // Sprint Burndown → Contract Performance Dashboard (per Demo Guide)
+  // Program Manager in Government Mode sees contract-level dashboards
   if (
     q.includes('burndown') ||
     q.includes('sprint progress') ||
     (q.includes('sprint') && (q.includes('status') || q.includes('track')))
   ) {
     return {
-      widgetType: 'sprint-burndown-chart',
-      widgetData: sprintBurndownDemo,
-      responseText: "Sprint 24 velocity tracking shows current progress against commitment:",
+      widgetType: 'contract-performance-dashboard',
+      widgetData: contractPerformanceDemo,
+      responseText: "Contract performance dashboard shows delivery metrics and milestone progress:",
     };
   }
 
@@ -2408,7 +2409,7 @@ function detectServiceTeamLeadQuery(q: string): QueryMatch | null {
 function detectServiceTeamMemberQuery(q: string): QueryMatch | null {
   // IC-FOCUSED QUERIES ONLY (No strategic/program-level data)
 
-  // PRIORITY 0: Personal Dashboard - IC's main view
+  // PRIORITY 0: Personal Dashboard - IC's main view (Demo Guide: "Personal Performance Dashboard")
   if (
     q.includes('my dashboard') ||
     q.includes('show my dashboard') ||
@@ -2416,9 +2417,9 @@ function detectServiceTeamMemberQuery(q: string): QueryMatch | null {
     (q.includes('show') && q.includes('dashboard') && !q.includes('team'))
   ) {
     return {
-      widgetType: 'agent-dashboard',
-      widgetData: agentDashboardDemo,
-      responseText: "Here's your daily update with today's sprint tasks, blockers, and priorities:",
+      widgetType: 'agent-performance-stats',
+      widgetData: agentPerformanceStatsDemo,
+      responseText: "Your personal performance dashboard shows metrics, tasks, and progress:",
     };
   }
 
@@ -2548,8 +2549,8 @@ function detectServiceTeamMemberQuery(q: string): QueryMatch | null {
     };
   }
 
-  // Top Performers - IC-APPROPRIATE: Show personal stats with team comparison context
-  // Service Team Member is an IC with no direct reports - show their own performance
+  // Top Performers - Per Demo Guide: Service Team Member sees Agent Performance Comparison
+  // Shows team performance comparison for benchmarking
   if (
     q.includes('top performers') ||
     q.includes('bottom performers') ||
@@ -2559,9 +2560,9 @@ function detectServiceTeamMemberQuery(q: string): QueryMatch | null {
     q.includes('compare performance')
   ) {
     return {
-      widgetType: 'agent-performance-stats',
-      widgetData: agentPerformanceStatsDemo,
-      responseText: "Here's your performance compared to team benchmarks - you're tracking among the top contributors this sprint:",
+      widgetType: 'agent-performance-comparison',
+      widgetData: agentPerformanceComparisonDemo,
+      responseText: "Team performance comparison shows top and bottom contributors this sprint:",
     };
   }
 
