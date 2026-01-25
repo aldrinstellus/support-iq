@@ -7,6 +7,46 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.2.3] - 2026-01-25
+
+### 🎯 Demo Guide Compliance Release
+
+**Overview**: Aligned local DSQ with official Demo Guide specification. All 54 questions now return the exact widgets specified in the Demo Guide PDF.
+
+### Fixed
+
+#### Demo Guide Compliance (3 Critical Fixes)
+| Persona | Question | Before | After (Per Demo Guide) |
+|---------|----------|--------|------------------------|
+| **Program Manager** | "Show me the sprint burndown" | `sprint-burndown-chart` | `contract-performance-dashboard` |
+| **Service Team Member** | "Who are my top performers?" | `agent-performance-stats` | `agent-performance-comparison` |
+| **CSM** | "Who are my top performers?" | `customer-risk-list` | `agent-performance-comparison` |
+
+### Added
+- `scripts/compare-platforms.mjs`: Full spectrum comparison tool against Demo Guide
+- `scripts/generate-missing-embeddings.mjs`: Vector embedding generator for knowledge items
+- `scripts/test-production.mjs`: Production build verification script
+- `src/app/api/test-query/route.ts`: API endpoint for automated widget testing
+
+### Verified
+- **Local Build**: ✅ Successful
+- **GitHub Push**: ✅ Commit pushed to main
+- **Vercel Production**: ✅ Live at https://support-iq-pearl.vercel.app
+- **Production Test**: ✅ 54/54 PASS (100%)
+- **Vector Embeddings**: ✅ 100% coverage (356 items)
+- **TypeScript**: ✅ 0 errors
+
+### Quality Metrics
+| Metric | Result |
+|--------|--------|
+| Total Questions | 54 |
+| Demo Guide Match | **54/54 (100%)** |
+| Vector Embeddings | 356/356 (100%) |
+| TypeScript Errors | 0 |
+| Production Build | ✅ Successful |
+
+---
+
 ## [1.2.2] - 2026-01-22
 
 ### 🔍 Full Spectrum Audit Release

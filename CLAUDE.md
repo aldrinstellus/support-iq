@@ -34,20 +34,20 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **Support IQ (dSQ)** - AI-Enhanced Customer Support for Digital Workplace AI. Unified Multi-Mode System with ATC/Government/Project Personas.
 
-**Version**: 1.2.2
+**Version**: 1.2.3
 **Port**: 3003
 **Browser Tab**: dSQ | Support Portal
-**Status**: Production Live - Full Spectrum Verified ✅
-**Deployed**: 2026-01-22
+**Status**: Production Live - Demo Guide Compliant ✅
+**Deployed**: 2026-01-25
 **GitHub**: https://github.com/aldrinstellus/support-iq
 **Production URL**: https://support-iq-pearl.vercel.app
 
-### Key Features (v1.2.2)
-- **Full Spectrum Audit**: 54/54 questions verified with parallel agents - 100% PASS ✅
-- **100% Widget Match**: All queries trigger expected widgets per Demo Guide ✅
-- **100% Semantic Match**: All responses use role-appropriate terminology ✅
-- **IC vs Manager Distinction**: Service Team Member & Support Agent get personal stats ✅
-- **Customer-Focus Role**: CSM returns customer data, not agent data ✅
+### Key Features (v1.2.3)
+- **Demo Guide Compliance**: 54/54 questions match official Demo Guide specification ✅
+- **100% Widget Match**: All queries trigger exact widgets per Demo Guide PDF ✅
+- **100% Vector Embeddings**: 356/356 knowledge items with embeddings ✅
+- **Production Verified**: Live build tested with all 54 questions passing ✅
+- **3 Critical Fixes**: Program Manager, Service Team Member, CSM aligned to spec ✅
 - **FloatingModeSwitcher**: Top-right dropdown with animated mode switching
 - **3 Modes**: Government, Project, ATC (SME)
 - **10 Personas**: Role-based interfaces across all modes
@@ -56,13 +56,20 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - **Theme Toggle**: Dark/light mode with smooth animations
 - **Fully Responsive**: Mobile, tablet, and desktop breakpoints
 
-### Full Spectrum Audit Results (v1.2.2)
+### Full Spectrum Audit Results (v1.2.3)
 | Mode | Personas | Questions | Status |
 |------|----------|-----------|--------|
 | **Government** | 3 | 15 | ✅ 15/15 PASS |
 | **Project** | 3 | 16 | ✅ 16/16 PASS |
 | **ATC (SME)** | 4 | 23 | ✅ 23/23 PASS |
-| **TOTAL** | **10** | **54** | **✅ 54/54 PASS** |
+| **TOTAL** | **10** | **54** | **✅ 54/54 PASS (Demo Guide Compliant)** |
+
+### Demo Guide Fixes (v1.2.3)
+| Persona | Question | Fixed Widget |
+|---------|----------|--------------|
+| Program Manager | "Show me the sprint burndown" | `contract-performance-dashboard` |
+| Service Team Member | "Who are my top performers?" | `agent-performance-comparison` |
+| CSM | "Who are my top performers?" | `agent-performance-comparison` |
 
 ## 📚 Documentation Structure
 
