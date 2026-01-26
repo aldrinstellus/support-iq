@@ -67,7 +67,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 | **Stop Words** | Keeps 'show', 'me' | Prevents over-normalization |
 
 **Reference Implementation**: `src/lib/semantic-matcher.ts`
-**Global Standards**: See root `/CLAUDE.md` → "GLOBAL STANDARDS" section
+**Canonical Standards**: `/docs/QUERY_DETECTION_STANDARDS.md`
+**Root Instructions**: `/CLAUDE.md` → "GLOBAL STANDARDS" section
 
 ### Full Spectrum Audit Results (v1.2.3)
 | Mode | Personas | Questions | Status |
