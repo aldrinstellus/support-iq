@@ -219,7 +219,7 @@ function detectCLevelQuery(q: string): QueryMatch | null {
     };
   }
 
-  // Sentiment Analysis
+  // Sentiment Analysis - routes to combined NPS & Sentiment widget
   if (
     q.includes('sentiment') ||
     (q.includes('customer') && q.includes('feeling')) ||
@@ -228,9 +228,9 @@ function detectCLevelQuery(q: string): QueryMatch | null {
     (q.includes('how are') && q.includes('customers'))
   ) {
     return {
-      widgetType: 'sentiment-analysis',
-      widgetData: sentimentAnalysisDemo,
-      responseText: "Customer sentiment analysis shows overall satisfaction trends and recent feedback:",
+      widgetType: 'nps-sentiment-analysis',
+      widgetData: null,
+      responseText: "Here's the combined NPS and sentiment analysis with customer feedback trends:",
     };
   }
 
@@ -1187,7 +1187,7 @@ function detectCSMQuery(q: string): QueryMatch | null {
     };
   }
 
-  // PRIORITY 4: Client Feedback & NPS
+  // PRIORITY 4: Client Feedback & NPS - Combined NPS & Sentiment Analysis Widget
 
   // NPS Survey Results (Specific)
   if (
@@ -1196,9 +1196,9 @@ function detectCSMQuery(q: string): QueryMatch | null {
     q.includes('nps survey results')
   ) {
     return {
-      widgetType: 'client-feedback-dashboard',
+      widgetType: 'nps-sentiment-analysis',
       widgetData: null,
-      responseText: "Recent NPS survey results by client reveal satisfaction trends:",
+      responseText: "NPS survey results with sentiment analysis and customer feedback drill-down:",
     };
   }
 
@@ -1209,9 +1209,9 @@ function detectCSMQuery(q: string): QueryMatch | null {
     q.includes('satisfaction')
   ) {
     return {
-      widgetType: 'client-feedback-dashboard',
+      widgetType: 'nps-sentiment-analysis',
       widgetData: null,
-      responseText: "Client feedback and Net Promoter Score analysis:",
+      responseText: "Combined NPS and sentiment analysis with detailed customer feedback:",
     };
   }
 

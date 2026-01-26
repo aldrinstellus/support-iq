@@ -66,6 +66,8 @@ export type WidgetType =
   | 'csm-training-dashboard'
   // V18 DORA Metrics Widget Type
   | 'dora-metrics-dashboard'
+  // NPS & Sentiment Analysis Widget Type
+  | 'nps-sentiment-analysis'
   // V20 ITSS Draft Review Widget Type
   | 'draft-review';
 

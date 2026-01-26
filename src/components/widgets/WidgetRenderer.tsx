@@ -105,6 +105,7 @@ import { BudgetUtilizationDashboardWidget } from './BudgetUtilizationDashboardWi
 import { MilestoneTrackingDashboardWidget } from './MilestoneTrackingDashboardWidget';
 import { RiskRegisterDashboardWidget } from './RiskRegisterDashboardWidget';
 import { CodeReviewDashboardWidget } from './CodeReviewDashboardWidget';
+import { NPSSentimentWidget } from './NPSSentimentWidget';
 
 interface WidgetRendererProps {
   type: WidgetType;
@@ -275,6 +276,10 @@ export function WidgetRenderer({ type, data, onAction }: WidgetRendererProps) {
       // Code Review Dashboard
       case 'code-review-dashboard':
         return <CodeReviewDashboardWidget data={data as CodeReviewDashboardData} />;
+
+      // NPS & Sentiment Analysis Widget
+      case 'nps-sentiment-analysis':
+        return <NPSSentimentWidget />;
 
       default:
         // Fallback for unimplemented widgets
