@@ -1,8 +1,8 @@
 # Support IQ (dSQ) - Savepoint
 
-**Last Updated**: 2026-01-26 21:26 +04
+**Last Updated**: 2026-01-26 21:36 +04
 **Version**: 1.2.6
-**Status**: Full Spectrum Test Complete - 113/116 (97.4%) ✅
+**Status**: Full Spectrum Test Complete - 116/116 (100%) ✅ ALL PASS
 
 ---
 
@@ -22,31 +22,29 @@
 
 | Mode | Personas | Queries | Passed | Status |
 |------|----------|---------|--------|--------|
-| **Government** | 3 | 34 | 33 | ✅ 97.1% |
-| **Project** | 3 | 31 | 30 | ✅ 96.8% |
-| **ATC (SME)** | 4 | 51 | 50 | ✅ 98.0% |
-| **TOTAL** | **10** | **116** | **113** | **✅ 97.4%** |
+| **Government** | 3 | 34 | 34 | ✅ 100% |
+| **Project** | 3 | 31 | 31 | ✅ 100% |
+| **ATC (SME)** | 4 | 51 | 51 | ✅ 100% |
+| **TOTAL** | **10** | **116** | **116** | **✅ 100%** |
 
-**Perfect Score Personas (100%)**:
-- Program Manager (12/12)
-- Stakeholder Lead (10/10)
-- Service Team Lead (11/11)
-- Service Team Member (10/10)
-- ATC Executive (10/10)
-- ATC Manager (11/11)
-- ATC CSM (13/13)
+**ALL 10 Personas at 100%**:
+- COR (12/12) ✅
+- Program Manager (12/12) ✅
+- Stakeholder Lead (10/10) ✅
+- Project Manager (10/10) ✅
+- Service Team Lead (11/11) ✅
+- Service Team Member (10/10) ✅
+- ATC Executive (10/10) ✅
+- ATC Manager (11/11) ✅
+- ATC Support (17/17) ✅
+- ATC CSM (13/13) ✅
 
-**Test Improvements Applied**:
+**Fixes Applied**:
 - ✅ Updated 13 test expectations to reflect MORE SPECIFIC widgets (v1.2.5 improvements)
 - ✅ Fixed COR deliverables detection (`!q.includes('deliverable')` exclusion)
-- ✅ Added "velocity" standalone pattern for project-manager
+- ✅ Fixed velocity detection - removed "sprint velocity" from burndown pattern
 - ✅ Added TICK-XXX patterns for ticket detail detection
 - ✅ Added "contract deliverables status" to semantic patterns
-
-**Remaining 3 Failures** (pending production deploy):
-1. COR: "Show me contract deliverables status" - Code fix ready
-2. Project Manager: "Velocity" - Semantic pattern added
-3. ATC Support: "Show me ticket TICK-001" - Pattern added
 
 **Files Modified**:
 | File | Changes |
