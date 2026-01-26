@@ -47,6 +47,7 @@ import {
   budgetUtilizationDemo,
   milestoneTrackingDemo,
   riskRegisterDemo,
+  codeReviewDemo,
 } from '@/data/demo-widget-data';
 import { doraMetricsDemo } from '@/data/csm-widget-data';
 
@@ -498,10 +499,14 @@ export const projectPatterns: SemanticPattern[] = [
       'pull request reviews',
       'reviews pending',
       'code review queue',
+      'pending PRs',
+      'my reviews',
+      'review queue',
+      'pull requests',
     ],
     personas: ['service-team-lead', 'service-team-member'],
-    widgetType: 'code-quality-dashboard',
-    widgetData: codeQualityDemo,
+    widgetType: 'code-review-dashboard',
+    widgetData: codeReviewDemo,
     responseText: 'Code review status and pending reviews:',
   },
   {

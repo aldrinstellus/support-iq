@@ -60,6 +60,7 @@ export type WidgetType =
   | 'budget-utilization-dashboard'
   | 'milestone-tracking-dashboard'
   | 'risk-register-dashboard'
+  | 'code-review-dashboard'
   // V18 CSM Insights & Training Widget Types
   | 'csm-insights-dashboard'
   | 'csm-training-dashboard'
@@ -1237,6 +1238,70 @@ export interface CodeQualityData {
   }>;
 }
 
+// Code Review Dashboard Widget (Service Team Lead Persona)
+export interface CodeReviewDashboardData {
+  title: string;
+  lastUpdated: string;
+  summary: {
+    totalPending: number;
+    needsYourReview: number;
+    awaitingYourChanges: number;
+    approved: number;
+    merged: number;
+    averageReviewTime: string;
+    reviewVelocity: 'fast' | 'normal' | 'slow';
+  };
+  pendingReviews: Array<{
+    id: string;
+    title: string;
+    author: string;
+    authorAvatar?: string;
+    repository: string;
+    branch: string;
+    targetBranch: string;
+    createdAt: string;
+    updatedAt: string;
+    linesAdded: number;
+    linesRemoved: number;
+    filesChanged: number;
+    comments: number;
+    approvals: number;
+    requiredApprovals: number;
+    status: 'pending' | 'changes-requested' | 'approved' | 'needs-rebase';
+    priority: 'critical' | 'high' | 'normal' | 'low';
+    labels: string[];
+    reviewers: Array<{
+      name: string;
+      status: 'pending' | 'approved' | 'changes-requested' | 'commented';
+    }>;
+    checksStatus: 'passing' | 'failing' | 'pending';
+  }>;
+  yourPullRequests: Array<{
+    id: string;
+    title: string;
+    repository: string;
+    status: 'open' | 'draft' | 'merged' | 'closed';
+    createdAt: string;
+    reviewStatus: 'awaiting-review' | 'changes-requested' | 'approved' | 'needs-rebase';
+    reviewers: string[];
+    comments: number;
+  }>;
+  recentActivity: Array<{
+    type: 'comment' | 'approval' | 'merge' | 'request-changes' | 'push';
+    pullRequestId: string;
+    pullRequestTitle: string;
+    user: string;
+    timestamp: string;
+    content?: string;
+  }>;
+  metrics: {
+    reviewsCompletedThisWeek: number;
+    averageCommentsPerReview: number;
+    firstResponseTime: string;
+    approvalRate: number;
+  };
+}
+
 // Deployment Pipeline Dashboard Widget (Service Team Lead Persona)
 export interface DeploymentPipelineData {
   title: string;
@@ -1857,6 +1922,7 @@ export type WidgetData =
   | MilestoneTrackingData
   // Risk Register Dashboard
   | RiskRegisterData
+  | CodeReviewDashboardData
   // V20 ITSS Draft Review
   | Draft;
 
