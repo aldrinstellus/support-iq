@@ -942,7 +942,11 @@ function detectAgentQuery(q: string): QueryMatch | null {
   ) {
     return {
       widgetType: 'similar-tickets-analysis',
-      widgetData: similarTicketsAnalysisDemo,
+      widgetData: {
+        ...similarTicketsAnalysisDemo,
+        title: 'Similar Tickets to #001 - Resolution Patterns',
+        referenceTicket: '#001',
+      },
       responseText: "Here are similar tickets and resolution patterns from ticket #001:",
     };
   }
