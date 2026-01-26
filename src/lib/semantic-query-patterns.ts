@@ -734,7 +734,11 @@ export const supportPatterns: SemanticPattern[] = [
     ],
     personas: ['atc-support', 'support-agent'],
     widgetType: 'similar-tickets-analysis',
-    widgetData: similarTicketsAnalysisDemo,
+    widgetData: {
+      ...similarTicketsAnalysisDemo,
+      title: 'Similar Tickets to #001 - Resolution Patterns',
+      referenceTicket: '#001',
+    },
     responseText: 'Similar tickets and resolution patterns from ticket #001:',
   },
   {
