@@ -934,13 +934,16 @@ function detectAgentQuery(q: string): QueryMatch | null {
   // 6. Similar Tickets Analysis
   if (
     q.includes('similar tickets') ||
+    q.includes('find similar') ||
     q.includes('learn the patterns') ||
+    q.includes('resolution patterns') ||
+    q.includes('similar issues') ||
     (q.includes('tickets i') && q.includes('resolved'))
   ) {
     return {
       widgetType: 'similar-tickets-analysis',
       widgetData: similarTicketsAnalysisDemo,
-      responseText: "Here are patterns from similar tickets you've successfully resolved:",
+      responseText: "Here are similar tickets and resolution patterns from ticket #001:",
     };
   }
 

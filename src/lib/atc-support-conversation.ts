@@ -157,13 +157,24 @@ const conversationEntries: ConversationEntry[] = [
   // Q12: Similar Tickets Analysis
   {
     id: 'q12-similar-tickets',
-    triggers: ['similar tickets', 'ticket patterns', 'learn patterns', 'related tickets'],
-    userQuery: 'Show me similar tickets I\'ve resolved.',
-    aiResponse: "Here are patterns from similar tickets you've successfully resolved:",
+    triggers: [
+      'similar tickets',
+      'find similar tickets',
+      'find similar',
+      'ticket patterns',
+      'learn patterns',
+      'related tickets',
+      'resolution patterns',
+      'tickets like this',
+      'similar issues',
+    ],
+    userQuery: 'Find similar tickets.',
+    aiResponse: "Here are similar tickets and resolution patterns from ticket #001:",
     widgetType: 'similar-tickets-analysis',
     widgetData: {
       ...similarTicketsAnalysisDemo,
-      title: 'Your Resolution Patterns - Integrations',
+      title: 'Similar Tickets to #001 - Resolution Patterns',
+      referenceTicket: '#001',
     },
   },
 
