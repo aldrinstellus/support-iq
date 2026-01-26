@@ -56,7 +56,7 @@ const TEST_CASES = {
       { query: 'Show stakeholder engagement', expectedWidget: 'stakeholder-engagement-dashboard' },
       { query: 'Show change requests', expectedWidget: 'change-request-dashboard' },
       { query: 'Change request pending', expectedWidget: 'change-request-dashboard' },
-      { query: 'Show user feedback', expectedWidget: 'sentiment-analysis' },
+      { query: 'Show user feedback', expectedWidget: 'nps-sentiment-analysis' },
       { query: 'Show requirements tracking', expectedWidget: 'requirements-tracking-dashboard' },
       { query: 'Requirements tracking status', expectedWidget: 'requirements-tracking-dashboard' },
       { query: 'Requirements traceability', expectedWidget: 'requirements-tracking-dashboard' },

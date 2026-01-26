@@ -354,9 +354,9 @@ export const governmentPatterns: SemanticPattern[] = [
       'user satisfaction',
     ],
     personas: ['stakeholder-lead'],
-    widgetType: 'sentiment-analysis',
-    widgetData: sentimentAnalysisDemo,
-    responseText: 'User feedback analysis and satisfaction trends:',
+    widgetType: 'nps-sentiment-analysis',
+    widgetData: { title: 'User Feedback & Satisfaction' },
+    responseText: 'Combined NPS and sentiment analysis with user feedback trends:',
   },
   {
     id: 'requirements-tracking',
