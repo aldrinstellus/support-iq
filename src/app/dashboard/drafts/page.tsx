@@ -13,6 +13,7 @@ import {
   User,
   AlertCircle,
 } from 'lucide-react';
+import { getApiBasePath } from '@/lib/api-utils';
 import { DraftReviewWidget } from '@/components/widgets/DraftReviewWidget';
 import type { DraftReviewData } from '@/types/widget';
 import { getConfidenceColor } from '@/types/draft';
@@ -220,7 +221,8 @@ async function fetchDrafts(status?: string): Promise<DraftReviewData[]> {
     }
     params.set('limit', '50');
 
-    const response = await fetch(`/api/drafts?${params.toString()}`);
+    const basePath = getApiBasePath();
+    const response = await fetch(`${basePath}/api/drafts?${params.toString()}`);
     if (!response.ok) throw new Error('Failed to fetch drafts');
 
     const data = await response.json();

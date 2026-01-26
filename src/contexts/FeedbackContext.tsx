@@ -8,6 +8,7 @@ import {
   ReactNode,
 } from 'react';
 import html2canvas from 'html2canvas';
+import { getApiBasePath } from '@/lib/api-utils';
 import type {
   FeedbackEntry,
   Annotation,
@@ -182,7 +183,8 @@ export function FeedbackProvider({ children }: { children: ReactNode }) {
           status: 'pending',
         };
 
-        const response = await fetch('/api/feedback', {
+        const basePath = getApiBasePath();
+        const response = await fetch(`${basePath}/api/feedback`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(entry),

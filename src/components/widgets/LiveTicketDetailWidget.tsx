@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { Loader2, AlertCircle, Clock, User, Mail, Phone, Calendar, Tag, MessageSquare, Paperclip } from 'lucide-react';
+import { getApiBasePath } from '@/lib/api-utils';
 
 interface LiveTicketDetailProps {
   ticketNumber: string;
@@ -87,9 +88,10 @@ export function LiveTicketDetailWidget({ ticketNumber }: LiveTicketDetailProps) 
         setError(null);
 
         console.log('[LiveTicketDetail] Received ticketNumber prop:', ticketNumber);
-        console.log('[LiveTicketDetail] Fetching URL:', `/api/tickets/${ticketNumber}`);
+        const basePath = getApiBasePath();
+        console.log('[LiveTicketDetail] Fetching URL:', `${basePath}/api/tickets/${ticketNumber}`);
 
-        const response = await fetch(`/api/tickets/${ticketNumber}`);
+        const response = await fetch(`${basePath}/api/tickets/${ticketNumber}`);
 
         if (!response.ok) {
           throw new Error('Failed to fetch ticket details');

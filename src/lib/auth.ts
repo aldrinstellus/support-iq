@@ -43,6 +43,8 @@ const DEMO_USERS = [
 ];
 
 export const authConfig: NextAuthConfig = {
+  // Base path must match next.config.ts basePath for auth routes to work
+  basePath: '/dsq/api/auth',
   providers: [
     // Google OAuth provider
     Google({
@@ -90,8 +92,8 @@ export const authConfig: NextAuthConfig = {
     }),
   ],
   pages: {
-    signIn: '/auth/signin',
-    error: '/auth/error',
+    signIn: '/dsq/auth/signin',
+    error: '/dsq/auth/error',
   },
   callbacks: {
     async jwt({ token, user, account }) {

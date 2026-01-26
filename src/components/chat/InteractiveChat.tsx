@@ -5,6 +5,7 @@ import { useSearchParams } from 'next/navigation';
 import { Send, Copy, Check, RotateCw, ThumbsUp, ThumbsDown, Download } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import { detectWidgetQuery, type PersonaId, type QueryMatch } from '@/lib/query-detection';
+import { getApiBasePath } from '@/lib/api-utils';
 import { WidgetRenderer } from '@/components/widgets/WidgetRenderer';
 import { useQuickAction } from '@/contexts/QuickActionContext';
 import { useConversation, type Message } from '@/contexts/ConversationContext';
@@ -319,7 +320,8 @@ export const InteractiveChat = forwardRef<InteractiveChatRef, InteractiveChatPro
       //   text: 'Analyzing your question...',
       // });
 
-      const response = await fetch('/api/chat', {
+      const basePath = getApiBasePath();
+      const response = await fetch(`${basePath}/api/chat`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ message: query }),

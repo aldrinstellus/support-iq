@@ -10,7 +10,9 @@ interface SessionProviderProps {
 export function SessionProvider({ children }: SessionProviderProps) {
   return (
     <NextAuthSessionProvider
-      // Disable automatic session refetch to reduce 500 errors on demo pages
+      // Base path must match the auth.ts basePath configuration
+      basePath="/dsq/api/auth"
+      // Disable automatic session refetch to reduce errors on demo pages
       refetchOnWindowFocus={false}
       refetchWhenOffline={false}
     >

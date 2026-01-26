@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { Loader2, RefreshCw, AlertCircle } from 'lucide-react';
+import { getApiBasePath } from '@/lib/api-utils';
 
 interface Ticket {
   id: string;
@@ -38,12 +39,19 @@ export function TicketListDemo({
   const [error, setError] = useState<string | null>(null);
   const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
 
-  const fetchTickets = async () => {
+  const fetchTickets = async (e?: React.MouseEvent) => {
+    // Prevent event bubbling to parent elements (important for chat widget context)
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+
     try {
       setLoading(true);
       setError(null);
 
-      const response = await fetch(`/api/tickets?limit=${limit}`);
+      const basePath = getApiBasePath();
+      const response = await fetch(`${basePath}/api/tickets?limit=${limit}`);
 
       if (!response.ok) {
         throw new Error('Failed to fetch tickets');
@@ -69,7 +77,7 @@ export function TicketListDemo({
     fetchTickets();
 
     if (autoRefresh) {
-      const interval = setInterval(fetchTickets, refreshInterval);
+      const interval = setInterval(() => fetchTickets(), refreshInterval);
       return () => clearInterval(interval);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -121,7 +129,7 @@ export function TicketListDemo({
           </div>
         </div>
         <button
-          onClick={fetchTickets}
+          onClick={(e) => fetchTickets(e)}
           className="mt-4 px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors"
         >
           Try Again
@@ -146,7 +154,7 @@ export function TicketListDemo({
           </p>
         </div>
         <button
-          onClick={fetchTickets}
+          onClick={(e) => fetchTickets(e)}
           disabled={loading}
           className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >

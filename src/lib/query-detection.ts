@@ -80,6 +80,24 @@ export function detectWidgetQuery(
 ): QueryMatch | null {
   const q = query.toLowerCase().trim();
 
+  // ============================================================================
+  // UNIVERSAL PATTERNS - Apply to ALL personas and ALL modes
+  // ============================================================================
+
+  // Universal Zoho Tickets Pattern - works across all personas/modes
+  if (
+    q.includes('zoho tickets') ||
+    q.includes('zoho desk tickets') ||
+    (q.includes('show') && q.includes('zoho') && q.includes('ticket')) ||
+    (q.includes('my') && q.includes('zoho') && q.includes('ticket'))
+  ) {
+    return {
+      widgetType: 'ticket-list',
+      widgetData: ticketListDemo,
+      responseText: "Here are the latest end user requests:",
+    };
+  }
+
   // Route based on persona
   switch (personaId) {
     // V14/V15 Personas
