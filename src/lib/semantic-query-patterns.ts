@@ -1,0 +1,801 @@
+// Semantic Query Patterns for Vector Embedding-Based Query Detection
+// Each pattern includes example queries and their expected widget mappings
+
+import type { WidgetType, WidgetData } from '@/types/widget';
+import {
+  executiveSummaryDemo,
+  customerRiskProfileDemo,
+  ticketDetailDemo,
+  slaPerformanceChartDemo,
+  agentPerformanceComparisonDemo,
+  callPrepNotesDemo,
+  responseComposerDemo,
+  teamWorkloadDashboardDemo,
+  customerRiskListDemo,
+  ticketListDemo,
+  agentDashboardDemo,
+  meetingSchedulerDemo,
+  similarTicketsAnalysisDemo,
+  agentPerformanceStatsDemo,
+  knowledgeBaseSearchDemo,
+  knowledgeArticleDemo,
+  messageComposerDemo,
+  passwordResetArticleDemo,
+  passwordResetEscalationDemo,
+  accountUnlockSuccessDemo,
+  accountUnlockEscalationDemo,
+  multiSystemAccessResolvedDemo,
+  profileUpdateSuccessDemo,
+  courseUpdateSuccessDemo,
+  contractPerformanceDemo,
+  deliverableReviewListDemo,
+  vendorComplianceDemo,
+  programHealthDemo,
+  stakeholderEngagementDemo,
+  requirementsTrackingDemo,
+  changeRequestDemo,
+  sprintBurndownDemo,
+  teamVelocityDemo,
+  codeQualityDemo,
+  deploymentPipelineDemo,
+  taskKanbanDemo,
+  resourceCapacityDemo,
+  blockerResolutionDemo,
+  analyticsDashboardDemo,
+  performanceTrendsDemo,
+  sentimentAnalysisDemo,
+} from '@/data/demo-widget-data';
+import { doraMetricsDemo } from '@/data/csm-widget-data';
+
+export interface SemanticPattern {
+  id: string;
+  // Example queries that should match this pattern (for embedding training)
+  exampleQueries: string[];
+  // Which personas this pattern applies to ('*' for all)
+  personas: string[];
+  // Widget configuration
+  widgetType: WidgetType;
+  widgetData: WidgetData;
+  responseText: string;
+  // Pre-computed embedding (to be filled by embedding script)
+  embedding?: number[];
+}
+
+// ============================================================================
+// UNIVERSAL PATTERNS - Apply to ALL personas
+// ============================================================================
+
+export const universalPatterns: SemanticPattern[] = [
+  {
+    id: 'universal-zoho-tickets',
+    exampleQueries: [
+      'show me zoho tickets',
+      'show me my zoho tickets',
+      'zoho desk tickets',
+      'zoho tickets list',
+      'what are my zoho tickets',
+      'display zoho tickets',
+      'open zoho tickets',
+      'my zoho desk tickets',
+      'show zoho ticket list',
+    ],
+    personas: ['*'],
+    widgetType: 'ticket-list',
+    widgetData: ticketListDemo,
+    responseText: 'Here are the latest end user requests:',
+  },
+  {
+    id: 'universal-ticket-list',
+    exampleQueries: [
+      'show me tickets',
+      'my tickets',
+      'current tickets',
+      'open tickets',
+      'ticket list',
+      'show tickets',
+      'display tickets',
+      'what tickets do I have',
+      'end user requests',
+      'user requests',
+      'latest requests',
+      'recent tickets',
+    ],
+    personas: ['*'],
+    widgetType: 'ticket-list',
+    widgetData: ticketListDemo,
+    responseText: 'Here are the latest end user requests:',
+  },
+  {
+    id: 'universal-draft-response',
+    exampleQueries: [
+      'draft a response',
+      'draft response',
+      'compose response',
+      'help me respond',
+      'draft message',
+      'compose message',
+      'write a response',
+      'help me draft',
+      'create response',
+    ],
+    personas: ['*'],
+    widgetType: 'response-composer',
+    widgetData: responseComposerDemo,
+    responseText: 'I\'ll help you draft a professional response:',
+  },
+  {
+    id: 'universal-top-performers',
+    exampleQueries: [
+      'top performers',
+      'who are my top performers',
+      'best performers',
+      'top performing agents',
+      'who are my best',
+      'performance comparison',
+      'compare performance',
+      'bottom performers',
+      'worst performers',
+      'performance ranking',
+      'agent ranking',
+    ],
+    personas: ['*'],
+    widgetType: 'agent-performance-comparison',
+    widgetData: agentPerformanceComparisonDemo,
+    responseText: 'Here\'s the performance comparison for your team:',
+  },
+];
+
+// ============================================================================
+// SPRINT / BURNDOWN PATTERNS - Project and Government modes
+// ============================================================================
+
+export const sprintPatterns: SemanticPattern[] = [
+  {
+    id: 'sprint-burndown',
+    exampleQueries: [
+      'show me sprint burndown',
+      'show me the sprint burndown',
+      'sprint burn down',
+      'sprint burndown',
+      'burndown chart',
+      'burn down chart',
+      'burn-down chart',
+      'show burndown',
+      'show burn down',
+      'display burndown',
+      'sprint progress',
+      'current sprint progress',
+      'sprint status',
+      'sprint tracking',
+      'how is the sprint going',
+      'sprint velocity',
+    ],
+    personas: ['program-manager', 'project-manager', 'service-team-lead'],
+    widgetType: 'sprint-burndown-chart',
+    widgetData: sprintBurndownDemo,
+    responseText: 'Sprint burndown chart shows current sprint progress and velocity tracking:',
+  },
+  {
+    id: 'team-velocity',
+    exampleQueries: [
+      'show me velocity',
+      'team velocity',
+      'velocity trends',
+      'velocity chart',
+      'team performance',
+      'sprint velocity',
+      'velocity metrics',
+      'how fast is the team',
+    ],
+    personas: ['project-manager', 'service-team-lead', 'program-manager'],
+    widgetType: 'team-velocity-dashboard',
+    widgetData: teamVelocityDemo,
+    responseText: 'Team velocity trends across recent sprints:',
+  },
+];
+
+// ============================================================================
+// GOVERNMENT MODE PATTERNS
+// ============================================================================
+
+export const governmentPatterns: SemanticPattern[] = [
+  // COR Patterns
+  {
+    id: 'contract-performance',
+    exampleQueries: [
+      'show contract performance',
+      'contract performance dashboard',
+      'contract status',
+      'how are my contracts performing',
+      'contract metrics',
+      'contract overview',
+      'show me contracts',
+      'current contract status',
+      'contract portfolio',
+    ],
+    personas: ['cor'],
+    widgetType: 'contract-performance-dashboard',
+    widgetData: contractPerformanceDemo,
+    responseText: 'Contract performance dashboard shows portfolio metrics and status:',
+  },
+  {
+    id: 'deliverable-reviews',
+    exampleQueries: [
+      'show deliverable reviews',
+      'deliverable review list',
+      'pending deliverables',
+      'deliverable status',
+      'what deliverables need review',
+      'deliverable approvals',
+      'review queue',
+      'pending approvals',
+    ],
+    personas: ['cor'],
+    widgetType: 'deliverable-review-list',
+    widgetData: deliverableReviewListDemo,
+    responseText: 'Deliverable reviews pending your approval:',
+  },
+  {
+    id: 'vendor-compliance',
+    exampleQueries: [
+      'check vendor compliance',
+      'vendor compliance status',
+      'vendor SLA performance',
+      'vendor metrics',
+      'compliance dashboard',
+      'SLA compliance',
+      'vendor performance',
+      'contractor compliance',
+    ],
+    personas: ['cor'],
+    widgetType: 'vendor-compliance-dashboard',
+    widgetData: vendorComplianceDemo,
+    responseText: 'Vendor compliance dashboard shows SLA performance and compliance status:',
+  },
+  {
+    id: 'budget-status',
+    exampleQueries: [
+      'show budget status',
+      'budget utilization',
+      'remaining funds',
+      'budget tracking',
+      'how much budget is left',
+      'budget burn rate',
+      'contract budget',
+    ],
+    personas: ['cor', 'program-manager'],
+    widgetType: 'contract-performance-dashboard',
+    widgetData: contractPerformanceDemo,
+    responseText: 'Budget utilization and burn rate analysis:',
+  },
+  // Program Manager Patterns
+  {
+    id: 'program-health',
+    exampleQueries: [
+      'show program health',
+      'program health dashboard',
+      'program status',
+      'how is the program doing',
+      'program overview',
+      'program metrics',
+      'portfolio health',
+    ],
+    personas: ['program-manager'],
+    widgetType: 'program-health-dashboard',
+    widgetData: programHealthDemo,
+    responseText: 'Program health dashboard shows portfolio status and key metrics:',
+  },
+  {
+    id: 'stakeholder-engagement',
+    exampleQueries: [
+      'stakeholder engagement',
+      'stakeholder status',
+      'stakeholder communication',
+      'stakeholder dashboard',
+      'how are stakeholders engaged',
+      'stakeholder metrics',
+    ],
+    personas: ['stakeholder-lead', 'program-manager'],
+    widgetType: 'stakeholder-engagement-dashboard',
+    widgetData: stakeholderEngagementDemo,
+    responseText: 'Stakeholder engagement metrics and communication effectiveness:',
+  },
+  {
+    id: 'requirements-tracking',
+    exampleQueries: [
+      'requirements tracking',
+      'requirement status',
+      'requirement progress',
+      'requirements dashboard',
+      'implementation progress',
+      'requirements coverage',
+      'traceability',
+    ],
+    personas: ['stakeholder-lead'],
+    widgetType: 'requirements-tracking-dashboard',
+    widgetData: requirementsTrackingDemo,
+    responseText: 'Requirements tracking shows implementation progress and coverage:',
+  },
+  {
+    id: 'change-requests',
+    exampleQueries: [
+      'change requests',
+      'pending changes',
+      'approved changes',
+      'change request dashboard',
+      'scope changes',
+      'change management',
+      'top risks',
+      'critical risks',
+      'high risks',
+    ],
+    personas: ['stakeholder-lead', 'program-manager'],
+    widgetType: 'change-request-dashboard',
+    widgetData: changeRequestDemo,
+    responseText: 'Change requests and risk items requiring attention:',
+  },
+  {
+    id: 'milestone-status',
+    exampleQueries: [
+      'milestone status',
+      'milestone tracking',
+      'milestone progress',
+      'phase progress',
+      'key milestones',
+      'upcoming milestones',
+    ],
+    personas: ['program-manager'],
+    widgetType: 'sprint-burndown-chart',
+    widgetData: sprintBurndownDemo,
+    responseText: 'Milestone progress tracking toward key phases:',
+  },
+  {
+    id: 'resource-capacity',
+    exampleQueries: [
+      'resource capacity',
+      'resource availability',
+      'resource allocation',
+      'team capacity',
+      'resource utilization',
+      'who is available',
+      'resource planning',
+    ],
+    personas: ['program-manager', 'project-manager', 'service-team-lead'],
+    widgetType: 'resource-capacity-dashboard',
+    widgetData: resourceCapacityDemo,
+    responseText: 'Resource capacity and utilization across the team:',
+  },
+];
+
+// ============================================================================
+// PROJECT MODE PATTERNS
+// ============================================================================
+
+export const projectPatterns: SemanticPattern[] = [
+  {
+    id: 'team-workload',
+    exampleQueries: [
+      'team workload',
+      'team status',
+      'show me my team',
+      'what is my team working on',
+      'team capacity',
+      'team dashboard',
+      'workload distribution',
+    ],
+    personas: ['service-team-lead', 'atc-manager', 'cs-manager'],
+    widgetType: 'team-workload-dashboard',
+    widgetData: teamWorkloadDashboardDemo,
+    responseText: 'Team workload dashboard shows task distribution and capacity:',
+  },
+  {
+    id: 'code-quality',
+    exampleQueries: [
+      'code quality',
+      'show me code quality',
+      'technical debt',
+      'test coverage',
+      'code coverage',
+      'code smell',
+      'code issues',
+      'code metrics',
+      'code health',
+    ],
+    personas: ['service-team-lead', 'service-team-member'],
+    widgetType: 'code-quality-dashboard',
+    widgetData: codeQualityDemo,
+    responseText: 'Code quality metrics show technical debt and test coverage:',
+  },
+  {
+    id: 'deployment-pipeline',
+    exampleQueries: [
+      'deployment status',
+      'deployment pipeline',
+      'show deployment',
+      'pipeline status',
+      'CI/CD status',
+      'build status',
+      'deploy status',
+      'recent deployments',
+    ],
+    personas: ['service-team-lead', 'service-team-member'],
+    widgetType: 'deployment-pipeline-dashboard',
+    widgetData: deploymentPipelineDemo,
+    responseText: 'Deployment pipeline status shows CI/CD health and recent deployments:',
+  },
+  {
+    id: 'task-kanban',
+    exampleQueries: [
+      'sprint planning',
+      'sprint plan',
+      'task board',
+      'kanban board',
+      'sprint tasks',
+      'upcoming tasks',
+      'task kanban',
+      'backlog',
+    ],
+    personas: ['project-manager', 'service-team-lead'],
+    widgetType: 'task-kanban-board',
+    widgetData: taskKanbanDemo,
+    responseText: 'Sprint task board shows current work items:',
+  },
+  {
+    id: 'blockers',
+    exampleQueries: [
+      'blockers',
+      'blocked tasks',
+      'blocker resolution',
+      'impediments',
+      'what is blocking us',
+      'active blockers',
+      'show blockers',
+    ],
+    personas: ['project-manager', 'service-team-lead'],
+    widgetType: 'blocker-resolution-dashboard',
+    widgetData: blockerResolutionDemo,
+    responseText: 'Active blockers requiring attention:',
+  },
+  {
+    id: 'dora-metrics',
+    exampleQueries: [
+      'DORA metrics',
+      'performance metrics',
+      'performance KPIs',
+      'developer metrics',
+      'deployment frequency',
+      'lead time',
+      'engineering metrics',
+    ],
+    personas: ['service-team-lead'],
+    widgetType: 'dora-metrics-dashboard',
+    widgetData: doraMetricsDemo,
+    responseText: 'DORA metrics show engineering performance indicators:',
+  },
+];
+
+// ============================================================================
+// ATC MODE / SUPPORT PATTERNS
+// ============================================================================
+
+export const supportPatterns: SemanticPattern[] = [
+  {
+    id: 'executive-summary',
+    exampleQueries: [
+      'show me executive summary',
+      'executive summary',
+      'good morning show me executive summary',
+      'executive dashboard',
+      'business overview',
+      'high level summary',
+      'leadership summary',
+    ],
+    personas: ['atc-executive', 'c-level'],
+    widgetType: 'executive-summary',
+    widgetData: executiveSummaryDemo,
+    responseText: 'Executive summary shows key business metrics and performance:',
+  },
+  {
+    id: 'analytics-dashboard',
+    exampleQueries: [
+      'show me analytics',
+      'analytics dashboard',
+      'detailed analytics',
+      'operational analytics',
+      'show me the detailed analytics dashboard',
+      'ticket analytics',
+    ],
+    personas: ['atc-executive', 'atc-manager', 'c-level'],
+    widgetType: 'analytics-dashboard',
+    widgetData: analyticsDashboardDemo,
+    responseText: 'Analytics dashboard shows operational trends and metrics:',
+  },
+  {
+    id: 'customer-risk',
+    exampleQueries: [
+      'customers at churn risk',
+      'high risk customers',
+      'customers at risk',
+      'churn risk',
+      'at risk customers',
+      'customer risk list',
+      'who might churn',
+    ],
+    personas: ['atc-executive', 'atc-manager', 'atc-csm', 'c-level', 'cs-manager'],
+    widgetType: 'customer-risk-list',
+    widgetData: customerRiskListDemo,
+    responseText: 'High-risk customers requiring attention:',
+  },
+  {
+    id: 'sla-performance',
+    exampleQueries: [
+      'SLA performance',
+      'SLA compliance',
+      'SLA breakdown',
+      'SLA status',
+      'SLA metrics',
+      'show me SLA',
+      'SLA dashboard',
+    ],
+    personas: ['atc-executive', 'atc-manager', 'c-level', 'cs-manager'],
+    widgetType: 'sla-performance-chart',
+    widgetData: slaPerformanceChartDemo,
+    responseText: 'SLA performance breakdown by tier:',
+  },
+  {
+    id: 'sentiment-analysis',
+    exampleQueries: [
+      'customer sentiment',
+      'sentiment analysis',
+      'sentiment dashboard',
+      'NPS score',
+      'customer feedback sentiment',
+      'how do customers feel',
+    ],
+    personas: ['atc-executive', 'atc-csm', 'c-level'],
+    widgetType: 'sentiment-analysis',
+    widgetData: sentimentAnalysisDemo,
+    responseText: 'Customer sentiment analysis and trending topics:',
+  },
+  {
+    id: 'agent-dashboard',
+    exampleQueries: [
+      'what is on my plate today',
+      'good morning',
+      'my daily overview',
+      'daily update',
+      'standup',
+      'morning update',
+      'what should I work on',
+      'my priorities',
+    ],
+    personas: ['atc-support', 'support-agent', 'service-team-member'],
+    widgetType: 'agent-dashboard',
+    widgetData: agentDashboardDemo,
+    responseText: 'Here\'s your daily overview with tasks and priorities:',
+  },
+  {
+    id: 'ticket-detail',
+    exampleQueries: [
+      'show me ticket',
+      'ticket details',
+      'open ticket',
+      'ticket information',
+      'ticket status',
+      'show ticket TICK',
+    ],
+    personas: ['atc-support', 'atc-manager', 'support-agent', 'cs-manager'],
+    widgetType: 'ticket-detail',
+    widgetData: ticketDetailDemo,
+    responseText: 'Ticket details:',
+  },
+  {
+    id: 'call-prep',
+    exampleQueries: [
+      'prepare for call',
+      'call prep notes',
+      'call preparation',
+      'draft prep notes',
+      'get ready for call',
+      'customer call prep',
+    ],
+    personas: ['atc-support', 'support-agent'],
+    widgetType: 'call-prep-notes',
+    widgetData: callPrepNotesDemo,
+    responseText: 'Call preparation notes for your upcoming customer call:',
+  },
+  {
+    id: 'similar-tickets',
+    exampleQueries: [
+      'similar tickets',
+      'find similar tickets',
+      'learn the patterns',
+      'related tickets',
+      'tickets like this',
+      'pattern analysis',
+    ],
+    personas: ['atc-support', 'support-agent'],
+    widgetType: 'similar-tickets-analysis',
+    widgetData: similarTicketsAnalysisDemo,
+    responseText: 'Similar tickets and resolution patterns:',
+  },
+  {
+    id: 'agent-performance-stats',
+    exampleQueries: [
+      'my performance stats',
+      'my stats',
+      'my performance',
+      'personal performance',
+      'how am I doing',
+      'my metrics',
+      'performance this sprint',
+    ],
+    personas: ['atc-support', 'support-agent', 'service-team-member'],
+    widgetType: 'agent-performance-stats',
+    widgetData: agentPerformanceStatsDemo,
+    responseText: 'Your personal performance metrics:',
+  },
+  {
+    id: 'knowledge-base',
+    exampleQueries: [
+      'search knowledge base',
+      'knowledge base',
+      'KB search',
+      'how do I',
+      'find documentation',
+      'search KB',
+      'help with',
+      'guide for',
+      'troubleshoot',
+    ],
+    personas: ['atc-support', 'support-agent', 'service-team-member'],
+    widgetType: 'knowledge-base-search',
+    widgetData: knowledgeBaseSearchDemo,
+    responseText: 'Knowledge base search results:',
+  },
+  {
+    id: 'password-reset',
+    exampleQueries: [
+      'password reset',
+      'forgot password',
+      'reset password',
+      'locked out',
+      'cannot login',
+      'login issue',
+      'password help',
+    ],
+    personas: ['atc-support', 'support-agent'],
+    widgetType: 'knowledge-article',
+    widgetData: passwordResetArticleDemo,
+    responseText: 'Password reset guide:',
+  },
+  {
+    id: 'meeting-scheduler',
+    exampleQueries: [
+      'schedule meeting',
+      'upcoming meetings',
+      'meeting schedule',
+      'calendar',
+      'schedule a call',
+      'book meeting',
+    ],
+    personas: ['stakeholder-lead', 'atc-manager', 'cs-manager'],
+    widgetType: 'meeting-scheduler',
+    widgetData: meetingSchedulerDemo,
+    responseText: 'Meeting scheduler and upcoming appointments:',
+  },
+];
+
+// ============================================================================
+// CSM SPECIFIC PATTERNS
+// ============================================================================
+
+export const csmPatterns: SemanticPattern[] = [
+  {
+    id: 'churn-risk-analysis',
+    exampleQueries: [
+      'churn risk analysis',
+      'analyze churn risk',
+      'client retention risk',
+      'who might leave',
+      'at risk of churn',
+    ],
+    personas: ['atc-csm'],
+    widgetType: 'customer-risk-profile',
+    widgetData: customerRiskProfileDemo,
+    responseText: 'Churn risk analysis for at-risk clients:',
+  },
+  {
+    id: 'product-adoption',
+    exampleQueries: [
+      'product adoption',
+      'feature usage',
+      'adoption metrics',
+      'declining adoption',
+      'product adoption declining',
+      'usage trends',
+    ],
+    personas: ['atc-csm'],
+    widgetType: 'analytics-dashboard',
+    widgetData: analyticsDashboardDemo,
+    responseText: 'Product adoption metrics and feature usage:',
+  },
+  {
+    id: 'renewal-pipeline',
+    exampleQueries: [
+      'upcoming renewals',
+      'renewal pipeline',
+      'renewals in 90 days',
+      'contract renewals',
+      'renewal status',
+    ],
+    personas: ['atc-csm'],
+    widgetType: 'analytics-dashboard',
+    widgetData: analyticsDashboardDemo,
+    responseText: 'Upcoming contract renewals:',
+  },
+  {
+    id: 'expansion-opportunities',
+    exampleQueries: [
+      'expansion opportunities',
+      'upsell opportunities',
+      'identify expansion',
+      'growth opportunities',
+      'ready for upgrade',
+      'premium tier upgrade',
+    ],
+    personas: ['atc-csm'],
+    widgetType: 'customer-risk-list',
+    widgetData: customerRiskListDemo,
+    responseText: 'Expansion and upsell opportunities:',
+  },
+  {
+    id: 'nps-feedback',
+    exampleQueries: [
+      'NPS survey results',
+      'NPS feedback',
+      'customer feedback',
+      'satisfaction scores',
+      'recent NPS',
+      'feedback dashboard',
+    ],
+    personas: ['atc-csm'],
+    widgetType: 'sentiment-analysis',
+    widgetData: sentimentAnalysisDemo,
+    responseText: 'NPS and customer feedback analysis:',
+  },
+  {
+    id: 'business-review',
+    exampleQueries: [
+      'business review',
+      'quarterly business review',
+      'QBR schedule',
+      'schedule business review',
+      'clients need business review',
+    ],
+    personas: ['atc-csm'],
+    widgetType: 'meeting-scheduler',
+    widgetData: meetingSchedulerDemo,
+    responseText: 'Business review scheduling:',
+  },
+];
+
+// ============================================================================
+// ALL PATTERNS COMBINED
+// ============================================================================
+
+export const allSemanticPatterns: SemanticPattern[] = [
+  ...universalPatterns,
+  ...sprintPatterns,
+  ...governmentPatterns,
+  ...projectPatterns,
+  ...supportPatterns,
+  ...csmPatterns,
+];
+
+// Get patterns applicable to a specific persona
+export function getPatternsForPersona(personaId: string): SemanticPattern[] {
+  return allSemanticPatterns.filter(
+    pattern => pattern.personas.includes('*') || pattern.personas.includes(personaId)
+  );
+}

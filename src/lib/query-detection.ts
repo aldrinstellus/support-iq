@@ -1,7 +1,9 @@
 // Query Detection Module for Bhanu's Assistant-First Interface
 // Maps natural language queries to appropriate widgets based on persona and intent
+// V1.3.0: Now uses semantic pattern matching for better fuzzy matching
 
 import type { WidgetType, WidgetData } from '@/types/widget';
+import { findSemanticMatch } from './semantic-matcher';
 import { findBestMatch as findCLevelMatch } from './c-level-conversation';
 import { findBestMatch as findCSManagerMatch } from './cs-manager-conversation';
 import { findBestMatch as findATCExecutiveMatch } from './atc-executive-conversation';
@@ -73,6 +75,7 @@ export type PersonaId =
 
 /**
  * Detect widget intent from user query
+ * Uses semantic pattern matching first, then falls back to keyword matching
  */
 export function detectWidgetQuery(
   query: string,
@@ -81,7 +84,16 @@ export function detectWidgetQuery(
   const q = query.toLowerCase().trim();
 
   // ============================================================================
-  // UNIVERSAL PATTERNS - Apply to ALL personas and ALL modes
+  // SEMANTIC MATCHING - Try fuzzy pattern matching first
+  // Handles variations like "burn down" vs "burndown", "the sprint burndown" etc.
+  // ============================================================================
+  const semanticMatch = findSemanticMatch(query, personaId);
+  if (semanticMatch) {
+    return semanticMatch;
+  }
+
+  // ============================================================================
+  // FALLBACK: KEYWORD PATTERNS - Apply if semantic match not found
   // ============================================================================
 
   // Universal Zoho Tickets Pattern - works across all personas/modes
@@ -1823,8 +1835,11 @@ function detectCORQuery(q: string): QueryMatch | null {
 
 function detectProgramManagerQuery(q: string): QueryMatch | null {
   // Sprint Burndown - Show actual sprint burndown chart
+  // Supports: "burndown", "burn down", "burn-down" variations
   if (
     q.includes('burndown') ||
+    q.includes('burn down') ||
+    q.includes('burn-down') ||
     q.includes('sprint progress') ||
     (q.includes('sprint') && (q.includes('status') || q.includes('track')))
   ) {
@@ -2099,9 +2114,11 @@ function detectStakeholderLeadQuery(q: string): QueryMatch | null {
 // ============================================================================
 
 function detectProjectManagerQuery(q: string): QueryMatch | null {
-  // Sprint Burndown
+  // Sprint Burndown - supports: "burndown", "burn down", "burn-down" variations
   if (
     q.includes('burndown') ||
+    q.includes('burn down') ||
+    q.includes('burn-down') ||
     q.includes('sprint progress') ||
     (q.includes('sprint') && (q.includes('status') || q.includes('track')))
   ) {
