@@ -126,6 +126,10 @@ const COMPOUND_WORDS: Record<string, string> = {
 function normalizeQuery(query: string): string {
   let normalized = query.toLowerCase().trim();
 
+  // Pre-process: normalize hyphens to spaces for compound matching
+  // This handles "burn-down" → "burn down" before compound matching
+  normalized = normalized.replace(/-/g, ' ');
+
   // Replace compound words first (before splitting)
   for (const [compound, replacement] of Object.entries(COMPOUND_WORDS)) {
     normalized = normalized.replace(new RegExp(compound, 'gi'), replacement);
