@@ -195,7 +195,6 @@ export const sprintPatterns: SemanticPattern[] = [
       'sprint status',
       'sprint tracking',
       'how is the sprint going',
-      'sprint velocity',
     ],
     personas: ['program-manager', 'project-manager', 'service-team-lead'],
     widgetType: 'sprint-burndown-chart',
@@ -205,6 +204,7 @@ export const sprintPatterns: SemanticPattern[] = [
   {
     id: 'team-velocity',
     exampleQueries: [
+      'velocity', // Standalone velocity query - high priority
       'show me velocity',
       'team velocity',
       'velocity trends',
@@ -213,7 +213,8 @@ export const sprintPatterns: SemanticPattern[] = [
       'sprint velocity',
       'velocity metrics',
       'how fast is the team',
-      'velocity', // Standalone velocity query
+      'what is the velocity',
+      'current velocity',
     ],
     personas: ['project-manager', 'service-team-lead', 'program-manager'],
     widgetType: 'team-velocity-dashboard',
