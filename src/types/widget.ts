@@ -57,6 +57,7 @@ export type WidgetType =
   | 'resource-capacity-dashboard'
   | 'blocker-resolution-dashboard'
   | 'kb-article-viewer'
+  | 'budget-utilization-dashboard'
   // V18 CSM Insights & Training Widget Types
   | 'csm-insights-dashboard'
   | 'csm-training-dashboard'
@@ -1608,6 +1609,60 @@ export interface DoraMetricsData {
   }>;
 }
 
+// Budget Utilization Dashboard Widget (COR/Program Manager Persona)
+export interface BudgetUtilizationData {
+  title: string;
+  fiscalYear: string;
+  lastUpdated: string;
+  summary: {
+    totalBudget: number;
+    spent: number;
+    committed: number;
+    remaining: number;
+    utilizationRate: number;
+    burnRate: number; // Monthly burn rate in dollars
+    projectedEndDate: string;
+    status: 'on-track' | 'at-risk' | 'over-budget' | 'under-utilized';
+  };
+  categories: Array<{
+    name: string;
+    allocated: number;
+    spent: number;
+    committed: number;
+    remaining: number;
+    utilizationRate: number;
+    status: 'on-track' | 'at-risk' | 'over-budget';
+    trend: 'up' | 'down' | 'stable';
+  }>;
+  monthlyBurndown: Array<{
+    month: string;
+    planned: number;
+    actual: number;
+    cumulative: number;
+  }>;
+  contracts: Array<{
+    id: string;
+    name: string;
+    vendor: string;
+    allocated: number;
+    spent: number;
+    remaining: number;
+    status: 'active' | 'pending' | 'completed';
+  }>;
+  alerts: Array<{
+    severity: 'critical' | 'high' | 'medium' | 'low';
+    message: string;
+    category?: string;
+    action?: string;
+  }>;
+  forecast: {
+    projectedSpend: number;
+    variance: number;
+    variancePercentage: number;
+    recommendation: string;
+  };
+}
+
 // Union type for all widget data
 export type WidgetData =
   | ExecutiveSummaryData
@@ -1662,6 +1717,8 @@ export type WidgetData =
   | CSMTrainingDashboardData
   // V18 DORA Metrics
   | DoraMetricsData
+  // Budget Utilization Dashboard
+  | BudgetUtilizationData
   // V20 ITSS Draft Review
   | Draft;
 

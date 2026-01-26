@@ -47,6 +47,7 @@ import type {
   CSMInsightsDashboardData,
   CSMTrainingDashboardData,
   DoraMetricsData,
+  BudgetUtilizationData,
 } from '@/types/widget';
 import { ExecutiveSummaryWidget } from './ExecutiveSummaryWidget';
 import { AnalyticsDashboardWidget } from './AnalyticsDashboardWidget';
@@ -97,6 +98,7 @@ import { ProductAdoptionMetricsWidget } from './ProductAdoptionMetricsWidget';
 import { CSMInsightsDashboardWidget } from './CSMInsightsDashboardWidget';
 import { CSMTrainingDashboardWidget } from './CSMTrainingDashboardWidget';
 import { DoraMetricsDashboardWidget } from './DoraMetricsDashboardWidget';
+import { BudgetUtilizationDashboardWidget } from './BudgetUtilizationDashboardWidget';
 
 interface WidgetRendererProps {
   type: WidgetType;
@@ -251,6 +253,10 @@ export function WidgetRenderer({ type, data, onAction }: WidgetRendererProps) {
 
       case 'dora-metrics-dashboard':
         return <DoraMetricsDashboardWidget data={data as DoraMetricsData} />;
+
+      // Budget Utilization Dashboard
+      case 'budget-utilization-dashboard':
+        return <BudgetUtilizationDashboardWidget data={data as BudgetUtilizationData} />;
 
       default:
         // Fallback for unimplemented widgets

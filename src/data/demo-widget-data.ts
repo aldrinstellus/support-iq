@@ -38,6 +38,8 @@ import type {
   TaskKanbanData,
   ResourceCapacityData,
   BlockerResolutionData,
+  // Budget Utilization Dashboard
+  BudgetUtilizationData,
 } from '@/types/widget';
 
 // C-Level: Executive Summary Widget Data
@@ -3376,6 +3378,157 @@ export const blockerResolutionDemo: BlockerResolutionData = {
   ],
 };
 
+// ============================================================================
+// BUDGET UTILIZATION DASHBOARD DEMO DATA
+// ============================================================================
+
+// COR/Program Manager Persona: Budget Utilization Dashboard
+export const budgetUtilizationDemo: BudgetUtilizationData = {
+  title: 'Budget Utilization & Burn Rate Analysis',
+  fiscalYear: 'FY 2025',
+  lastUpdated: new Date().toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  }),
+  summary: {
+    totalBudget: 5000000,
+    spent: 3250000,
+    committed: 850000,
+    remaining: 900000,
+    utilizationRate: 82,
+    burnRate: 325000, // Monthly burn rate
+    projectedEndDate: '2025-09-15',
+    status: 'on-track',
+  },
+  categories: [
+    {
+      name: 'Personnel Services',
+      allocated: 2000000,
+      spent: 1450000,
+      committed: 350000,
+      remaining: 200000,
+      utilizationRate: 90,
+      status: 'on-track',
+      trend: 'stable',
+    },
+    {
+      name: 'IT Infrastructure',
+      allocated: 1500000,
+      spent: 950000,
+      committed: 300000,
+      remaining: 250000,
+      utilizationRate: 83,
+      status: 'on-track',
+      trend: 'up',
+    },
+    {
+      name: 'Software Licenses',
+      allocated: 800000,
+      spent: 520000,
+      committed: 150000,
+      remaining: 130000,
+      utilizationRate: 84,
+      status: 'on-track',
+      trend: 'stable',
+    },
+    {
+      name: 'Training & Development',
+      allocated: 400000,
+      spent: 180000,
+      committed: 50000,
+      remaining: 170000,
+      utilizationRate: 58,
+      status: 'at-risk',
+      trend: 'down',
+    },
+    {
+      name: 'Contingency Reserve',
+      allocated: 300000,
+      spent: 150000,
+      committed: 0,
+      remaining: 150000,
+      utilizationRate: 50,
+      status: 'on-track',
+      trend: 'stable',
+    },
+  ],
+  monthlyBurndown: [
+    { month: 'Oct', planned: 500000, actual: 520000, cumulative: 520000 },
+    { month: 'Nov', planned: 500000, actual: 480000, cumulative: 1000000 },
+    { month: 'Dec', planned: 500000, actual: 510000, cumulative: 1510000 },
+    { month: 'Jan', planned: 500000, actual: 490000, cumulative: 2000000 },
+    { month: 'Feb', planned: 500000, actual: 505000, cumulative: 2505000 },
+    { month: 'Mar', planned: 500000, actual: 495000, cumulative: 3000000 },
+    { month: 'Apr', planned: 500000, actual: 250000, cumulative: 3250000 },
+    { month: 'May', planned: 500000, actual: 0, cumulative: 3250000 },
+    { month: 'Jun', planned: 500000, actual: 0, cumulative: 3250000 },
+  ],
+  contracts: [
+    {
+      id: 'CON-2025-042',
+      name: 'Enterprise IT Modernization',
+      vendor: 'TechSolutions Inc.',
+      allocated: 2500000,
+      spent: 1950000,
+      remaining: 550000,
+      status: 'active',
+    },
+    {
+      id: 'CON-2025-043',
+      name: 'Cloud Migration Services',
+      vendor: 'CloudFirst Partners',
+      allocated: 1200000,
+      spent: 800000,
+      remaining: 400000,
+      status: 'active',
+    },
+    {
+      id: 'CON-2025-044',
+      name: 'Security Assessment',
+      vendor: 'SecureNet Solutions',
+      allocated: 500000,
+      spent: 350000,
+      remaining: 150000,
+      status: 'active',
+    },
+    {
+      id: 'CON-2025-045',
+      name: 'Staff Augmentation',
+      vendor: 'TalentBridge LLC',
+      allocated: 800000,
+      spent: 150000,
+      remaining: 650000,
+      status: 'pending',
+    },
+  ],
+  alerts: [
+    {
+      severity: 'high',
+      message: 'Training & Development budget utilization below target (58%)',
+      category: 'Training & Development',
+      action: 'Review Q3 training schedule and accelerate planned sessions',
+    },
+    {
+      severity: 'medium',
+      message: 'IT Infrastructure spending 5% above monthly forecast',
+      category: 'IT Infrastructure',
+      action: 'Monitor closely for next 30 days',
+    },
+    {
+      severity: 'low',
+      message: 'Q3 budget review due in 15 days',
+      action: 'Prepare quarterly financial report for stakeholders',
+    },
+  ],
+  forecast: {
+    projectedSpend: 4800000,
+    variance: 200000,
+    variancePercentage: 4,
+    recommendation: 'Current burn rate projects 4% under-utilization at fiscal year end. Consider accelerating Training & Development initiatives or reallocating funds to high-priority infrastructure upgrades.',
+  },
+};
+
 import type { WidgetData } from '@/types/widget';
 
 // Helper function to get demo data for each widget type
@@ -3420,6 +3573,8 @@ export function getWidgetDemoData(widgetType: string): WidgetData | null {
     'task-kanban-board': taskKanbanDemo,
     'resource-capacity-dashboard': resourceCapacityDemo,
     'blocker-resolution-dashboard': blockerResolutionDemo,
+    // Budget Utilization Dashboard
+    'budget-utilization-dashboard': budgetUtilizationDemo,
   };
 
   return dataMap[widgetType] || null;

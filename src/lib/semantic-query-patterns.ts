@@ -44,6 +44,7 @@ import {
   analyticsDashboardDemo,
   performanceTrendsDemo,
   sentimentAnalysisDemo,
+  budgetUtilizationDemo,
 } from '@/data/demo-widget-data';
 import { doraMetricsDemo } from '@/data/csm-widget-data';
 
@@ -289,10 +290,15 @@ export const governmentPatterns: SemanticPattern[] = [
       'how much budget is left',
       'budget burn rate',
       'contract budget',
+      'show me budget tracking dashboard',
+      'budget remaining for contracts',
+      'budget remaining',
+      'budget dashboard',
+      'budget analysis',
     ],
     personas: ['cor', 'program-manager'],
-    widgetType: 'contract-performance-dashboard',
-    widgetData: contractPerformanceDemo,
+    widgetType: 'budget-utilization-dashboard',
+    widgetData: budgetUtilizationDemo,
     responseText: 'Budget utilization and burn rate analysis:',
   },
   // Program Manager Patterns
