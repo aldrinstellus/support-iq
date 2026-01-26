@@ -812,8 +812,8 @@ export const supportPatterns: SemanticPattern[] = [
       'department budget',
     ],
     personas: ['atc-manager', 'atc-executive', 'cs-manager'],
-    widgetType: 'analytics-dashboard',
-    widgetData: analyticsDashboardDemo,
+    widgetType: 'budget-utilization-dashboard',
+    widgetData: budgetUtilizationDemo,
     responseText: 'Team budget overview and allocation:',
   },
 ];
