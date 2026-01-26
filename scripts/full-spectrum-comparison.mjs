@@ -4,7 +4,7 @@
  * Compares all 54 questions across both platforms
  */
 
-const OUR_DSQ = 'https://support-iq-pearl.vercel.app';
+const OUR_DSQ = 'https://support-iq-pearl.vercel.app/dsq';
 const PARENT_DEMO = 'https://atc-support-v20-op3.vercel.app';
 
 // Demo Guide Specification (from dsq_DEMO-GUIDE.pdf)
