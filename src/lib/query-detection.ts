@@ -1822,17 +1822,16 @@ function detectCORQuery(q: string): QueryMatch | null {
 // ============================================================================
 
 function detectProgramManagerQuery(q: string): QueryMatch | null {
-  // Sprint Burndown → Contract Performance Dashboard (per Demo Guide)
-  // Program Manager in Government Mode sees contract-level dashboards
+  // Sprint Burndown - Show actual sprint burndown chart
   if (
     q.includes('burndown') ||
     q.includes('sprint progress') ||
     (q.includes('sprint') && (q.includes('status') || q.includes('track')))
   ) {
     return {
-      widgetType: 'contract-performance-dashboard',
-      widgetData: contractPerformanceDemo,
-      responseText: "Contract performance dashboard shows delivery metrics and milestone progress:",
+      widgetType: 'sprint-burndown-chart',
+      widgetData: sprintBurndownDemo,
+      responseText: "Sprint burndown chart shows current sprint progress and velocity tracking:",
     };
   }
 
