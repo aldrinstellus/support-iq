@@ -373,6 +373,8 @@ export const governmentPatterns: SemanticPattern[] = [
       'top risks',
       'critical risks',
       'high risks',
+      'change request pending',
+      'pending change requests',
     ],
     personas: ['stakeholder-lead', 'program-manager'],
     widgetType: 'change-request-dashboard',
