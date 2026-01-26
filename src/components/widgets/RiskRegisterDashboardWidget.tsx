@@ -1,3 +1,6 @@
+'use client';
+
+import { useState } from 'react';
 import {
   AlertTriangle,
   Shield,
@@ -13,11 +16,17 @@ import {
   Calendar,
   ArrowRight,
   Activity,
+  ChevronRight,
+  X,
 } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import type { RiskRegisterData } from '@/types/widget';
 
+type FilterType = 'all' | 'critical' | 'high' | 'medium' | 'low' | 'mitigated' | 'new' | null;
+
 export function RiskRegisterDashboardWidget({ data }: { data: RiskRegisterData }) {
+  const [selectedFilter, setSelectedFilter] = useState<FilterType>(null);
+  const [expandedRisk, setExpandedRisk] = useState<string | null>(null);
   // Defensive check
   if (!data || typeof data !== 'object') {
     return (
@@ -190,60 +199,240 @@ export function RiskRegisterDashboardWidget({ data }: { data: RiskRegisterData }
         </div>
       </div>
 
-      {/* Summary Cards */}
+      {/* Interactive Summary Cards */}
       <motion.div className="mb-6" variants={itemVariants}>
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-3">
           <motion.div
-            className="p-3 rounded-lg bg-muted/30 border border-border text-center"
+            onClick={() => setSelectedFilter(selectedFilter === 'all' ? null : 'all')}
+            className={`p-3 rounded-lg bg-muted/30 border border-border text-center cursor-pointer transition-all duration-200 hover:shadow-md ${
+              selectedFilter === 'all' ? 'ring-2 ring-primary/50' : ''
+            }`}
             whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
           >
+            <div className="flex items-center justify-between mb-1">
+              <Shield className="h-3 w-3 text-muted-foreground" />
+              <ChevronRight className={`h-3 w-3 transition-transform ${selectedFilter === 'all' ? 'rotate-90 text-primary' : 'text-muted-foreground'}`} />
+            </div>
             <div className="text-2xl font-bold text-foreground">{data.summary.totalRisks}</div>
             <div className="text-xs text-muted-foreground">Total</div>
           </motion.div>
           <motion.div
-            className="p-3 rounded-lg bg-red-500/20 border border-destructive/30 text-center"
+            onClick={() => setSelectedFilter(selectedFilter === 'critical' ? null : 'critical')}
+            className={`p-3 rounded-lg bg-red-500/20 border border-destructive/30 text-center cursor-pointer transition-all duration-200 hover:shadow-md ${
+              selectedFilter === 'critical' ? 'ring-2 ring-primary/50' : ''
+            }`}
             whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
           >
+            <div className="flex items-center justify-between mb-1">
+              <AlertCircle className="h-3 w-3 text-destructive" />
+              <ChevronRight className={`h-3 w-3 transition-transform ${selectedFilter === 'critical' ? 'rotate-90 text-primary' : 'text-muted-foreground'}`} />
+            </div>
             <div className="text-2xl font-bold text-destructive">{data.summary.critical}</div>
             <div className="text-xs text-muted-foreground">Critical</div>
           </motion.div>
           <motion.div
-            className="p-3 rounded-lg bg-orange-500/20 border border-orange-500/30 text-center"
+            onClick={() => setSelectedFilter(selectedFilter === 'high' ? null : 'high')}
+            className={`p-3 rounded-lg bg-orange-500/20 border border-orange-500/30 text-center cursor-pointer transition-all duration-200 hover:shadow-md ${
+              selectedFilter === 'high' ? 'ring-2 ring-primary/50' : ''
+            }`}
             whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
           >
+            <div className="flex items-center justify-between mb-1">
+              <AlertTriangle className="h-3 w-3 text-orange-500" />
+              <ChevronRight className={`h-3 w-3 transition-transform ${selectedFilter === 'high' ? 'rotate-90 text-primary' : 'text-muted-foreground'}`} />
+            </div>
             <div className="text-2xl font-bold text-orange-500">{data.summary.high}</div>
             <div className="text-xs text-muted-foreground">High</div>
           </motion.div>
           <motion.div
-            className="p-3 rounded-lg bg-amber-500/20 border border-chart-4/30 text-center"
+            onClick={() => setSelectedFilter(selectedFilter === 'medium' ? null : 'medium')}
+            className={`p-3 rounded-lg bg-amber-500/20 border border-chart-4/30 text-center cursor-pointer transition-all duration-200 hover:shadow-md ${
+              selectedFilter === 'medium' ? 'ring-2 ring-primary/50' : ''
+            }`}
             whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
           >
+            <div className="flex items-center justify-between mb-1">
+              <Target className="h-3 w-3 text-chart-4" />
+              <ChevronRight className={`h-3 w-3 transition-transform ${selectedFilter === 'medium' ? 'rotate-90 text-primary' : 'text-muted-foreground'}`} />
+            </div>
             <div className="text-2xl font-bold text-chart-4">{data.summary.medium}</div>
             <div className="text-xs text-muted-foreground">Medium</div>
           </motion.div>
           <motion.div
-            className="p-3 rounded-lg bg-emerald-500/20 border border-success/30 text-center"
+            onClick={() => setSelectedFilter(selectedFilter === 'low' ? null : 'low')}
+            className={`p-3 rounded-lg bg-emerald-500/20 border border-success/30 text-center cursor-pointer transition-all duration-200 hover:shadow-md ${
+              selectedFilter === 'low' ? 'ring-2 ring-primary/50' : ''
+            }`}
             whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
           >
+            <div className="flex items-center justify-between mb-1">
+              <CheckCircle2 className="h-3 w-3 text-success" />
+              <ChevronRight className={`h-3 w-3 transition-transform ${selectedFilter === 'low' ? 'rotate-90 text-primary' : 'text-muted-foreground'}`} />
+            </div>
             <div className="text-2xl font-bold text-success">{data.summary.low}</div>
             <div className="text-xs text-muted-foreground">Low</div>
           </motion.div>
           <motion.div
-            className="p-3 rounded-lg bg-blue-500/20 border border-blue-500/30 text-center"
+            onClick={() => setSelectedFilter(selectedFilter === 'mitigated' ? null : 'mitigated')}
+            className={`p-3 rounded-lg bg-blue-500/20 border border-blue-500/30 text-center cursor-pointer transition-all duration-200 hover:shadow-md ${
+              selectedFilter === 'mitigated' ? 'ring-2 ring-primary/50' : ''
+            }`}
             whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
           >
+            <div className="flex items-center justify-between mb-1">
+              <Shield className="h-3 w-3 text-blue-500" />
+              <ChevronRight className={`h-3 w-3 transition-transform ${selectedFilter === 'mitigated' ? 'rotate-90 text-primary' : 'text-muted-foreground'}`} />
+            </div>
             <div className="text-2xl font-bold text-blue-500">{data.summary.mitigated}</div>
             <div className="text-xs text-muted-foreground">Mitigated</div>
           </motion.div>
           <motion.div
-            className="p-3 rounded-lg bg-purple-500/20 border border-purple-500/30 text-center"
+            onClick={() => setSelectedFilter(selectedFilter === 'new' ? null : 'new')}
+            className={`p-3 rounded-lg bg-purple-500/20 border border-purple-500/30 text-center cursor-pointer transition-all duration-200 hover:shadow-md ${
+              selectedFilter === 'new' ? 'ring-2 ring-primary/50' : ''
+            }`}
             whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
           >
+            <div className="flex items-center justify-between mb-1">
+              <Activity className="h-3 w-3 text-purple-500" />
+              <ChevronRight className={`h-3 w-3 transition-transform ${selectedFilter === 'new' ? 'rotate-90 text-primary' : 'text-muted-foreground'}`} />
+            </div>
             <div className="text-2xl font-bold text-purple-500">{data.summary.newThisWeek}</div>
             <div className="text-xs text-muted-foreground">New This Week</div>
           </motion.div>
         </div>
+        <div className="text-xs text-muted-foreground mt-2 text-center">Click any card to filter risks</div>
       </motion.div>
+
+      {/* Filtered Risks Detail Panel */}
+      <AnimatePresence>
+        {selectedFilter && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.3 }}
+            className="overflow-hidden mb-6"
+          >
+            <div className="glass-card rounded-lg border border-border bg-card/70 p-4">
+              <div className="flex items-center justify-between mb-4">
+                <h4 className="text-sm font-semibold text-foreground flex items-center gap-2">
+                  {selectedFilter === 'all' && <Shield className="h-4 w-4 text-primary" />}
+                  {selectedFilter === 'critical' && <AlertCircle className="h-4 w-4 text-destructive" />}
+                  {selectedFilter === 'high' && <AlertTriangle className="h-4 w-4 text-orange-500" />}
+                  {selectedFilter === 'medium' && <Target className="h-4 w-4 text-chart-4" />}
+                  {selectedFilter === 'low' && <CheckCircle2 className="h-4 w-4 text-success" />}
+                  {selectedFilter === 'mitigated' && <Shield className="h-4 w-4 text-blue-500" />}
+                  {selectedFilter === 'new' && <Activity className="h-4 w-4 text-purple-500" />}
+                  {selectedFilter === 'all' ? 'All Risks' :
+                   selectedFilter === 'critical' ? 'Critical Risks' :
+                   selectedFilter === 'high' ? 'High Risks' :
+                   selectedFilter === 'medium' ? 'Medium Risks' :
+                   selectedFilter === 'low' ? 'Low Risks' :
+                   selectedFilter === 'mitigated' ? 'Mitigated Risks' :
+                   'New Risks This Week'}
+                </h4>
+                <button
+                  onClick={() => setSelectedFilter(null)}
+                  className="p-1 rounded hover:bg-muted transition-colors"
+                >
+                  <X className="h-4 w-4 text-muted-foreground" />
+                </button>
+              </div>
+
+              <div className="space-y-3">
+                {data.risks
+                  .filter(risk => {
+                    if (selectedFilter === 'all') return true;
+                    if (selectedFilter === 'mitigated') return risk.status === 'mitigating' || risk.status === 'closed';
+                    if (selectedFilter === 'new') return true; // Ideally filter by date
+                    return risk.impact === selectedFilter;
+                  })
+                  .map((risk, idx) => (
+                    <motion.div
+                      key={risk.id}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: idx * 0.05 }}
+                      onClick={() => setExpandedRisk(expandedRisk === risk.id ? null : risk.id)}
+                      className="p-4 rounded-lg border border-border bg-muted/20 cursor-pointer hover:bg-muted/30 transition-all"
+                    >
+                      <div className="flex items-start justify-between mb-2">
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <span className={getCategoryColor(risk.category)}>
+                              {getCategoryIcon(risk.category)}
+                            </span>
+                            <span className="text-sm font-semibold text-foreground">{risk.title}</span>
+                            <span className={`px-2 py-0.5 rounded text-xs font-medium border ${getImpactColor(risk.impact)}`}>
+                              {risk.impact}
+                            </span>
+                            <ChevronRight className={`h-4 w-4 transition-transform ${expandedRisk === risk.id ? 'rotate-90 text-primary' : 'text-muted-foreground'}`} />
+                          </div>
+                        </div>
+                        <div className="text-right ml-4">
+                          <div className="text-lg font-bold text-foreground">{risk.riskScore}</div>
+                          <div className="text-xs text-muted-foreground">Score</div>
+                        </div>
+                      </div>
+
+                      <AnimatePresence>
+                        {expandedRisk === risk.id && (
+                          <motion.div
+                            initial={{ opacity: 0, height: 0 }}
+                            animate={{ opacity: 1, height: 'auto' }}
+                            exit={{ opacity: 0, height: 0 }}
+                            className="mt-3 pt-3 border-t border-border/50"
+                          >
+                            <p className="text-xs text-muted-foreground mb-3">{risk.description}</p>
+                            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-3 text-xs">
+                              <div>
+                                <span className="text-muted-foreground">Owner:</span>
+                                <span className="ml-1 text-foreground">{risk.owner}</span>
+                              </div>
+                              <div>
+                                <span className="text-muted-foreground">Probability:</span>
+                                <span className="ml-1 text-foreground">{getProbabilityLabel(risk.probability)}</span>
+                              </div>
+                              <div>
+                                <span className="text-muted-foreground">Status:</span>
+                                <span className={`ml-1 px-1.5 py-0.5 rounded text-xs ${getStatusColor(risk.status)}`}>{risk.status}</span>
+                              </div>
+                              <div>
+                                <span className="text-muted-foreground">Identified:</span>
+                                <span className="ml-1 text-foreground">{risk.identifiedDate}</span>
+                              </div>
+                            </div>
+                            <div className="p-3 rounded bg-background/50 border border-border/50">
+                              <div className="flex items-center justify-between mb-2">
+                                <span className="text-xs font-medium text-foreground">Mitigation Strategy</span>
+                                <span className="text-xs text-muted-foreground">{risk.mitigation.progress}% complete</span>
+                              </div>
+                              <p className="text-xs text-muted-foreground mb-2">{risk.mitigation.strategy}</p>
+                              <div className="h-1.5 bg-muted rounded-full overflow-hidden">
+                                <div
+                                  className="h-full rounded-full transition-all duration-500 bg-primary"
+                                  style={{ width: `${risk.mitigation.progress}%` }}
+                                />
+                              </div>
+                            </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </motion.div>
+                  ))}
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Risk Matrix Summary */}
       <motion.div className="mb-6" variants={itemVariants}>

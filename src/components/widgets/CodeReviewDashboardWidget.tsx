@@ -1,3 +1,6 @@
+'use client';
+
+import { useState } from 'react';
 import {
   GitPullRequest,
   GitMerge,
@@ -15,11 +18,17 @@ import {
   User,
   TrendingUp,
   Activity,
+  ChevronRight,
+  X,
 } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import type { CodeReviewDashboardData } from '@/types/widget';
 
+type FilterType = 'needs-review' | 'awaiting-changes' | 'pending' | 'approved' | 'merged' | 'activity' | null;
+
 export function CodeReviewDashboardWidget({ data }: { data: CodeReviewDashboardData }) {
+  const [selectedFilter, setSelectedFilter] = useState<FilterType>(null);
+  const [expandedPR, setExpandedPR] = useState<string | null>(null);
   // Defensive check
   if (!data || typeof data !== 'object') {
     return (
@@ -179,53 +188,309 @@ export function CodeReviewDashboardWidget({ data }: { data: CodeReviewDashboardD
         </div>
       </div>
 
-      {/* Summary Cards */}
+      {/* Interactive Summary Cards */}
       <motion.div className="mb-6" variants={itemVariants}>
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3">
           <motion.div
-            className="p-3 rounded-lg bg-amber-500/20 border border-chart-4/30 text-center"
+            onClick={() => setSelectedFilter(selectedFilter === 'needs-review' ? null : 'needs-review')}
+            className={`p-3 rounded-lg bg-amber-500/20 border border-chart-4/30 text-center cursor-pointer transition-all duration-200 hover:shadow-md ${
+              selectedFilter === 'needs-review' ? 'ring-2 ring-primary/50' : ''
+            }`}
             whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
           >
+            <div className="flex items-center justify-between mb-1">
+              <Eye className="h-3 w-3 text-chart-4" />
+              <ChevronRight className={`h-3 w-3 transition-transform ${selectedFilter === 'needs-review' ? 'rotate-90 text-primary' : 'text-muted-foreground'}`} />
+            </div>
             <div className="text-2xl font-bold text-chart-4">{data.summary.needsYourReview}</div>
             <div className="text-xs text-muted-foreground">Needs Your Review</div>
           </motion.div>
           <motion.div
-            className="p-3 rounded-lg bg-red-500/20 border border-destructive/30 text-center"
+            onClick={() => setSelectedFilter(selectedFilter === 'awaiting-changes' ? null : 'awaiting-changes')}
+            className={`p-3 rounded-lg bg-red-500/20 border border-destructive/30 text-center cursor-pointer transition-all duration-200 hover:shadow-md ${
+              selectedFilter === 'awaiting-changes' ? 'ring-2 ring-primary/50' : ''
+            }`}
             whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
           >
+            <div className="flex items-center justify-between mb-1">
+              <XCircle className="h-3 w-3 text-destructive" />
+              <ChevronRight className={`h-3 w-3 transition-transform ${selectedFilter === 'awaiting-changes' ? 'rotate-90 text-primary' : 'text-muted-foreground'}`} />
+            </div>
             <div className="text-2xl font-bold text-destructive">{data.summary.awaitingYourChanges}</div>
             <div className="text-xs text-muted-foreground">Awaiting Changes</div>
           </motion.div>
           <motion.div
-            className="p-3 rounded-lg bg-muted/30 border border-border text-center"
+            onClick={() => setSelectedFilter(selectedFilter === 'pending' ? null : 'pending')}
+            className={`p-3 rounded-lg bg-muted/30 border border-border text-center cursor-pointer transition-all duration-200 hover:shadow-md ${
+              selectedFilter === 'pending' ? 'ring-2 ring-primary/50' : ''
+            }`}
             whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
           >
+            <div className="flex items-center justify-between mb-1">
+              <Clock className="h-3 w-3 text-muted-foreground" />
+              <ChevronRight className={`h-3 w-3 transition-transform ${selectedFilter === 'pending' ? 'rotate-90 text-primary' : 'text-muted-foreground'}`} />
+            </div>
             <div className="text-2xl font-bold text-foreground">{data.summary.totalPending}</div>
             <div className="text-xs text-muted-foreground">Total Pending</div>
           </motion.div>
           <motion.div
-            className="p-3 rounded-lg bg-emerald-500/20 border border-success/30 text-center"
+            onClick={() => setSelectedFilter(selectedFilter === 'approved' ? null : 'approved')}
+            className={`p-3 rounded-lg bg-emerald-500/20 border border-success/30 text-center cursor-pointer transition-all duration-200 hover:shadow-md ${
+              selectedFilter === 'approved' ? 'ring-2 ring-primary/50' : ''
+            }`}
             whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
           >
+            <div className="flex items-center justify-between mb-1">
+              <CheckCircle2 className="h-3 w-3 text-success" />
+              <ChevronRight className={`h-3 w-3 transition-transform ${selectedFilter === 'approved' ? 'rotate-90 text-primary' : 'text-muted-foreground'}`} />
+            </div>
             <div className="text-2xl font-bold text-success">{data.summary.approved}</div>
             <div className="text-xs text-muted-foreground">Approved</div>
           </motion.div>
           <motion.div
-            className="p-3 rounded-lg bg-purple-500/20 border border-purple-500/30 text-center"
+            onClick={() => setSelectedFilter(selectedFilter === 'merged' ? null : 'merged')}
+            className={`p-3 rounded-lg bg-purple-500/20 border border-purple-500/30 text-center cursor-pointer transition-all duration-200 hover:shadow-md ${
+              selectedFilter === 'merged' ? 'ring-2 ring-primary/50' : ''
+            }`}
             whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
           >
+            <div className="flex items-center justify-between mb-1">
+              <GitMerge className="h-3 w-3 text-purple-500" />
+              <ChevronRight className={`h-3 w-3 transition-transform ${selectedFilter === 'merged' ? 'rotate-90 text-primary' : 'text-muted-foreground'}`} />
+            </div>
             <div className="text-2xl font-bold text-purple-500">{data.summary.merged}</div>
             <div className="text-xs text-muted-foreground">Merged (Week)</div>
           </motion.div>
           <motion.div
-            className="p-3 rounded-lg bg-blue-500/20 border border-blue-500/30 text-center"
+            onClick={() => setSelectedFilter(selectedFilter === 'activity' ? null : 'activity')}
+            className={`p-3 rounded-lg bg-blue-500/20 border border-blue-500/30 text-center cursor-pointer transition-all duration-200 hover:shadow-md ${
+              selectedFilter === 'activity' ? 'ring-2 ring-primary/50' : ''
+            }`}
             whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
           >
+            <div className="flex items-center justify-between mb-1">
+              <Activity className="h-3 w-3 text-blue-500" />
+              <ChevronRight className={`h-3 w-3 transition-transform ${selectedFilter === 'activity' ? 'rotate-90 text-primary' : 'text-muted-foreground'}`} />
+            </div>
             <div className="text-lg font-bold text-blue-500">{data.summary.averageReviewTime}</div>
             <div className="text-xs text-muted-foreground">Avg Review Time</div>
           </motion.div>
         </div>
+        <div className="text-xs text-muted-foreground mt-2 text-center">Click any card to view details</div>
       </motion.div>
+
+      {/* Filtered PRs Detail Panel */}
+      <AnimatePresence>
+        {selectedFilter && selectedFilter !== 'activity' && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.3 }}
+            className="overflow-hidden mb-6"
+          >
+            <div className="glass-card rounded-lg border border-border bg-card/70 p-4">
+              <div className="flex items-center justify-between mb-4">
+                <h4 className="text-sm font-semibold text-foreground flex items-center gap-2">
+                  {selectedFilter === 'needs-review' && <Eye className="h-4 w-4 text-chart-4" />}
+                  {selectedFilter === 'awaiting-changes' && <XCircle className="h-4 w-4 text-destructive" />}
+                  {selectedFilter === 'pending' && <Clock className="h-4 w-4 text-muted-foreground" />}
+                  {selectedFilter === 'approved' && <CheckCircle2 className="h-4 w-4 text-success" />}
+                  {selectedFilter === 'merged' && <GitMerge className="h-4 w-4 text-purple-500" />}
+                  {selectedFilter === 'needs-review' ? 'Pull Requests Needing Your Review' :
+                   selectedFilter === 'awaiting-changes' ? 'Pull Requests Awaiting Your Changes' :
+                   selectedFilter === 'pending' ? 'All Pending Pull Requests' :
+                   selectedFilter === 'approved' ? 'Approved Pull Requests' :
+                   'Merged Pull Requests'}
+                </h4>
+                <button
+                  onClick={() => setSelectedFilter(null)}
+                  className="p-1 rounded hover:bg-muted transition-colors"
+                >
+                  <X className="h-4 w-4 text-muted-foreground" />
+                </button>
+              </div>
+
+              <div className="space-y-3">
+                {data.pendingReviews
+                  .filter(pr => {
+                    switch (selectedFilter) {
+                      case 'needs-review': return pr.status === 'pending';
+                      case 'awaiting-changes': return pr.status === 'changes-requested';
+                      case 'pending': return true;
+                      case 'approved': return pr.status === 'approved';
+                      default: return true;
+                    }
+                  })
+                  .map((pr, idx) => (
+                    <motion.div
+                      key={pr.id}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: idx * 0.05 }}
+                      onClick={() => setExpandedPR(expandedPR === pr.id ? null : pr.id)}
+                      className="p-4 rounded-lg border border-border bg-muted/20 cursor-pointer hover:bg-muted/30 transition-all"
+                    >
+                      <div className="flex items-start justify-between mb-2">
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <span className="text-xs font-mono text-primary">{pr.id}</span>
+                            <span className="text-sm font-medium text-foreground">{pr.title}</span>
+                            <ChevronRight className={`h-4 w-4 transition-transform ${expandedPR === pr.id ? 'rotate-90 text-primary' : 'text-muted-foreground'}`} />
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <span className={`px-2 py-0.5 rounded text-xs font-medium border ${getPriorityColor(pr.priority)}`}>
+                            {pr.priority}
+                          </span>
+                          <span className={`px-2 py-0.5 rounded text-xs font-medium border ${getStatusColor(pr.status)}`}>
+                            {pr.status.replace('-', ' ')}
+                          </span>
+                        </div>
+                      </div>
+
+                      <AnimatePresence>
+                        {expandedPR === pr.id && (
+                          <motion.div
+                            initial={{ opacity: 0, height: 0 }}
+                            animate={{ opacity: 1, height: 'auto' }}
+                            exit={{ opacity: 0, height: 0 }}
+                            className="mt-3 pt-3 border-t border-border/50"
+                          >
+                            <div className="flex items-center gap-2 text-xs text-muted-foreground mb-3">
+                              <User className="h-3 w-3" />
+                              <span>{pr.author}</span>
+                              <span>•</span>
+                              <span>{pr.repository}</span>
+                              <span>•</span>
+                              <GitBranch className="h-3 w-3" />
+                              <span>{pr.branch} → {pr.targetBranch}</span>
+                            </div>
+
+                            <div className="flex items-center justify-between text-xs mb-3">
+                              <div className="flex items-center gap-4">
+                                <span className="flex items-center gap-1 text-success">
+                                  <Plus className="h-3 w-3" /> {pr.linesAdded}
+                                </span>
+                                <span className="flex items-center gap-1 text-destructive">
+                                  <Minus className="h-3 w-3" /> {pr.linesRemoved}
+                                </span>
+                                <span className="flex items-center gap-1 text-muted-foreground">
+                                  <FileCode className="h-3 w-3" /> {pr.filesChanged} files
+                                </span>
+                                <span className="flex items-center gap-1 text-muted-foreground">
+                                  <MessageSquare className="h-3 w-3" /> {pr.comments}
+                                </span>
+                                <span className={`flex items-center gap-1 ${getChecksColor(pr.checksStatus)}`}>
+                                  {pr.checksStatus === 'passing' ? <CheckCircle2 className="h-3 w-3" /> :
+                                   pr.checksStatus === 'failing' ? <XCircle className="h-3 w-3" /> :
+                                   <Clock className="h-3 w-3" />}
+                                  {pr.checksStatus}
+                                </span>
+                              </div>
+                            </div>
+
+                            <div className="flex items-center gap-2">
+                              <span className="text-xs text-muted-foreground">Reviewers:</span>
+                              {pr.reviewers.map((reviewer, ridx) => (
+                                <div key={ridx} className="flex items-center gap-1">
+                                  {getStatusIcon(reviewer.status)}
+                                  <span className="text-xs text-foreground">{reviewer.name}</span>
+                                </div>
+                              ))}
+                            </div>
+
+                            {pr.labels.length > 0 && (
+                              <div className="flex items-center gap-1 mt-2 flex-wrap">
+                                {pr.labels.map((label, lidx) => (
+                                  <span
+                                    key={lidx}
+                                    className="px-2 py-0.5 rounded text-xs bg-primary/10 text-primary border border-primary/30"
+                                  >
+                                    {label}
+                                  </span>
+                                ))}
+                              </div>
+                            )}
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </motion.div>
+                  ))}
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Activity Detail Panel */}
+      <AnimatePresence>
+        {selectedFilter === 'activity' && data.recentActivity && data.recentActivity.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.3 }}
+            className="overflow-hidden mb-6"
+          >
+            <div className="glass-card rounded-lg border border-border bg-card/70 p-4">
+              <div className="flex items-center justify-between mb-4">
+                <h4 className="text-sm font-semibold text-foreground flex items-center gap-2">
+                  <Activity className="h-4 w-4 text-blue-500" />
+                  Recent Activity ({data.recentActivity.length})
+                </h4>
+                <button
+                  onClick={() => setSelectedFilter(null)}
+                  className="p-1 rounded hover:bg-muted transition-colors"
+                >
+                  <X className="h-4 w-4 text-muted-foreground" />
+                </button>
+              </div>
+              <div className="space-y-2">
+                {data.recentActivity.map((activity, idx) => (
+                  <motion.div
+                    key={idx}
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: idx * 0.05 }}
+                    className="p-3 rounded-lg bg-muted/10 border border-border/50 flex items-start gap-3"
+                  >
+                    {getActivityIcon(activity.type)}
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <span className="text-sm font-medium text-foreground">{activity.user}</span>
+                        <span className="text-xs text-muted-foreground">
+                          {activity.type === 'comment' ? 'commented on' :
+                           activity.type === 'approval' ? 'approved' :
+                           activity.type === 'merge' ? 'merged' :
+                           activity.type === 'request-changes' ? 'requested changes on' :
+                           activity.type === 'push' ? 'pushed to' : ''}
+                        </span>
+                        <span className="text-xs font-mono text-primary">{activity.pullRequestId}</span>
+                      </div>
+                      <div className="text-xs text-muted-foreground truncate">{activity.pullRequestTitle}</div>
+                      {activity.content && (
+                        <div className="text-xs text-foreground mt-1 p-2 bg-background/50 rounded border border-border/30">
+                          "{activity.content}"
+                        </div>
+                      )}
+                    </div>
+                    <span className="text-xs text-muted-foreground whitespace-nowrap">
+                      {formatTimeAgo(activity.timestamp)}
+                    </span>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Pending Reviews */}
       <motion.div className="mb-6" variants={itemVariants}>

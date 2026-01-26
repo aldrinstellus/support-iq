@@ -1,3 +1,6 @@
+'use client';
+
+import { useState } from 'react';
 import {
   Calendar,
   CheckCircle2,
@@ -9,11 +12,17 @@ import {
   ArrowRight,
   CircleDot,
   AlertCircle,
+  ChevronRight,
+  X,
 } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import type { MilestoneTrackingData } from '@/types/widget';
 
+type FilterType = 'all' | 'completed' | 'on-track' | 'at-risk' | 'delayed' | null;
+
 export function MilestoneTrackingDashboardWidget({ data }: { data: MilestoneTrackingData }) {
+  const [selectedFilter, setSelectedFilter] = useState<FilterType>(null);
+  const [expandedPhase, setExpandedPhase] = useState<string | null>(null);
   // Defensive check
   if (!data || typeof data !== 'object') {
     return (
@@ -138,46 +147,204 @@ export function MilestoneTrackingDashboardWidget({ data }: { data: MilestoneTrac
         </div>
       </div>
 
-      {/* Summary Cards */}
+      {/* Interactive Summary Cards */}
       <motion.div className="mb-6" variants={itemVariants}>
         <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
           <motion.div
-            className="p-3 rounded-lg bg-muted/30 border border-border text-center"
+            onClick={() => setSelectedFilter(selectedFilter === 'all' ? null : 'all')}
+            className={`p-3 rounded-lg bg-muted/30 border border-border text-center cursor-pointer transition-all duration-200 hover:shadow-md ${
+              selectedFilter === 'all' ? 'ring-2 ring-primary/50' : ''
+            }`}
             whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
           >
+            <div className="flex items-center justify-between mb-1">
+              <Flag className="h-3 w-3 text-muted-foreground" />
+              <ChevronRight className={`h-3 w-3 transition-transform ${selectedFilter === 'all' ? 'rotate-90 text-primary' : 'text-muted-foreground'}`} />
+            </div>
             <div className="text-2xl font-bold text-foreground">{data.summary.totalMilestones}</div>
             <div className="text-xs text-muted-foreground">Total</div>
           </motion.div>
           <motion.div
-            className="p-3 rounded-lg bg-emerald-500/20 border border-success/30 text-center"
+            onClick={() => setSelectedFilter(selectedFilter === 'completed' ? null : 'completed')}
+            className={`p-3 rounded-lg bg-emerald-500/20 border border-success/30 text-center cursor-pointer transition-all duration-200 hover:shadow-md ${
+              selectedFilter === 'completed' ? 'ring-2 ring-primary/50' : ''
+            }`}
             whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
           >
+            <div className="flex items-center justify-between mb-1">
+              <CheckCircle2 className="h-3 w-3 text-success" />
+              <ChevronRight className={`h-3 w-3 transition-transform ${selectedFilter === 'completed' ? 'rotate-90 text-primary' : 'text-muted-foreground'}`} />
+            </div>
             <div className="text-2xl font-bold text-success">{data.summary.completed}</div>
             <div className="text-xs text-muted-foreground">Completed</div>
           </motion.div>
           <motion.div
-            className="p-3 rounded-lg bg-blue-500/20 border border-blue-500/30 text-center"
+            onClick={() => setSelectedFilter(selectedFilter === 'on-track' ? null : 'on-track')}
+            className={`p-3 rounded-lg bg-blue-500/20 border border-blue-500/30 text-center cursor-pointer transition-all duration-200 hover:shadow-md ${
+              selectedFilter === 'on-track' ? 'ring-2 ring-primary/50' : ''
+            }`}
             whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
           >
+            <div className="flex items-center justify-between mb-1">
+              <TrendingUp className="h-3 w-3 text-blue-500" />
+              <ChevronRight className={`h-3 w-3 transition-transform ${selectedFilter === 'on-track' ? 'rotate-90 text-primary' : 'text-muted-foreground'}`} />
+            </div>
             <div className="text-2xl font-bold text-blue-500">{data.summary.onTrack}</div>
             <div className="text-xs text-muted-foreground">On Track</div>
           </motion.div>
           <motion.div
-            className="p-3 rounded-lg bg-amber-500/20 border border-chart-4/30 text-center"
+            onClick={() => setSelectedFilter(selectedFilter === 'at-risk' ? null : 'at-risk')}
+            className={`p-3 rounded-lg bg-amber-500/20 border border-chart-4/30 text-center cursor-pointer transition-all duration-200 hover:shadow-md ${
+              selectedFilter === 'at-risk' ? 'ring-2 ring-primary/50' : ''
+            }`}
             whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
           >
+            <div className="flex items-center justify-between mb-1">
+              <AlertTriangle className="h-3 w-3 text-chart-4" />
+              <ChevronRight className={`h-3 w-3 transition-transform ${selectedFilter === 'at-risk' ? 'rotate-90 text-primary' : 'text-muted-foreground'}`} />
+            </div>
             <div className="text-2xl font-bold text-chart-4">{data.summary.atRisk}</div>
             <div className="text-xs text-muted-foreground">At Risk</div>
           </motion.div>
           <motion.div
-            className="p-3 rounded-lg bg-red-500/20 border border-destructive/30 text-center"
+            onClick={() => setSelectedFilter(selectedFilter === 'delayed' ? null : 'delayed')}
+            className={`p-3 rounded-lg bg-red-500/20 border border-destructive/30 text-center cursor-pointer transition-all duration-200 hover:shadow-md ${
+              selectedFilter === 'delayed' ? 'ring-2 ring-primary/50' : ''
+            }`}
             whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
           >
+            <div className="flex items-center justify-between mb-1">
+              <AlertCircle className="h-3 w-3 text-destructive" />
+              <ChevronRight className={`h-3 w-3 transition-transform ${selectedFilter === 'delayed' ? 'rotate-90 text-primary' : 'text-muted-foreground'}`} />
+            </div>
             <div className="text-2xl font-bold text-destructive">{data.summary.delayed}</div>
             <div className="text-xs text-muted-foreground">Delayed</div>
           </motion.div>
         </div>
+        <div className="text-xs text-muted-foreground mt-2 text-center">Click any card for detailed view</div>
       </motion.div>
+
+      {/* Filtered Milestones Detail Panel */}
+      <AnimatePresence>
+        {selectedFilter && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.3 }}
+            className="overflow-hidden mb-6"
+          >
+            <div className="glass-card rounded-lg border border-border bg-card/70 p-4">
+              <div className="flex items-center justify-between mb-4">
+                <h4 className="text-sm font-semibold text-foreground flex items-center gap-2">
+                  {selectedFilter === 'all' && <Flag className="h-4 w-4 text-primary" />}
+                  {selectedFilter === 'completed' && <CheckCircle2 className="h-4 w-4 text-success" />}
+                  {selectedFilter === 'on-track' && <TrendingUp className="h-4 w-4 text-blue-500" />}
+                  {selectedFilter === 'at-risk' && <AlertTriangle className="h-4 w-4 text-chart-4" />}
+                  {selectedFilter === 'delayed' && <AlertCircle className="h-4 w-4 text-destructive" />}
+                  {selectedFilter === 'all' ? 'All Milestones' :
+                   selectedFilter === 'completed' ? 'Completed Milestones' :
+                   selectedFilter === 'on-track' ? 'On Track Milestones' :
+                   selectedFilter === 'at-risk' ? 'At Risk Milestones' :
+                   'Delayed Milestones'}
+                </h4>
+                <button
+                  onClick={() => setSelectedFilter(null)}
+                  className="p-1 rounded hover:bg-muted transition-colors"
+                >
+                  <X className="h-4 w-4 text-muted-foreground" />
+                </button>
+              </div>
+
+              <div className="space-y-3">
+                {data.phases
+                  .filter(phase =>
+                    selectedFilter === 'all' ||
+                    phase.status === selectedFilter ||
+                    phase.milestones.some(m => m.status === selectedFilter)
+                  )
+                  .map((phase, idx) => (
+                    <motion.div
+                      key={phase.id}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: idx * 0.05 }}
+                      onClick={() => setExpandedPhase(expandedPhase === phase.id ? null : phase.id)}
+                      className={`border-l-4 ${getPhaseStatusColor(phase.status)} rounded-r-lg p-4 bg-muted/20 cursor-pointer hover:bg-muted/30 transition-all`}
+                    >
+                      <div className="flex items-center justify-between mb-2">
+                        <div className="flex items-center gap-2">
+                          {getStatusIcon(phase.status)}
+                          <span className="text-sm font-semibold text-foreground">{phase.name}</span>
+                          <span className={`px-2 py-0.5 rounded text-xs font-medium border ${getStatusColor(phase.status)}`}>
+                            {phase.status.replace('-', ' ')}
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <span className="text-sm font-bold text-foreground">{phase.progress}%</span>
+                          <ChevronRight className={`h-4 w-4 transition-transform ${expandedPhase === phase.id ? 'rotate-90 text-primary' : 'text-muted-foreground'}`} />
+                        </div>
+                      </div>
+
+                      <div className="h-2 bg-muted rounded-full overflow-hidden mb-2">
+                        <div
+                          className={`h-full rounded-full transition-all duration-500 ${
+                            phase.status === 'completed' ? 'bg-success' :
+                            phase.status === 'at-risk' ? 'bg-chart-4' :
+                            phase.status === 'delayed' ? 'bg-destructive' :
+                            'bg-primary'
+                          }`}
+                          style={{ width: `${phase.progress}%` }}
+                        />
+                      </div>
+
+                      <AnimatePresence>
+                        {expandedPhase === phase.id && (
+                          <motion.div
+                            initial={{ opacity: 0, height: 0 }}
+                            animate={{ opacity: 1, height: 'auto' }}
+                            exit={{ opacity: 0, height: 0 }}
+                            className="mt-3 pt-3 border-t border-border/50"
+                          >
+                            <div className="text-xs text-muted-foreground mb-2">
+                              {phase.startDate} → {phase.endDate}
+                            </div>
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
+                              {phase.milestones
+                                .filter(m =>
+                                  selectedFilter === 'all' ||
+                                  m.status === selectedFilter
+                                )
+                                .map((milestone) => (
+                                  <div
+                                    key={milestone.id}
+                                    className="p-2 rounded bg-background/50 border border-border/50 flex items-center justify-between"
+                                  >
+                                    <div className="flex items-center gap-2 flex-1 min-w-0">
+                                      {getStatusIcon(milestone.status)}
+                                      <span className="text-xs text-foreground truncate">{milestone.name}</span>
+                                    </div>
+                                    <div className="text-xs text-muted-foreground ml-2">
+                                      {milestone.deliverablesCompleted}/{milestone.deliverables}
+                                    </div>
+                                  </div>
+                                ))}
+                            </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </motion.div>
+                  ))}
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Next Milestone Alert */}
       <motion.div className="mb-6" variants={itemVariants}>
