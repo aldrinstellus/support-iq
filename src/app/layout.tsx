@@ -48,6 +48,36 @@ const themeInitScript = `
   })();
 `;
 
+// Script to clear session data BEFORE React hydrates (prevents stale data loading)
+// This runs synchronously, BEFORE any React components mount
+const sessionResetScript = `
+  (function() {
+    try {
+      var SESSION_MARKER_KEY = 'dsq_session_active';
+      var DEMO_DATA_KEYS = ['messagesByPersona', 'sidebarOpen'];
+
+      var sessionActive = sessionStorage.getItem(SESSION_MARKER_KEY);
+
+      if (!sessionActive) {
+        // New session - clear all demo data BEFORE React loads
+        console.log('[SessionReset:Sync] New session detected - clearing demo data');
+
+        DEMO_DATA_KEYS.forEach(function(key) {
+          localStorage.removeItem(key);
+          console.log('[SessionReset:Sync] Cleared: ' + key);
+        });
+
+        sessionStorage.setItem(SESSION_MARKER_KEY, 'true');
+        console.log('[SessionReset:Sync] Session marked as active');
+      } else {
+        console.log('[SessionReset:Sync] Existing session - keeping data');
+      }
+    } catch (e) {
+      console.error('[SessionReset:Sync] Error:', e);
+    }
+  })();
+`;
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -57,6 +87,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+        <script dangerouslySetInnerHTML={{ __html: sessionResetScript }} />
       </head>
       <body className="h-screen overflow-hidden bg-background font-sans antialiased">
         <SessionResetProvider>

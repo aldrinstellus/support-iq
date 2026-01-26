@@ -50,6 +50,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - **100% Vector Embeddings**: 356/356 knowledge items with embeddings ✅
 - **Production Verified**: Live build tested with all 117 questions passing ✅
 - **Query Collision Prevention**: 75+ compound words prevent false positives ✅
+- **Session Reset Protocol**: Every new browser session starts fresh (no stale messages) ✅
 - **FloatingModeSwitcher**: Top-right dropdown with animated mode switching
 - **3 Modes**: Government, Project, ATC (SME)
 - **10 Personas**: Role-based interfaces across all modes
@@ -57,6 +58,21 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - **Supabase Integration**: 15 DSQ tables + 348 knowledge items with 100% embedding coverage
 - **Theme Toggle**: Dark/light mode with smooth animations
 - **Fully Responsive**: Mobile, tablet, and desktop breakpoints
+
+### Session Reset Protocol (v1.2.5)
+
+**CRITICAL**: Every new browser session MUST start with a clean slate.
+
+| Component | Purpose |
+|-----------|---------|
+| **Sync Script** (`layout.tsx`) | Clears localStorage BEFORE React hydrates |
+| **React Provider** (`SessionResetProvider`) | Backup/confirmation layer |
+| **sessionStorage marker** | `dsq_session_active` tracks active sessions |
+
+**Cleared on new session**: `messagesByPersona`, `sidebarOpen`
+**Preserved**: `sana-theme`, `selected-mode`
+
+**Full Documentation**: `docs/06-features/CONVERSATION-MANAGEMENT.md`
 
 ### Semantic Matching Standards (v1.2.4)
 | Setting | Value | Purpose |

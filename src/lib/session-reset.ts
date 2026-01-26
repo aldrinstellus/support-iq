@@ -1,8 +1,13 @@
 /**
  * Session Reset Utility
  *
- * Clears conversation data at the start of each new browser session.
- * This ensures the demo always starts fresh for new visitors.
+ * IMPORTANT: The actual clearing now happens in a synchronous inline script
+ * in layout.tsx that runs BEFORE React hydrates. This prevents race conditions
+ * where ConversationContext might load stale data before the clear happens.
+ *
+ * This utility now serves as:
+ * 1. A confirmation logger (verifies the sync script ran correctly)
+ * 2. A fallback if somehow the sync script didn't run
  *
  * Keys cleared on new session:
  * - messagesByPersona (conversation history)
@@ -21,7 +26,8 @@ const DEMO_DATA_KEYS = [
 
 /**
  * Check if this is a new browser session and clear demo data if so.
- * Called once on app initialization.
+ * Called once on app initialization as a BACKUP to the sync script.
+ * The sync script in layout.tsx should have already cleared the data.
  */
 export function initSessionReset(): void {
   if (typeof window === 'undefined') return;
@@ -29,19 +35,23 @@ export function initSessionReset(): void {
   const sessionActive = sessionStorage.getItem(SESSION_MARKER_KEY);
 
   if (!sessionActive) {
-    // New session - clear all demo data
-    console.log('[SessionReset] New session detected - clearing demo data');
+    // This should rarely happen since sync script handles it first
+    // But as a fallback, clear any remaining data
+    console.log('[SessionReset:React] New session detected - clearing demo data (fallback)');
 
     DEMO_DATA_KEYS.forEach(key => {
-      localStorage.removeItem(key);
-      console.log(`[SessionReset] Cleared: ${key}`);
+      const exists = localStorage.getItem(key);
+      if (exists) {
+        localStorage.removeItem(key);
+        console.log(`[SessionReset:React] Cleared: ${key}`);
+      }
     });
 
     // Mark session as active
     sessionStorage.setItem(SESSION_MARKER_KEY, 'true');
-    console.log('[SessionReset] Session marked as active');
+    console.log('[SessionReset:React] Session marked as active');
   } else {
-    console.log('[SessionReset] Existing session - keeping data');
+    console.log('[SessionReset:React] Existing session confirmed - keeping data');
   }
 }
 

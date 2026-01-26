@@ -1,8 +1,8 @@
 # Support IQ (dSQ) - Savepoint
 
-**Last Updated**: 2026-01-26 18:00 +04
+**Last Updated**: 2026-01-26 21:30 +04
 **Version**: 1.2.5
-**Status**: Production Live - NPS & Sentiment Analysis Added ✅
+**Status**: Production Live - Session Reset Protocol Fixed ✅
 
 ---
 
@@ -16,7 +16,28 @@
 | **Health** | https://dsq.digitalworkplace.ai/api/health | ✅ Healthy |
 | **Parent App** | https://digitalworkplace-ai.vercel.app | ✅ Linked |
 
-### Latest Session (v1.2.5)
+### Latest Session - Session Reset Protocol Fix
+
+**Issue**: Messages persisted across browser sessions (36 msgs visible after session end)
+
+**Root Cause**: Race condition between `SessionResetProvider` (useEffect) and `ConversationContext` (useEffect). Both ran after React hydrated, but ConversationContext could load stale localStorage data before SessionResetProvider cleared it.
+
+**Fix Applied**:
+- ✅ **Sync Script** - Added inline script in `layout.tsx` that clears localStorage BEFORE React hydrates
+- ✅ **Two-Layer Approach** - Sync script (primary) + React provider (backup)
+- ✅ **Documentation** - Updated `docs/06-features/CONVERSATION-MANAGEMENT.md`
+- ✅ **CLAUDE.md** - Added session reset protocol section
+- ✅ **Build verified** - Type check and build passed
+
+**Files Modified**:
+| File | Changes |
+|------|---------|
+| `src/app/layout.tsx` | Added `sessionResetScript` inline script |
+| `src/lib/session-reset.ts` | Updated comments, made backup layer |
+| `docs/06-features/CONVERSATION-MANAGEMENT.md` | Complete protocol documentation |
+| `CLAUDE.md` | Added session reset section |
+
+### Previous Session (v1.2.5)
 **NPS & Sentiment Analysis Widget**
 
 Added combined NPS and Sentiment Analysis widget with full drill-down:
