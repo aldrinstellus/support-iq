@@ -49,7 +49,7 @@ import {
   riskRegisterDemo,
   codeReviewDemo,
 } from '@/data/demo-widget-data';
-import { doraMetricsDemo } from '@/data/csm-widget-data';
+import { doraMetricsDemo, renewalPipelineDemo } from '@/data/csm-widget-data';
 
 export interface SemanticPattern {
   id: string;
@@ -864,15 +864,18 @@ export const csmPatterns: SemanticPattern[] = [
     id: 'renewal-pipeline',
     exampleQueries: [
       'upcoming renewals',
+      'show upcoming renewals',
       'renewal pipeline',
       'renewals in 90 days',
       'contract renewals',
       'renewal status',
+      'show me the renewal pipeline',
+      'show renewals',
     ],
     personas: ['atc-csm'],
-    widgetType: 'analytics-dashboard',
-    widgetData: analyticsDashboardDemo,
-    responseText: 'Upcoming contract renewals:',
+    widgetType: 'renewal-pipeline',
+    widgetData: renewalPipelineDemo,
+    responseText: 'Here are your upcoming renewals for the next 90 days:',
   },
   {
     id: 'expansion-opportunities',

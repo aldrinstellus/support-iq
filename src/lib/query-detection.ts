@@ -56,7 +56,7 @@ import {
   performanceTrendsDemo,
   sentimentAnalysisDemo,
 } from '@/data/demo-widget-data';
-import { doraMetricsDemo } from '@/data/csm-widget-data';
+import { doraMetricsDemo, renewalPipelineDemo } from '@/data/csm-widget-data';
 
 export interface QueryMatch {
   widgetType: WidgetType | null;
@@ -1112,14 +1112,15 @@ function detectCSMQuery(q: string): QueryMatch | null {
 
   // Upcoming Renewals (Specific Timeframe)
   if (
-    (q.includes('renewal') && (q.includes('upcoming') || q.includes('next'))) ||
+    (q.includes('renewal') && (q.includes('upcoming') || q.includes('next') || q.includes('show'))) ||
     (q.includes('renewal') && q.includes('90 days')) ||
-    q.includes('upcoming renewals')
+    q.includes('upcoming renewals') ||
+    q.includes('show renewals')
   ) {
     return {
       widgetType: 'renewal-pipeline',
-      widgetData: null,
-      responseText: "Renewal pipeline for the next 90 days shows contracts requiring attention:",
+      widgetData: renewalPipelineDemo,
+      responseText: "Here are your upcoming renewals for the next 90 days:",
     };
   }
 
@@ -1166,7 +1167,7 @@ function detectCSMQuery(q: string): QueryMatch | null {
   if (q.includes('renewal') || q.includes('contract')) {
     return {
       widgetType: 'renewal-pipeline',
-      widgetData: null,
+      widgetData: renewalPipelineDemo,
       responseText: "Renewal pipeline overview for your assigned accounts:",
     };
   }
