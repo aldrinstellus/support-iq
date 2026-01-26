@@ -1,6 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // Base path for all routes - makes URLs like /dsq/demo/cor
+  basePath: "/dsq",
   devIndicators: false,
   // Force cache busting on each build to prevent stale JavaScript
   generateBuildId: async () => {
