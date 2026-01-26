@@ -25,17 +25,25 @@
 **Fix Applied**:
 - ✅ **Sync Script** - Added inline script in `layout.tsx` that clears localStorage BEFORE React hydrates
 - ✅ **Two-Layer Approach** - Sync script (primary) + React provider (backup)
+- ✅ **User Isolation** - Different users on same device get their own clean session
 - ✅ **Documentation** - Updated `docs/06-features/CONVERSATION-MANAGEMENT.md`
 - ✅ **CLAUDE.md** - Added session reset protocol section
 - ✅ **Build verified** - Type check and build passed
 
+**User Isolation Logic**:
+| Scenario | Action |
+|----------|--------|
+| New browser session | Clear all demo data |
+| Same user, same session | Keep data |
+| Different user (userId changed) | Clear all demo data |
+
 **Files Modified**:
 | File | Changes |
 |------|---------|
-| `src/app/layout.tsx` | Added `sessionResetScript` inline script |
-| `src/lib/session-reset.ts` | Updated comments, made backup layer |
-| `docs/06-features/CONVERSATION-MANAGEMENT.md` | Complete protocol documentation |
-| `CLAUDE.md` | Added session reset section |
+| `src/app/layout.tsx` | Added `sessionResetScript` with user isolation |
+| `src/lib/session-reset.ts` | Full user tracking, `checkAndClearOnUserChange()` |
+| `docs/06-features/CONVERSATION-MANAGEMENT.md` | Complete protocol + user isolation docs |
+| `CLAUDE.md` | Added session reset protocol section |
 
 ### Previous Session (v1.2.5)
 **NPS & Sentiment Analysis Widget**

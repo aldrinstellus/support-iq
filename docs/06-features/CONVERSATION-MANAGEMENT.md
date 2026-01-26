@@ -14,10 +14,11 @@ Support IQ (dSQ) manages conversation state per-persona using localStorage, with
 ## Session Reset Protocol
 
 ### Purpose
-Every new browser session should start with a clean slate - no previous conversation history. This ensures:
+Every new browser session AND every different user should start with a clean slate - no previous conversation history. This ensures:
 1. Demo visitors always see a fresh interface
 2. No stale data from previous sessions
-3. Consistent demo experience across all users
+3. **User isolation** - different users don't see each other's data on shared devices
+4. Consistent demo experience across all users
 
 ### Implementation Architecture
 
@@ -54,9 +55,54 @@ Located in `src/components/providers/SessionResetProvider.tsx`:
 | Key | Storage | Purpose |
 |-----|---------|---------|
 | `dsq_session_active` | sessionStorage | Marks an active browser session |
+| `dsq_last_user_id` | localStorage | Tracks last logged-in user for isolation |
 
 - **New session**: Marker absent → clear localStorage → set marker
-- **Existing session**: Marker present → keep localStorage data
+- **Existing session**: Marker present → check user → keep data if same user
+- **User changed**: Different user ID → clear localStorage → update user tracking
+
+---
+
+## User Isolation
+
+### How It Works
+
+When a user logs in to `dsq.digitalworkplace.ai`, their identity is obtained from the shared analytics session (`dw_analytics_session`) which is set by the main Digital Workplace app.
+
+The session reset script checks:
+1. Is this a new browser session? (sessionStorage marker)
+2. Is this a different user? (compare userId with stored last user)
+
+If either condition is true, all demo data is cleared.
+
+### User Identification Flow
+
+```
+Main App (digitalworkplace-ai.vercel.app)
+    ↓ User logs in
+    ↓ Sets localStorage: dw_analytics_session = { userId, sessionId, ... }
+    ↓
+Support IQ (dsq.digitalworkplace.ai)
+    ↓ Reads dw_analytics_session
+    ↓ Compares userId with dsq_last_user_id
+    ↓ If different → clear data
+    ↓ Updates dsq_last_user_id
+```
+
+### Example Scenario
+
+1. **User A** logs into main app, clicks Support IQ
+   - `dw_analytics_session.userId` = "user_a_123"
+   - `dsq_last_user_id` = null (first visit)
+   - Data cleared (new session), user tracked
+2. **User A** asks 10 questions
+   - Messages stored in `messagesByPersona`
+3. **User B** logs into main app (same device), clicks Support IQ
+   - `dw_analytics_session.userId` = "user_b_456"
+   - `dsq_last_user_id` = "user_a_123"
+   - **User changed detected** → data cleared
+   - `dsq_last_user_id` updated to "user_b_456"
+4. **User B** sees clean interface with no previous messages
 
 ### Data Keys Cleared on New Session
 

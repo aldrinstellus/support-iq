@@ -50,27 +50,54 @@ const themeInitScript = `
 
 // Script to clear session data BEFORE React hydrates (prevents stale data loading)
 // This runs synchronously, BEFORE any React components mount
+// Also handles user isolation - different users on same device get clean slate
 const sessionResetScript = `
   (function() {
     try {
       var SESSION_MARKER_KEY = 'dsq_session_active';
+      var LAST_USER_KEY = 'dsq_last_user_id';
+      var ANALYTICS_SESSION_KEY = 'dw_analytics_session';
       var DEMO_DATA_KEYS = ['messagesByPersona', 'sidebarOpen'];
 
+      // Get current user ID from analytics session (shared with main app)
+      var currentUserId = null;
+      try {
+        var analyticsSession = localStorage.getItem(ANALYTICS_SESSION_KEY);
+        if (analyticsSession) {
+          var parsed = JSON.parse(analyticsSession);
+          currentUserId = parsed.userId || null;
+        }
+      } catch (e) {
+        console.log('[SessionReset:Sync] Could not parse analytics session');
+      }
+
+      // Get last known user ID
+      var lastUserId = localStorage.getItem(LAST_USER_KEY);
       var sessionActive = sessionStorage.getItem(SESSION_MARKER_KEY);
 
-      if (!sessionActive) {
-        // New session - clear all demo data BEFORE React loads
-        console.log('[SessionReset:Sync] New session detected - clearing demo data');
+      // Clear data if: new session OR different user
+      var shouldClear = !sessionActive || (currentUserId && lastUserId && currentUserId !== lastUserId);
+
+      if (shouldClear) {
+        var reason = !sessionActive ? 'new session' : 'user changed from ' + lastUserId + ' to ' + currentUserId;
+        console.log('[SessionReset:Sync] Clearing demo data - reason: ' + reason);
 
         DEMO_DATA_KEYS.forEach(function(key) {
           localStorage.removeItem(key);
           console.log('[SessionReset:Sync] Cleared: ' + key);
         });
 
+        // Mark session as active
         sessionStorage.setItem(SESSION_MARKER_KEY, 'true');
         console.log('[SessionReset:Sync] Session marked as active');
       } else {
-        console.log('[SessionReset:Sync] Existing session - keeping data');
+        console.log('[SessionReset:Sync] Existing session, same user - keeping data');
+      }
+
+      // Always update last user ID if we have a current user
+      if (currentUserId) {
+        localStorage.setItem(LAST_USER_KEY, currentUserId);
+        console.log('[SessionReset:Sync] User ID tracked: ' + currentUserId);
       }
     } catch (e) {
       console.error('[SessionReset:Sync] Error:', e);
