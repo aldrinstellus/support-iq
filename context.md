@@ -210,6 +210,28 @@ These standards are now documented in root `/CLAUDE.md` and apply to all Digital
 
 ---
 
+## Session Reset Protocol (v1.2.5)
+
+**CRITICAL**: Every new browser session AND every different user starts fresh.
+
+### How It Works
+1. **Synchronous clearing**: Inline script in `<head>` clears localStorage BEFORE React hydrates
+2. **User isolation**: Tracks `userId` from `dw_analytics_session`, clears on user change
+3. **Session marker**: `dsq_session_active` in sessionStorage tracks active sessions
+
+### Data Keys
+| Key | Cleared | Preserved |
+|-----|---------|-----------|
+| `messagesByPersona` | Yes | - |
+| `sidebarOpen` | Yes | - |
+| `sana-theme` | - | Yes |
+| `selected-mode` | - | Yes |
+
+### Documentation
+Full protocol: `docs/06-features/CONVERSATION-MANAGEMENT.md`
+
+---
+
 ## Support & Maintenance
 
 **Maintainer**: Aldo (aldrinstellus)
@@ -219,4 +241,4 @@ These standards are now documented in root `/CLAUDE.md` and apply to all Digital
 
 ---
 
-*Last verified: 2026-01-26 - NPS & Sentiment Analysis Added (v1.2.5)*
+*Last verified: 2026-01-26 - Session Reset Protocol & User Isolation Added (v1.2.5)*

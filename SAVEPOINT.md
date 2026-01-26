@@ -1,8 +1,8 @@
 # Support IQ (dSQ) - Savepoint
 
-**Last Updated**: 2026-01-26 21:30 +04
+**Last Updated**: 2026-01-26 22:15 +04
 **Version**: 1.2.5
-**Status**: Production Live - Session Reset Protocol Fixed ✅
+**Status**: Production Live - Session Reset & User Isolation Deployed ✅
 
 ---
 
@@ -372,8 +372,34 @@ curl http://localhost:3003/api/health
 
 ---
 
-*Savepoint created: 2026-01-22 22:00 +04*
-*Version: 1.2.2 - Full Spectrum Audit Complete - Production Live*
-*By: Claude Opus 4.5 (Parallel Verification)*
+## Pending Tasks
+
+| Priority | Task | Status |
+|----------|------|--------|
+| ✅ | Session reset race condition | **COMPLETED** - Sync script deployed |
+| ✅ | User isolation (different users) | **COMPLETED** - User tracking deployed |
+| ✅ | Documentation updates | **COMPLETED** - All docs updated |
+| - | Production verification | Needs live test on dsq.digitalworkplace.ai |
+
+### Next Session
+1. Verify session reset works on production (close browser, reopen)
+2. Test user isolation (different users on same device)
+3. Monitor console for `[SessionReset:Sync]` logs
+
+---
+
+## Git Commits (Latest)
+
+| Commit | Message |
+|--------|---------|
+| `e9123bf` | Add user isolation - different users get clean sessions |
+| `f0cbb84` | Fix session reset race condition - enforce clean slate per session |
+| `42c6b1b` | Standardize production URL to dsq.digitalworkplace.ai |
+
+---
+
+*Savepoint created: 2026-01-26 22:15 +04*
+*Version: 1.2.5 - Session Reset & User Isolation Deployed*
+*By: Claude Opus 4.5*
 *GitHub: https://github.com/aldrinstellus/support-iq*
 *Production: https://dsq.digitalworkplace.ai*

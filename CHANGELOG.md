@@ -9,6 +9,40 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.2.5] - 2026-01-26
 
+### Session Reset Protocol & User Isolation
+
+**Overview**: Fixed critical session management issues to ensure every new browser session and every different user starts with a completely clean slate.
+
+### Fixed
+
+#### Session Reset Race Condition
+- **Issue**: Messages persisted across browser sessions (36 msgs visible after closing browser)
+- **Root Cause**: Both `SessionResetProvider` and `ConversationContext` used `useEffect` hooks. ConversationContext could load stale localStorage data before SessionResetProvider cleared it.
+- **Fix**: Added synchronous inline script in `<head>` that runs BEFORE React hydrates
+- **File**: `src/app/layout.tsx` → `sessionResetScript`
+
+#### User Isolation
+- **Issue**: Different users on same device could see each other's messages
+- **Fix**: Track user ID from shared analytics session (`dw_analytics_session`)
+- **Logic**: Compare `currentUserId` with stored `dsq_last_user_id`, clear data on mismatch
+- **Files**: `src/app/layout.tsx`, `src/lib/session-reset.ts`
+
+### Session Reset Protocol
+
+| Scenario | Action |
+|----------|--------|
+| New browser session | Clear all demo data |
+| Same user, same session | Keep data |
+| Different user logs in | Clear all demo data |
+
+### Added
+- `sessionResetScript` - Synchronous inline script for immediate clearing
+- `dsq_last_user_id` - localStorage key for user tracking
+- `checkAndClearOnUserChange()` - Reactive user change detection
+- `docs/06-features/CONVERSATION-MANAGEMENT.md` - Complete protocol documentation
+
+---
+
 ### NPS & Sentiment Analysis Widget
 
 **Overview**: Added combined NPS (Net Promoter Score) and Sentiment Analysis widget with full interactive drill-down functionality. This widget consolidates customer feedback analysis into a single, comprehensive dashboard.
