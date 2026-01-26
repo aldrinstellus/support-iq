@@ -518,6 +518,8 @@ export const supportPatterns: SemanticPattern[] = [
       'customers at risk',
       'churn risk',
       'at risk customers',
+      'at risk of churn',
+      'risk of churn',
       'customer risk list',
       'who might churn',
     ],
