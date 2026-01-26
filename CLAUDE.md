@@ -34,20 +34,21 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **Support IQ (dSQ)** - AI-Enhanced Customer Support for Digital Workplace AI. Unified Multi-Mode System with ATC/Government/Project Personas.
 
-**Version**: 1.2.3
+**Version**: 1.2.4
 **Port**: 3003
 **Browser Tab**: dSQ | Support Portal
-**Status**: Production Live - Demo Guide Compliant ✅
-**Deployed**: 2026-01-25
+**Status**: Production Live - Semantic Matching Enhanced ✅
+**Deployed**: 2026-01-26
 **GitHub**: https://github.com/aldrinstellus/support-iq
 **Production URL**: https://support-iq-pearl.vercel.app
 
-### Key Features (v1.2.3)
+### Key Features (v1.2.4)
+- **Enhanced Semantic Matching**: 50% threshold, compound words, key term penalties ✅
 - **Demo Guide Compliance**: 54/54 questions match official Demo Guide specification ✅
 - **100% Widget Match**: All queries trigger exact widgets per Demo Guide PDF ✅
 - **100% Vector Embeddings**: 356/356 knowledge items with embeddings ✅
 - **Production Verified**: Live build tested with all 54 questions passing ✅
-- **3 Critical Fixes**: Program Manager, Service Team Member, CSM aligned to spec ✅
+- **Query Collision Prevention**: 75+ compound words prevent false positives ✅
 - **FloatingModeSwitcher**: Top-right dropdown with animated mode switching
 - **3 Modes**: Government, Project, ATC (SME)
 - **10 Personas**: Role-based interfaces across all modes
@@ -56,6 +57,18 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - **Theme Toggle**: Dark/light mode with smooth animations
 - **Fully Responsive**: Mobile, tablet, and desktop breakpoints
 
+### Semantic Matching Standards (v1.2.4)
+| Setting | Value | Purpose |
+|---------|-------|---------|
+| **Match Threshold** | 0.50 (50%) | Prevents false positives |
+| **Compound Words** | 75+ | Preserves multi-word meaning |
+| **Key Term Penalty** | -0.08 | Penalizes unmatched key terms |
+| **Key Term Bonus** | +0.12/+0.15 | Rewards matched terms |
+| **Stop Words** | Keeps 'show', 'me' | Prevents over-normalization |
+
+**Reference Implementation**: `src/lib/semantic-matcher.ts`
+**Global Standards**: See root `/CLAUDE.md` → "GLOBAL STANDARDS" section
+
 ### Full Spectrum Audit Results (v1.2.3)
 | Mode | Personas | Questions | Status |
 |------|----------|-----------|--------|
@@ -63,6 +76,13 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 | **Project** | 3 | 16 | ✅ 16/16 PASS |
 | **ATC (SME)** | 4 | 23 | ✅ 23/23 PASS |
 | **TOTAL** | **10** | **54** | **✅ 54/54 PASS (Demo Guide Compliant)** |
+
+### v1.2.4 Fixes
+| Issue | Resolution |
+|-------|------------|
+| "show team budget" → AnalyticsDashboard | Fixed: Now shows BudgetUtilizationDashboard |
+| Analytics widget black charts | Fixed: Using explicit hex colors |
+| Analytics missing drill-down | Fixed: Full drill-down for all cards |
 
 ### Demo Guide Fixes (v1.2.3)
 | Persona | Question | Fixed Widget |

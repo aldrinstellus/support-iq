@@ -1,8 +1,8 @@
 # Support IQ - Project Context
 
-**Version**: 1.2.3
-**Last Updated**: 2026-01-25
-**Status**: Production Live - Full Spectrum Verified ✅
+**Version**: 1.2.4
+**Last Updated**: 2026-01-26
+**Status**: Production Live - Semantic Matching Enhanced ✅
 **Deployed**: https://support-iq-pearl.vercel.app
 
 ---
@@ -142,7 +142,35 @@ npm run dev:support    # If configured
 
 ---
 
-## Recent Updates (v1.2.2)
+## Recent Updates (v1.2.4)
+
+### Semantic Matching Enhancement
+Major improvements to prevent query collisions:
+
+| Fix | Description |
+|-----|-------------|
+| **Match Threshold** | Raised from 0.35 to 0.50 (50%) |
+| **Compound Words** | Added 75+ domain-specific compounds |
+| **Key Term Penalty** | Penalizes unmatched key terms in queries |
+| **Stop Words** | Removed 'show', 'me' to prevent over-normalization |
+
+### Key Fixes (v1.2.4)
+| Issue | Resolution |
+|-------|------------|
+| "show team budget" → wrong widget | Now correctly shows BudgetUtilizationDashboard |
+| Analytics widget black charts | Fixed with explicit hex colors |
+| Analytics missing drill-down | Full drill-down for all cards |
+
+### Global Standards
+These standards are now documented in root `/CLAUDE.md` and apply to all Digital Workplace AI apps:
+- Match threshold: minimum 50%
+- Compound words for domain phrases
+- Key term penalty system
+- Stop words: keep action words
+
+---
+
+## Audit Status (v1.2.3)
 
 ### Full Spectrum Audit Results
 | Mode | Personas | Questions | Status |
@@ -169,4 +197,4 @@ npm run dev:support    # If configured
 
 ---
 
-*Last verified: 2026-01-22 - Full Spectrum Audit Complete*
+*Last verified: 2026-01-26 - Semantic Matching Enhanced*

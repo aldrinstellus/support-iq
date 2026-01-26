@@ -7,6 +7,114 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.2.4] - 2026-01-26
+
+### Semantic Matching Enhancement - Query Collision Prevention
+
+**Overview**: Major improvements to the semantic query matching system to prevent query collisions and false positives. The "show team budget" query for ATC Manager was incorrectly returning AnalyticsDashboard instead of BudgetUtilizationDashboard, which led to a comprehensive investigation and fix of the entire matching system.
+
+### Fixed
+
+#### Semantic Matcher (`src/lib/semantic-matcher.ts`)
+| Change | Before | After |
+|--------|--------|-------|
+| **Match Threshold** | 0.35 (35%) | **0.50 (50%)** - reduces false positives |
+| **Stop Words** | Included 'show', 'me' | **Removed** - prevents over-normalization |
+| **Key Term Handling** | Bonus only | **Penalty system** - -0.08 for unmatched terms |
+| **Compound Words** | ~50 compounds | **75+ compounds** - especially budget-related |
+| **Algorithm Weights** | Unbalanced | **Rebalanced**: jaccard 0.35, levenshtein 0.15 |
+
+#### Query Pattern Fix (`src/lib/semantic-query-patterns.ts`)
+| Pattern | Widget Before | Widget After |
+|---------|---------------|--------------|
+| `team-budget` | `analytics-dashboard` | **`budget-utilization-dashboard`** |
+
+#### Analytics Widget Fix (`src/components/widgets/AnalyticsDashboardWidget.tsx`)
+| Issue | Fix |
+|-------|-----|
+| Black charts | Using explicit hex colors (#14b8a6, #06b6d4, etc.) |
+| Missing drill-down | Full drill-down for Resolved, Pending, Escalated cards |
+| Non-interactive headers | Added clickable chart headers with drill-down panels |
+
+### Added
+
+#### New Compound Words (75+ total)
+```typescript
+// Budget-related (PRIORITY - prevents analytics collision)
+'team budget': 'teambudget',
+'budget overview': 'budgetoverview',
+'budget allocation': 'budgetallocation',
+'budget status': 'budgetstatus',
+'budget utilization': 'budgetutilization',
+'budget tracking': 'budgettracking',
+'department budget': 'departmentbudget',
+'budget burn': 'budgetburn',
+'burn rate': 'burnrate',
+// ... and 65+ more domain-specific compounds
+```
+
+#### Key Term Penalty System
+```typescript
+// Query has key term that target doesn't have = PENALTY
+if (queryHasTerm && !targetHasTerm) {
+  keyTermBonus -= 0.08; // Penalty
+}
+// All query key terms matched = EXTRA BONUS
+if (queryKeyTerms > 0 && matchedKeyTerms === queryKeyTerms) {
+  keyTermBonus += 0.15;
+}
+```
+
+#### Test Utility (`validateMatch()`)
+```typescript
+// New utility for testing pattern matching
+validateMatch(query, personaId, expectedWidgetType): {
+  success: boolean;
+  actualWidgetType: string | null;
+  score: number;
+}
+```
+
+### Documentation
+
+#### Root CLAUDE.md Updates
+| Section | Change |
+|---------|--------|
+| **SUB-PROJECTS** | Added dSQ (Support IQ) section |
+| **GLOBAL STANDARDS** | New section with Query Detection standards |
+
+#### Global Standards Established
+These standards now apply to ALL Digital Workplace AI apps:
+1. Match threshold: minimum 0.50 (50%)
+2. Compound words for domain-specific multi-word phrases
+3. Key term penalty system for unmatched terms
+4. Stop words: do NOT remove meaningful action words
+5. Algorithm weights reference implementation
+
+### Quality Metrics
+| Metric | Result |
+|--------|--------|
+| Total Questions | 54 |
+| Demo Guide Match | **54/54 (100%)** |
+| Query Collision Issues | **0** (was 1) |
+| TypeScript Errors | 0 |
+| Production Build | Successful |
+
+### Architecture Notes
+
+**Why This Fix Was Needed:**
+- Vector embeddings infrastructure existed but was NEVER USED in support-iq
+- Query detection was purely text-based with 35% threshold (too low)
+- "show team budget" matched "analytics" patterns due to shared stop words
+- Solution: Enhanced text matching with compound words, penalties, and higher threshold
+
+**Cross-App Verification:**
+- `intranet-iq`: Already uses real OpenAI embeddings (no change needed)
+- `chat-core-iq`: Already uses real OpenAI embeddings (no change needed)
+- `support-iq`: Fixed with enhanced text matching (this release)
+
+---
+
 ## [1.2.3] - 2026-01-25
 
 ### 🎯 Demo Guide Compliance Release

@@ -1,8 +1,8 @@
 # Support IQ (dSQ) - Savepoint
 
-**Last Updated**: 2026-01-22 20:00 +04
-**Version**: 1.2.2
-**Status**: Production Live - Full Spectrum Verified ✅
+**Last Updated**: 2026-01-26 12:00 +04
+**Version**: 1.2.4
+**Status**: Production Live - Semantic Matching Enhanced ✅
 
 ---
 
@@ -16,30 +16,71 @@
 | **Health** | https://support-iq-pearl.vercel.app/api/health | ✅ Healthy |
 | **Parent App** | https://digitalworkplace-ai.vercel.app | ✅ Linked |
 
-### Latest Session (v1.2.2)
-**Full Spectrum Audit - Complete Verification Release**
+### Latest Session (v1.2.4)
+**Semantic Matching Enhancement - Query Collision Prevention**
 
-Comprehensive full-spectrum audit with parallel verification:
-- ✅ **54/54 questions verified** across all 10 personas, 3 modes
-- ✅ **100% widget match rate** - All queries trigger expected widgets
-- ✅ **100% semantic match rate** - All responses role-appropriate
-- ✅ **IC vs Manager distinction** verified (Service Team Member, Support Agent)
-- ✅ **CSM customer-focus** verified (returns customer data, not agent data)
-- ✅ **Full-Spectrum Audit Report v1.2.2** created
-- ✅ **Documentation aligned** - All docs match code implementation
-- ✅ Production deployed and live
+Major improvements to semantic query matching system:
+- ✅ **Match threshold raised** from 0.35 to 0.50 (50%) to reduce false positives
+- ✅ **75+ compound words** added (budget-related, domain-specific)
+- ✅ **Key term penalty system** - penalizes unmatched key terms
+- ✅ **Stop words fixed** - removed 'show', 'me' to prevent over-normalization
+- ✅ **Algorithm rebalanced** - improved scoring weights
+- ✅ **Team budget query fixed** - now correctly shows BudgetUtilizationDashboard
+- ✅ **Analytics widget fixed** - black charts resolved with explicit hex colors
+- ✅ **Drill-down functionality** - added to analytics dashboard
+- ✅ **Global standards documented** - in root CLAUDE.md for all apps
 
 ### Full Spectrum Test Reports
-- `docs/15-reference/FULL-SPECTRUM-AUDIT-REPORT-v1.2.2.md` - **LATEST** Complete audit with parallel verification
+- `docs/15-reference/FULL-SPECTRUM-AUDIT-REPORT-v1.2.2.md` - Complete audit with parallel verification
 - `docs/15-reference/FULL-SPECTRUM-TEST-REPORT-v1.2.1.md` - Comprehensive test results
 - `docs/15-reference/FULL-SPECTRUM-ANALYSIS-v1.2.1.md` - Parallel verification
 - All documentation aligned with `query-detection.ts` implementation
 
 ### Version Details
-- **Package**: support-iq@1.2.2
+- **Package**: support-iq@1.2.4
 - **Port**: 3003 (local development)
 - **Browser Tab**: dSQ | Support Portal
-- **Commit**: f8883a3
+- **Commit**: Pending
+
+---
+
+## v1.2.4 Changes
+
+### Semantic Matching Enhancement
+| Fix | Description |
+|-----|-------------|
+| **Match Threshold** | Raised from 0.35 to 0.50 (50%) |
+| **Compound Words** | Added 75+ domain-specific compounds |
+| **Key Term Penalty** | -0.08 for unmatched query key terms |
+| **Key Term Bonus** | +0.12 per matched term, +0.15 for all matched |
+| **Stop Words** | Removed 'show', 'me' from stop words |
+| **Algorithm Weights** | Rebalanced: jaccard 0.35, levenshtein 0.15 |
+
+### Key Fixes
+| Issue | Resolution |
+|-------|------------|
+| "show team budget" → AnalyticsDashboard | Fixed: Now shows BudgetUtilizationDashboard |
+| Analytics widget black charts | Fixed: Using explicit hex colors |
+| Analytics drill-down missing | Fixed: Full drill-down for all cards |
+
+### Files Modified
+| File | Changes |
+|------|---------|
+| `src/lib/semantic-matcher.ts` | Major rewrite - threshold, compounds, penalties |
+| `src/lib/semantic-query-patterns.ts` | Fixed team-budget widget mapping |
+| `src/components/widgets/AnalyticsDashboardWidget.tsx` | Fixed colors, added drill-down |
+| `/CLAUDE.md` (root) | Added dSQ section + Global Standards |
+
+---
+
+## v1.2.3 Changes
+
+### Demo Guide Compliance
+| Persona | Fix |
+|---------|-----|
+| Program Manager | "Sprint burndown" → `contract-performance-dashboard` |
+| Service Team Member | "Top performers" → `agent-performance-comparison` |
+| CSM | "Top performers" → `agent-performance-comparison` |
 
 ---
 
