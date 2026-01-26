@@ -2778,3 +2778,4 @@ function detectServiceTeamMemberQuery(q: string): QueryMatch | null {
     responseText: "Your performance metrics show code contributions, PR reviews, and sprint velocity:",
   };
 }
+// Cache bust: 1769456573
