@@ -40,6 +40,8 @@ import type {
   BlockerResolutionData,
   // Budget Utilization Dashboard
   BudgetUtilizationData,
+  // Milestone Tracking Dashboard
+  MilestoneTrackingData,
 } from '@/types/widget';
 
 // C-Level: Executive Summary Widget Data
@@ -3529,6 +3531,261 @@ export const budgetUtilizationDemo: BudgetUtilizationData = {
   },
 };
 
+// ============================================================================
+// MILESTONE TRACKING DASHBOARD DEMO DATA
+// ============================================================================
+
+// Program Manager Persona: Milestone Tracking Dashboard
+export const milestoneTrackingDemo: MilestoneTrackingData = {
+  title: 'Milestone Progress Tracking',
+  programName: 'Enterprise IT Infrastructure Modernization',
+  programId: 'PRG-2025-042',
+  lastUpdated: new Date().toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  }),
+  summary: {
+    totalMilestones: 24,
+    completed: 14,
+    onTrack: 6,
+    atRisk: 3,
+    delayed: 1,
+    overallProgress: 58,
+    daysToNextMilestone: 12,
+    nextMilestoneName: 'Phase 2 Security Audit Complete',
+  },
+  phases: [
+    {
+      id: 'PH-001',
+      name: 'Phase 1: Discovery & Planning',
+      startDate: '2025-01-15',
+      endDate: '2025-03-31',
+      status: 'completed',
+      progress: 100,
+      milestones: [
+        {
+          id: 'MS-001',
+          name: 'Requirements Gathering Complete',
+          dueDate: '2025-02-01',
+          completedDate: '2025-01-28',
+          status: 'completed',
+          owner: 'Sarah Williams',
+          deliverables: 5,
+          deliverablesCompleted: 5,
+        },
+        {
+          id: 'MS-002',
+          name: 'Architecture Design Approved',
+          dueDate: '2025-02-28',
+          completedDate: '2025-02-25',
+          status: 'completed',
+          owner: 'Michael Chen',
+          deliverables: 8,
+          deliverablesCompleted: 8,
+        },
+        {
+          id: 'MS-003',
+          name: 'Project Charter Signed',
+          dueDate: '2025-03-15',
+          completedDate: '2025-03-12',
+          status: 'completed',
+          owner: 'Jennifer Chen',
+          deliverables: 3,
+          deliverablesCompleted: 3,
+        },
+      ],
+    },
+    {
+      id: 'PH-002',
+      name: 'Phase 2: Implementation',
+      startDate: '2025-04-01',
+      endDate: '2025-08-31',
+      status: 'in-progress',
+      progress: 65,
+      milestones: [
+        {
+          id: 'MS-004',
+          name: 'Infrastructure Setup Complete',
+          dueDate: '2025-04-30',
+          completedDate: '2025-04-28',
+          status: 'completed',
+          owner: 'David Miller',
+          deliverables: 12,
+          deliverablesCompleted: 12,
+        },
+        {
+          id: 'MS-005',
+          name: 'Core System Integration',
+          dueDate: '2025-05-31',
+          completedDate: '2025-06-02',
+          status: 'completed',
+          owner: 'Herbert Roberts',
+          dependencies: ['MS-004'],
+          deliverables: 15,
+          deliverablesCompleted: 15,
+        },
+        {
+          id: 'MS-006',
+          name: 'Security Audit Complete',
+          dueDate: '2025-07-15',
+          status: 'on-track',
+          owner: 'Alexa Johnson',
+          dependencies: ['MS-005'],
+          deliverables: 8,
+          deliverablesCompleted: 5,
+        },
+        {
+          id: 'MS-007',
+          name: 'User Acceptance Testing',
+          dueDate: '2025-08-15',
+          status: 'at-risk',
+          owner: 'Emily Rodriguez',
+          dependencies: ['MS-006'],
+          deliverables: 10,
+          deliverablesCompleted: 2,
+        },
+        {
+          id: 'MS-008',
+          name: 'Performance Optimization',
+          dueDate: '2025-08-31',
+          status: 'upcoming',
+          owner: 'Dale Thompson',
+          dependencies: ['MS-007'],
+          deliverables: 6,
+          deliverablesCompleted: 0,
+        },
+      ],
+    },
+    {
+      id: 'PH-003',
+      name: 'Phase 3: Deployment & Training',
+      startDate: '2025-09-01',
+      endDate: '2025-11-30',
+      status: 'upcoming',
+      progress: 0,
+      milestones: [
+        {
+          id: 'MS-009',
+          name: 'Pilot Deployment',
+          dueDate: '2025-09-30',
+          status: 'upcoming',
+          owner: 'Jennifer Chen',
+          dependencies: ['MS-008'],
+          deliverables: 8,
+          deliverablesCompleted: 0,
+        },
+        {
+          id: 'MS-010',
+          name: 'Training Program Complete',
+          dueDate: '2025-10-31',
+          status: 'upcoming',
+          owner: 'Emily Rodriguez',
+          dependencies: ['MS-009'],
+          deliverables: 12,
+          deliverablesCompleted: 0,
+        },
+        {
+          id: 'MS-011',
+          name: 'Full Production Rollout',
+          dueDate: '2025-11-30',
+          status: 'upcoming',
+          owner: 'Michael Chen',
+          dependencies: ['MS-010'],
+          deliverables: 5,
+          deliverablesCompleted: 0,
+        },
+      ],
+    },
+  ],
+  upcomingMilestones: [
+    {
+      id: 'MS-006',
+      name: 'Security Audit Complete',
+      phase: 'Phase 2: Implementation',
+      dueDate: '2025-07-15',
+      daysRemaining: 12,
+      status: 'on-track',
+      owner: 'Alexa Johnson',
+      criticalPath: true,
+    },
+    {
+      id: 'MS-007',
+      name: 'User Acceptance Testing',
+      phase: 'Phase 2: Implementation',
+      dueDate: '2025-08-15',
+      daysRemaining: 43,
+      status: 'at-risk',
+      owner: 'Emily Rodriguez',
+      criticalPath: true,
+      blockers: ['Pending test environment setup', 'Resource availability constraints'],
+    },
+    {
+      id: 'MS-008',
+      name: 'Performance Optimization',
+      phase: 'Phase 2: Implementation',
+      dueDate: '2025-08-31',
+      daysRemaining: 59,
+      status: 'on-track',
+      owner: 'Dale Thompson',
+      criticalPath: false,
+    },
+  ],
+  recentlyCompleted: [
+    {
+      id: 'MS-005',
+      name: 'Core System Integration',
+      phase: 'Phase 2: Implementation',
+      completedDate: '2025-06-02',
+      daysEarlyOrLate: 2,
+      deliverables: 15,
+    },
+    {
+      id: 'MS-004',
+      name: 'Infrastructure Setup Complete',
+      phase: 'Phase 2: Implementation',
+      completedDate: '2025-04-28',
+      daysEarlyOrLate: -2,
+      deliverables: 12,
+    },
+    {
+      id: 'MS-003',
+      name: 'Project Charter Signed',
+      phase: 'Phase 1: Discovery & Planning',
+      completedDate: '2025-03-12',
+      daysEarlyOrLate: -3,
+      deliverables: 3,
+    },
+  ],
+  criticalPathItems: [
+    {
+      milestone: 'User Acceptance Testing',
+      impact: 'Delays will push back Phase 3 start and affect production rollout timeline',
+      dueDate: '2025-08-15',
+      risk: 'high',
+    },
+    {
+      milestone: 'Security Audit Complete',
+      impact: 'Required for compliance certification before UAT can begin',
+      dueDate: '2025-07-15',
+      risk: 'medium',
+    },
+    {
+      milestone: 'Training Program Complete',
+      impact: 'End-user readiness depends on completion before rollout',
+      dueDate: '2025-10-31',
+      risk: 'low',
+    },
+  ],
+  forecast: {
+    projectedCompletionDate: '2025-12-05',
+    originalTargetDate: '2025-11-30',
+    varianceDays: 5,
+    confidence: 78,
+    recommendation: 'Current trajectory shows 5-day delay risk due to UAT blockers. Recommend adding test environment resources and scheduling parallel testing tracks to recover schedule.',
+  },
+};
+
 import type { WidgetData } from '@/types/widget';
 
 // Helper function to get demo data for each widget type
@@ -3575,6 +3832,8 @@ export function getWidgetDemoData(widgetType: string): WidgetData | null {
     'blocker-resolution-dashboard': blockerResolutionDemo,
     // Budget Utilization Dashboard
     'budget-utilization-dashboard': budgetUtilizationDemo,
+    // Milestone Tracking Dashboard
+    'milestone-tracking-dashboard': milestoneTrackingDemo,
   };
 
   return dataMap[widgetType] || null;

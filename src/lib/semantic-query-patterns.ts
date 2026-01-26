@@ -45,6 +45,7 @@ import {
   performanceTrendsDemo,
   sentimentAnalysisDemo,
   budgetUtilizationDemo,
+  milestoneTrackingDemo,
 } from '@/data/demo-widget-data';
 import { doraMetricsDemo } from '@/data/csm-widget-data';
 
@@ -397,10 +398,14 @@ export const governmentPatterns: SemanticPattern[] = [
       'key milestones',
       'upcoming milestones',
       'show milestone status',
+      'show milestones',
+      'milestone dashboard',
+      'project milestones',
+      'milestone timeline',
     ],
     personas: ['program-manager'],
-    widgetType: 'program-health-dashboard',
-    widgetData: programHealthDemo,
+    widgetType: 'milestone-tracking-dashboard',
+    widgetData: milestoneTrackingDemo,
     responseText: 'Milestone progress tracking toward key phases:',
   },
   {

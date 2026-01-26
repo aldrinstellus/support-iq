@@ -58,6 +58,7 @@ export type WidgetType =
   | 'blocker-resolution-dashboard'
   | 'kb-article-viewer'
   | 'budget-utilization-dashboard'
+  | 'milestone-tracking-dashboard'
   // V18 CSM Insights & Training Widget Types
   | 'csm-insights-dashboard'
   | 'csm-training-dashboard'
@@ -1663,6 +1664,75 @@ export interface BudgetUtilizationData {
   };
 }
 
+// Milestone Tracking Dashboard Widget (Program Manager Persona)
+export interface MilestoneTrackingData {
+  title: string;
+  programName: string;
+  programId: string;
+  lastUpdated: string;
+  summary: {
+    totalMilestones: number;
+    completed: number;
+    onTrack: number;
+    atRisk: number;
+    delayed: number;
+    overallProgress: number;
+    daysToNextMilestone: number;
+    nextMilestoneName: string;
+  };
+  phases: Array<{
+    id: string;
+    name: string;
+    startDate: string;
+    endDate: string;
+    status: 'completed' | 'in-progress' | 'upcoming' | 'at-risk' | 'delayed';
+    progress: number;
+    milestones: Array<{
+      id: string;
+      name: string;
+      dueDate: string;
+      completedDate?: string;
+      status: 'completed' | 'on-track' | 'at-risk' | 'delayed' | 'upcoming';
+      owner: string;
+      dependencies?: string[];
+      deliverables: number;
+      deliverablesCompleted: number;
+    }>;
+  }>;
+  upcomingMilestones: Array<{
+    id: string;
+    name: string;
+    phase: string;
+    dueDate: string;
+    daysRemaining: number;
+    status: 'on-track' | 'at-risk' | 'delayed';
+    owner: string;
+    criticalPath: boolean;
+    blockers?: string[];
+  }>;
+  recentlyCompleted: Array<{
+    id: string;
+    name: string;
+    phase: string;
+    completedDate: string;
+    daysEarlyOrLate: number;
+    deliverables: number;
+  }>;
+  criticalPathItems: Array<{
+    milestone: string;
+    impact: string;
+    dueDate: string;
+    risk: 'high' | 'medium' | 'low';
+  }>;
+  forecast: {
+    projectedCompletionDate: string;
+    originalTargetDate: string;
+    varianceDays: number;
+    confidence: number;
+    recommendation: string;
+  };
+}
+
 // Union type for all widget data
 export type WidgetData =
   | ExecutiveSummaryData
@@ -1719,6 +1789,8 @@ export type WidgetData =
   | DoraMetricsData
   // Budget Utilization Dashboard
   | BudgetUtilizationData
+  // Milestone Tracking Dashboard
+  | MilestoneTrackingData
   // V20 ITSS Draft Review
   | Draft;
 
