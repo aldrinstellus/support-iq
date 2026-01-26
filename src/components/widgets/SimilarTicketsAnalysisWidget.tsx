@@ -18,13 +18,85 @@ export function SimilarTicketsAnalysisWidget({ data }: { data: SimilarTicketsAna
     setExpandedPattern(expandedPattern === index ? null : index);
   };
 
-  // Mock detailed data for drill-downs
+  const [selectedTicket, setSelectedTicket] = useState<string | null>(null);
+
+  // Mock detailed data for drill-downs - with KB articles for each ticket
   const ticketsAnalyzedDetails = [
-    { id: '#001', title: 'SSO Integration Failure', status: 'Resolved', time: '18 min', date: '2 days ago' },
-    { id: '#002', title: 'API Token Expired', status: 'Resolved', time: '12 min', date: '3 days ago' },
-    { id: '#003', title: 'OAuth Scope Missing', status: 'Resolved', time: '25 min', date: '4 days ago' },
-    { id: '#004', title: 'Webhook Authentication', status: 'Resolved', time: '15 min', date: '5 days ago' },
-    { id: '#005', title: 'SAML Config Error', status: 'In Progress', time: '-', date: '1 day ago' },
+    {
+      id: '#001',
+      title: 'SSO Integration Failure',
+      status: 'Resolved',
+      time: '18 min',
+      date: '2 days ago',
+      customer: 'Acme Corp',
+      priority: 'High',
+      kbArticles: [
+        { id: 'KB-101', title: 'SSO Troubleshooting Guide', used: true },
+        { id: 'KB-105', title: 'Token Refresh Procedures', used: true },
+      ],
+      resolution: 'Refreshed OAuth tokens and updated SSO configuration',
+      steps: ['Identified expired token in logs', 'Regenerated OAuth credentials', 'Updated SSO config', 'Verified with customer']
+    },
+    {
+      id: '#002',
+      title: 'API Token Expired',
+      status: 'Resolved',
+      time: '12 min',
+      date: '3 days ago',
+      customer: 'TechStart Inc',
+      priority: 'Medium',
+      kbArticles: [
+        { id: 'KB-102', title: 'API Token Management', used: true },
+        { id: 'KB-110', title: 'Token Expiration Settings', used: false },
+      ],
+      resolution: 'Generated new API token with extended expiration',
+      steps: ['Checked token expiration date', 'Generated new token', 'Updated client integration', 'Confirmed API connectivity']
+    },
+    {
+      id: '#003',
+      title: 'OAuth Scope Missing',
+      status: 'Resolved',
+      time: '25 min',
+      date: '4 days ago',
+      customer: 'Global Systems',
+      priority: 'High',
+      kbArticles: [
+        { id: 'KB-103', title: 'OAuth Scopes Reference', used: true },
+        { id: 'KB-107', title: 'Permission Configuration', used: true },
+        { id: 'KB-112', title: 'Admin Console Guide', used: true },
+      ],
+      resolution: 'Added missing read/write scopes to OAuth application',
+      steps: ['Identified missing scopes from error logs', 'Updated OAuth app configuration', 'Re-authorized connection', 'Tested all endpoints']
+    },
+    {
+      id: '#004',
+      title: 'Webhook Authentication',
+      status: 'Resolved',
+      time: '15 min',
+      date: '5 days ago',
+      customer: 'DataFlow Ltd',
+      priority: 'Medium',
+      kbArticles: [
+        { id: 'KB-108', title: 'Webhook Security Setup', used: true },
+      ],
+      resolution: 'Configured webhook signature verification',
+      steps: ['Verified webhook endpoint', 'Added signature header', 'Updated secret key', 'Tested payload delivery']
+    },
+    {
+      id: '#005',
+      title: 'SAML Config Error',
+      status: 'In Progress',
+      time: '-',
+      date: '1 day ago',
+      customer: 'Enterprise Co',
+      priority: 'Critical',
+      kbArticles: [
+        { id: 'KB-104', title: 'SAML Configuration Guide', used: true },
+        { id: 'KB-109', title: 'Identity Provider Setup', used: false },
+      ],
+      resolution: null,
+      steps: ['Reviewing SAML metadata', 'Checking certificate validity']
+    },
   ];
 
   const successRateDetails = {
@@ -122,31 +194,125 @@ export function SimilarTicketsAnalysisWidget({ data }: { data: SimilarTicketsAna
           <div className="flex items-center justify-between mb-3">
             <h5 className="text-sm font-semibold text-foreground flex items-center gap-2">
               <FileText className="h-4 w-4 text-primary" />
-              Tickets Analyzed Details
+              Similar Tickets You&apos;ve Resolved - Click to View Details
             </h5>
             <button
-              onClick={() => setActiveDrillDown(null)}
+              onClick={() => { setActiveDrillDown(null); setSelectedTicket(null); }}
               className="text-muted-foreground hover:text-foreground"
             >
               <XCircle className="h-4 w-4" />
             </button>
           </div>
-          <div className="space-y-2">
+
+          {/* Ticket List */}
+          <div className="space-y-2 mb-4">
             {ticketsAnalyzedDetails.map((ticket, index) => (
-              <div key={index} className="flex items-center justify-between p-2 rounded bg-background/50 border border-border/50">
-                <div className="flex items-center gap-3">
-                  <span className="text-sm font-semibold text-primary">{ticket.id}</span>
-                  <span className="text-sm text-foreground">{ticket.title}</span>
+              <div
+                key={index}
+                onClick={() => setSelectedTicket(selectedTicket === ticket.id ? null : ticket.id)}
+                className={`cursor-pointer p-3 rounded border transition-all ${
+                  selectedTicket === ticket.id
+                    ? 'bg-primary/10 border-primary/50 ring-1 ring-primary/30'
+                    : 'bg-background/50 border-border/50 hover:border-primary/30 hover:bg-primary/5'
+                }`}
+              >
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <span className="text-sm font-bold text-primary">{ticket.id}</span>
+                    <span className="text-sm font-medium text-foreground">{ticket.title}</span>
+                    <span className="text-xs text-muted-foreground">• {ticket.customer}</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <span className={`text-xs px-2 py-0.5 rounded ${
+                      ticket.priority === 'Critical' ? 'bg-red-500/20 text-red-500' :
+                      ticket.priority === 'High' ? 'bg-amber-500/20 text-amber-500' :
+                      'bg-blue-500/20 text-blue-500'
+                    }`}>
+                      {ticket.priority}
+                    </span>
+                    <span className={`text-xs px-2 py-0.5 rounded ${
+                      ticket.status === 'Resolved' ? 'bg-emerald-500/20 text-emerald-500' : 'bg-amber-500/20 text-amber-500'
+                    }`}>
+                      {ticket.status}
+                    </span>
+                    <span className="text-xs text-muted-foreground">{ticket.time}</span>
+                    {selectedTicket === ticket.id ? (
+                      <ChevronUp className="h-4 w-4 text-primary" />
+                    ) : (
+                      <ChevronDown className="h-4 w-4 text-muted-foreground" />
+                    )}
+                  </div>
                 </div>
-                <div className="flex items-center gap-3">
-                  <span className={`text-xs px-2 py-0.5 rounded ${
-                    ticket.status === 'Resolved' ? 'bg-emerald-500/20 text-emerald-500' : 'bg-amber-500/20 text-amber-500'
-                  }`}>
-                    {ticket.status}
-                  </span>
-                  <span className="text-xs text-muted-foreground">{ticket.time}</span>
-                  <span className="text-xs text-muted-foreground">{ticket.date}</span>
-                </div>
+
+                {/* Expanded Ticket Details */}
+                {selectedTicket === ticket.id && (
+                  <div className="mt-4 space-y-4 animate-in slide-in-from-top-2 duration-200">
+                    {/* KB Articles Used */}
+                    <div className="p-3 rounded bg-card/70 border border-border/50">
+                      <p className="text-xs font-semibold text-muted-foreground mb-2 flex items-center gap-2">
+                        <FileText className="h-3 w-3" />
+                        Knowledge Base Articles Used
+                      </p>
+                      <div className="space-y-2">
+                        {ticket.kbArticles.map((kb, kbIndex) => (
+                          <div
+                            key={kbIndex}
+                            className={`flex items-center justify-between p-2 rounded border ${
+                              kb.used
+                                ? 'bg-emerald-500/10 border-emerald-500/30'
+                                : 'bg-muted/30 border-border/30'
+                            }`}
+                          >
+                            <div className="flex items-center gap-2">
+                              <span className="text-xs font-mono text-primary">{kb.id}</span>
+                              <span className="text-sm text-foreground">{kb.title}</span>
+                            </div>
+                            {kb.used ? (
+                              <span className="text-xs text-emerald-500 flex items-center gap-1">
+                                <CheckCircle2 className="h-3 w-3" />
+                                Applied
+                              </span>
+                            ) : (
+                              <span className="text-xs text-muted-foreground">Referenced</span>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Resolution */}
+                    {ticket.resolution && (
+                      <div className="p-3 rounded bg-emerald-500/10 border border-emerald-500/30">
+                        <p className="text-xs font-semibold text-muted-foreground mb-1">Resolution Applied</p>
+                        <p className="text-sm text-foreground font-medium">{ticket.resolution}</p>
+                      </div>
+                    )}
+
+                    {/* Resolution Steps */}
+                    <div className="p-3 rounded bg-card/70 border border-border/50">
+                      <p className="text-xs font-semibold text-muted-foreground mb-2">Resolution Steps</p>
+                      <ol className="list-decimal list-inside space-y-1">
+                        {ticket.steps.map((step, stepIndex) => (
+                          <li key={stepIndex} className="text-sm text-foreground">
+                            {step}
+                          </li>
+                        ))}
+                      </ol>
+                    </div>
+
+                    {/* Action Buttons */}
+                    <div className="flex items-center gap-2">
+                      <button className="flex items-center gap-1 text-xs text-primary bg-primary/20 px-3 py-1.5 rounded border border-primary/20 hover:bg-primary/30 transition-all">
+                        <Ticket className="h-3 w-3" />
+                        View Full Ticket
+                      </button>
+                      <button className="flex items-center gap-1 text-xs text-muted-foreground bg-muted/20 px-3 py-1.5 rounded border border-border hover:bg-muted/30 transition-all">
+                        <ArrowRight className="h-3 w-3" />
+                        Apply This Solution
+                      </button>
+                    </div>
+                  </div>
+                )}
               </div>
             ))}
           </div>
