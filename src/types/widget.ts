@@ -309,13 +309,13 @@ export interface AgentDashboardData {
 export interface TicketDetailData {
   ticketId: string;
   priority: 'critical' | 'high' | 'medium' | 'low';
-  status: 'open' | 'in-progress' | 'pending' | 'resolved' | 'closed';
+  status: 'open' | 'in-progress' | 'pending' | 'resolved' | 'closed' | 'escalated';
   subject: string;
   customer: {
     name: string;
     id: string;
     plan: string;
-    arr: string;
+    arr?: string;
     contactName: string;
     contactEmail: string;
     contactPhone: string;
@@ -342,7 +342,7 @@ export interface TicketDetailData {
       target: string;
       deadline: string;
       elapsed: string;
-      status: 'met' | 'at-risk' | 'breached';
+      status: 'met' | 'on-track' | 'at-risk' | 'breached';
       breachedBy?: string;
     };
   };
@@ -362,6 +362,13 @@ export interface TicketDetailData {
     status: string;
     priority: string;
   }>;
+  attachments?: Array<{
+    name: string;
+    size: string;
+    type: string;
+    uploadedBy: string;
+    uploadedAt: string;
+  }>;
   jiraIntegration?: {
     linkedIssue: string;
     issueTitle: string;
@@ -375,7 +382,7 @@ export interface TicketDetailData {
       content: string;
     }>;
   };
-  aiInsights: {
+  aiInsights?: {
     sentiment: {
       current: string;
       score: number;

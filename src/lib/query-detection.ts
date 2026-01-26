@@ -1,6 +1,6 @@
 // Query Detection Module for Bhanu's Assistant-First Interface
 // Maps natural language queries to appropriate widgets based on persona and intent
-// V1.3.0: Now uses semantic pattern matching for better fuzzy matching
+// V1.3.1: Universal TICK-XXX ticket detection across all personas and modes
 
 import type { WidgetType, WidgetData } from '@/types/widget';
 import { findSemanticMatch } from './semantic-matcher';
@@ -10,6 +10,8 @@ import { findBestMatch as findATCExecutiveMatch } from './atc-executive-conversa
 import { findBestMatch as findATCManagerMatch } from './atc-manager-conversation';
 import { findBestMatch as findATCSupportMatch } from './atc-support-conversation';
 import { findBestMatch as findATCCSMMatch } from './atc-csm-conversation';
+// V1.3.1: Standardized ticket database
+import { extractTicketIdFromQuery, getTicketById, getTicketSummaries } from '@/data/ticket-database';
 import {
   executiveSummaryDemo,
   customerRiskProfileDemo,
@@ -73,6 +75,108 @@ export type PersonaId =
   // V17 Project Mode
   | 'project-manager' | 'service-team-lead' | 'service-team-member';
 
+// ============================================================================
+// V1.3.1: UNIVERSAL TICKET DETECTION FUNCTION
+// Handles TICK-XXX format across ALL personas and ALL modes
+// ============================================================================
+
+/**
+ * Detect ticket queries using standardized TICK-XXX format
+ * Works across all personas and modes
+ * Returns ticket detail with full data from ticket database
+ */
+function detectUniversalTicket(q: string, personaId: PersonaId): QueryMatch | null {
+  // Check if query is asking about a specific ticket
+  const ticketPatterns = [
+    /\bticket\s*#?\s*(\d{1,3})\b/i,           // "ticket 001", "ticket #001", "ticket 1"
+    /\btick[- ]?(\d{1,3})\b/i,                 // "TICK-001", "TICK001", "tick 001"
+    /\bdesk[- ]?(\d{1,4})\b/i,                 // "DESK-1001"
+    /\bshow\s+(?:me\s+)?(?:ticket\s*)?(\d{3})\b/i,  // "show me 001", "show 001"
+    /\b(\d{3})\s*ticket\b/i,                   // "001 ticket"
+  ];
+
+  let ticketId: string | null = null;
+
+  // Try to extract ticket ID from query
+  for (const pattern of ticketPatterns) {
+    const match = q.match(pattern);
+    if (match) {
+      ticketId = extractTicketIdFromQuery(q);
+      break;
+    }
+  }
+
+  // Also try direct extraction if no pattern matched but query mentions "ticket"
+  if (!ticketId && (q.includes('ticket') || q.includes('tick'))) {
+    ticketId = extractTicketIdFromQuery(q);
+  }
+
+  if (!ticketId) {
+    return null;
+  }
+
+  // Get ticket data from database
+  const ticket = getTicketById(ticketId);
+
+  if (!ticket) {
+    // Ticket ID extracted but not found in database - return helpful message
+    return {
+      widgetType: null,
+      widgetData: null,
+      responseText: `I couldn't find ticket ${ticketId} in our system. Valid tickets are TICK-001 through TICK-010. Would you like me to show you the ticket list instead?`,
+    };
+  }
+
+  // Get persona-appropriate response text based on role
+  const responseText = getTicketResponseText(ticket, personaId);
+
+  console.log(`[Universal Ticket Detection] Query: "${q}" → ${ticketId} → Found: ${ticket.subject}`);
+
+  return {
+    widgetType: 'ticket-detail',
+    widgetData: ticket,
+    responseText,
+  };
+}
+
+/**
+ * Generate persona-appropriate response text for ticket display
+ */
+function getTicketResponseText(ticket: ReturnType<typeof getTicketById>, personaId: PersonaId): string {
+  if (!ticket) return '';
+
+  const baseInfo = `Here are the details for ${ticket.ticketId}:`;
+  const priorityNote = ticket.priority === 'critical' || ticket.priority === 'high'
+    ? ` This is a ${ticket.priority.toUpperCase()} priority issue.`
+    : '';
+  const slaNote = ticket.sla.resolutionTime.status === 'breached'
+    ? ' SLA has been breached.'
+    : ticket.sla.resolutionTime.status === 'at-risk'
+    ? ' SLA is at risk.'
+    : '';
+
+  // Executive/Manager personas get strategic context
+  if (['c-level', 'atc-executive', 'cor', 'program-manager'].includes(personaId)) {
+    const customerContext = ticket.customer.riskLevel === 'critical' || ticket.customer.riskLevel === 'high'
+      ? ` ${ticket.customer.name} is a ${ticket.customer.riskLevel} risk account with $${ticket.customer.arr?.replace(/[^0-9]/g, '')} ARR.`
+      : '';
+    return `${baseInfo}${priorityNote}${slaNote}${customerContext}`;
+  }
+
+  // Manager personas get team context
+  if (['cs-manager', 'atc-manager', 'stakeholder-lead', 'service-team-lead'].includes(personaId)) {
+    return `${baseInfo}${priorityNote}${slaNote} Currently assigned to ${ticket.metadata.assignedTo}.`;
+  }
+
+  // Support/IC personas get actionable context
+  if (['support-agent', 'atc-support', 'atc-csm', 'csm', 'service-team-member'].includes(personaId)) {
+    return `${baseInfo}${priorityNote}${slaNote} Customer: ${ticket.customer.name} (${ticket.customer.contactName}).`;
+  }
+
+  // Default
+  return `${baseInfo}${priorityNote}${slaNote}`;
+}
+
 /**
  * Detect widget intent from user query
  * Uses semantic pattern matching first, then falls back to keyword matching
@@ -82,6 +186,16 @@ export function detectWidgetQuery(
   personaId: PersonaId
 ): QueryMatch | null {
   const q = query.toLowerCase().trim();
+
+  // ============================================================================
+  // V1.3.1: UNIVERSAL TICKET DETECTION (TICK-XXX) - HIGHEST PRIORITY
+  // Works across ALL personas and ALL modes (Government, Project, ATC)
+  // Handles: "ticket 001", "TICK-001", "show me ticket 001", "ticket #001", etc.
+  // ============================================================================
+  const universalTicketMatch = detectUniversalTicket(q, personaId);
+  if (universalTicketMatch) {
+    return universalTicketMatch;
+  }
 
   // ============================================================================
   // SEMANTIC MATCHING - Try fuzzy pattern matching first

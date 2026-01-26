@@ -1,6 +1,6 @@
 {
   "name": "support-iq",
-  "version": "1.2.6",
+  "version": "1.2.7",
   "private": true,
   "description": "Support IQ (dSQ) - AI-Enhanced Customer Support for Digital Workplace AI",
   "scripts": {

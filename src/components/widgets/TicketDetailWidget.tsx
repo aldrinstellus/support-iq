@@ -33,16 +33,19 @@ export function TicketDetailWidget({ data }: { data: TicketDetailData }) {
     pending: 'border-chart-4/50 bg-amber-500/20 text-chart-4',
     resolved: 'border-success/50 bg-emerald-500/20 text-success',
     closed: 'border-muted/50 bg-muted/20 text-muted-foreground',
+    escalated: 'border-destructive/50 bg-red-500/20 text-destructive',
   };
 
   const slaStatusColors = {
     met: 'text-success',
+    'on-track': 'text-success',
     'at-risk': 'text-chart-4',
     breached: 'text-destructive',
   };
 
   const slaStatusIcons = {
     met: CheckCircle2,
+    'on-track': CheckCircle2,
     'at-risk': AlertCircle,
     breached: XCircle,
   };
@@ -59,7 +62,9 @@ export function TicketDetailWidget({ data }: { data: TicketDetailData }) {
     stable: Activity,
     declining: TrendingDown,
   };
-  const SentimentTrendIcon = sentimentTrendIcons[data.aiInsights.sentiment.trend];
+  const SentimentTrendIcon = data.aiInsights?.sentiment?.trend
+    ? sentimentTrendIcons[data.aiInsights.sentiment.trend]
+    : Activity;
 
   return (
     <div className="space-y-6 my-4">
@@ -317,40 +322,42 @@ export function TicketDetailWidget({ data }: { data: TicketDetailData }) {
         </div>
       )}
 
-      {/* AI Sentiment Analysis */}
-      <div className="glass-card rounded-lg border border-primary/30 bg-primary/20 p-4 backdrop-blur-md">
-        <h5 className="text-sm font-semibold mb-3 flex items-center gap-2 text-foreground">
-          <Activity className="h-4 w-4 text-primary" />
-          AI Sentiment Analysis
-        </h5>
-        <div className="flex items-center justify-between mb-3">
-          <div>
-            <div className="text-xs text-muted-foreground mb-1">Current Sentiment</div>
-            <div className="flex items-center gap-2">
-              <span className="text-lg font-bold text-foreground capitalize">{data.aiInsights.sentiment.current}</span>
-              <SentimentTrendIcon className={`h-5 w-5 ${
-                data.aiInsights.sentiment.trend === 'improving' ? 'text-success' :
-                data.aiInsights.sentiment.trend === 'declining' ? 'text-destructive' :
-                'text-muted-foreground'
-              }`} />
+      {/* AI Sentiment Analysis - Only show if aiInsights data exists */}
+      {data.aiInsights?.sentiment && (
+        <div className="glass-card rounded-lg border border-primary/30 bg-primary/20 p-4 backdrop-blur-md">
+          <h5 className="text-sm font-semibold mb-3 flex items-center gap-2 text-foreground">
+            <Activity className="h-4 w-4 text-primary" />
+            AI Sentiment Analysis
+          </h5>
+          <div className="flex items-center justify-between mb-3">
+            <div>
+              <div className="text-xs text-muted-foreground mb-1">Current Sentiment</div>
+              <div className="flex items-center gap-2">
+                <span className="text-lg font-bold text-foreground capitalize">{data.aiInsights.sentiment.current}</span>
+                <SentimentTrendIcon className={`h-5 w-5 ${
+                  data.aiInsights.sentiment.trend === 'improving' ? 'text-success' :
+                  data.aiInsights.sentiment.trend === 'declining' ? 'text-destructive' :
+                  'text-muted-foreground'
+                }`} />
+              </div>
+            </div>
+            <div className="text-right">
+              <div className="text-xs text-muted-foreground mb-1">Sentiment Score</div>
+              <div className={`text-2xl font-bold ${
+                data.aiInsights.sentiment.score >= 70 ? 'text-success' :
+                data.aiInsights.sentiment.score >= 40 ? 'text-chart-4' :
+                'text-destructive'
+              }`}>
+                {data.aiInsights.sentiment.score}%
+              </div>
             </div>
           </div>
-          <div className="text-right">
-            <div className="text-xs text-muted-foreground mb-1">Sentiment Score</div>
-            <div className={`text-2xl font-bold ${
-              data.aiInsights.sentiment.score >= 70 ? 'text-success' :
-              data.aiInsights.sentiment.score >= 40 ? 'text-chart-4' :
-              'text-destructive'
-            }`}>
-              {data.aiInsights.sentiment.score}%
-            </div>
-          </div>
+          <p className="text-sm text-foreground/90">{data.aiInsights.sentiment.analysis}</p>
         </div>
-        <p className="text-sm text-foreground/90">{data.aiInsights.sentiment.analysis}</p>
-      </div>
+      )}
 
       {/* Recommended Actions */}
-      {data.aiInsights.recommendedActions.length > 0 && (
+      {data.aiInsights?.recommendedActions && data.aiInsights.recommendedActions.length > 0 && (
         <div className="glass-card rounded-lg border border-border bg-card/70 p-4 backdrop-blur-md">
           <h5 className="text-sm font-semibold mb-3 flex items-center gap-2 text-foreground">
             <ArrowUpCircle className="h-4 w-4 text-success" />
