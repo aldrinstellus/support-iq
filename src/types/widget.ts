@@ -59,6 +59,7 @@ export type WidgetType =
   | 'kb-article-viewer'
   | 'budget-utilization-dashboard'
   | 'milestone-tracking-dashboard'
+  | 'risk-register-dashboard'
   // V18 CSM Insights & Training Widget Types
   | 'csm-insights-dashboard'
   | 'csm-training-dashboard'
@@ -1733,6 +1734,69 @@ export interface MilestoneTrackingData {
   };
 }
 
+// Risk Register Dashboard Widget (Program Manager Persona)
+export interface RiskRegisterData {
+  title: string;
+  programName: string;
+  programId: string;
+  lastUpdated: string;
+  summary: {
+    totalRisks: number;
+    critical: number;
+    high: number;
+    medium: number;
+    low: number;
+    mitigated: number;
+    newThisWeek: number;
+    overallRiskScore: number;
+    trend: 'increasing' | 'decreasing' | 'stable';
+  };
+  risks: Array<{
+    id: string;
+    title: string;
+    description: string;
+    category: 'technical' | 'schedule' | 'budget' | 'resource' | 'external' | 'compliance';
+    impact: 'critical' | 'high' | 'medium' | 'low';
+    probability: 'very-likely' | 'likely' | 'possible' | 'unlikely';
+    riskScore: number;
+    status: 'open' | 'mitigating' | 'monitoring' | 'closed';
+    owner: string;
+    identifiedDate: string;
+    targetResolutionDate?: string;
+    mitigation: {
+      strategy: string;
+      actions: string[];
+      progress: number;
+    };
+    contingency?: string;
+    affectedAreas: string[];
+    lastReviewDate: string;
+  }>;
+  riskMatrix: {
+    criticalHigh: number;
+    criticalMedium: number;
+    highHigh: number;
+    highMedium: number;
+    mediumMedium: number;
+    lowLow: number;
+  };
+  recentChanges: Array<{
+    riskId: string;
+    riskTitle: string;
+    changeType: 'new' | 'escalated' | 'de-escalated' | 'closed' | 'updated';
+    previousState?: string;
+    newState: string;
+    changedBy: string;
+    changedDate: string;
+  }>;
+  upcomingReviews: Array<{
+    riskId: string;
+    riskTitle: string;
+    reviewDate: string;
+    reviewer: string;
+  }>;
+}
+
 // Union type for all widget data
 export type WidgetData =
   | ExecutiveSummaryData
@@ -1791,6 +1855,8 @@ export type WidgetData =
   | BudgetUtilizationData
   // Milestone Tracking Dashboard
   | MilestoneTrackingData
+  // Risk Register Dashboard
+  | RiskRegisterData
   // V20 ITSS Draft Review
   | Draft;
 

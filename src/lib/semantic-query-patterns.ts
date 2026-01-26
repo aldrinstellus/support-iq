@@ -46,6 +46,7 @@ import {
   sentimentAnalysisDemo,
   budgetUtilizationDemo,
   milestoneTrackingDemo,
+  riskRegisterDemo,
 } from '@/data/demo-widget-data';
 import { doraMetricsDemo } from '@/data/csm-widget-data';
 
@@ -417,11 +418,10 @@ export const governmentPatterns: SemanticPattern[] = [
       'active risks',
       'risk mitigation',
       'risk assessment',
-      'top risks',
     ],
     personas: ['program-manager'],
-    widgetType: 'program-health-dashboard',
-    widgetData: programHealthDemo,
+    widgetType: 'risk-register-dashboard',
+    widgetData: riskRegisterDemo,
     responseText: 'Risk register shows active risks and mitigation plans:',
   },
   {

@@ -49,6 +49,7 @@ import type {
   DoraMetricsData,
   BudgetUtilizationData,
   MilestoneTrackingData,
+  RiskRegisterData,
 } from '@/types/widget';
 import { ExecutiveSummaryWidget } from './ExecutiveSummaryWidget';
 import { AnalyticsDashboardWidget } from './AnalyticsDashboardWidget';
@@ -101,6 +102,7 @@ import { CSMTrainingDashboardWidget } from './CSMTrainingDashboardWidget';
 import { DoraMetricsDashboardWidget } from './DoraMetricsDashboardWidget';
 import { BudgetUtilizationDashboardWidget } from './BudgetUtilizationDashboardWidget';
 import { MilestoneTrackingDashboardWidget } from './MilestoneTrackingDashboardWidget';
+import { RiskRegisterDashboardWidget } from './RiskRegisterDashboardWidget';
 
 interface WidgetRendererProps {
   type: WidgetType;
@@ -263,6 +265,10 @@ export function WidgetRenderer({ type, data, onAction }: WidgetRendererProps) {
       // Milestone Tracking Dashboard
       case 'milestone-tracking-dashboard':
         return <MilestoneTrackingDashboardWidget data={data as MilestoneTrackingData} />;
+
+      // Risk Register Dashboard
+      case 'risk-register-dashboard':
+        return <RiskRegisterDashboardWidget data={data as RiskRegisterData} />;
 
       default:
         // Fallback for unimplemented widgets
