@@ -2,7 +2,7 @@
 
 **Version**: v1.2.1
 **Last Updated**: January 22, 2026
-**Live Demo**: https://support-iq-pearl.vercel.app
+**Live Demo**: https://dsq.digitalworkplace.ai
 
 ---
 
@@ -267,7 +267,7 @@ These 4 questions work across all 10 personas and return **role-appropriate** re
 
 For questions about this demo or to schedule a detailed walkthrough:
 
-**Demo URL**: https://support-iq-pearl.vercel.app
+**Demo URL**: https://dsq.digitalworkplace.ai
 
 ---
 

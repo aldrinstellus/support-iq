@@ -1,8 +1,8 @@
 # Support IQ (dSQ) - Savepoint
 
-**Last Updated**: 2026-01-26 12:00 +04
-**Version**: 1.2.4
-**Status**: Production Live - Semantic Matching Enhanced ✅
+**Last Updated**: 2026-01-26 18:00 +04
+**Version**: 1.2.5
+**Status**: Production Live - NPS & Sentiment Analysis Added ✅
 
 ---
 
@@ -11,12 +11,25 @@
 ### Production Deployment
 | Component | URL | Status |
 |-----------|-----|--------|
-| **Vercel** | https://support-iq-pearl.vercel.app | ✅ Live |
+| **Vercel** | https://dsq.digitalworkplace.ai | ✅ Live |
 | **GitHub** | https://github.com/aldrinstellus/support-iq | ✅ Current |
-| **Health** | https://support-iq-pearl.vercel.app/api/health | ✅ Healthy |
+| **Health** | https://dsq.digitalworkplace.ai/api/health | ✅ Healthy |
 | **Parent App** | https://digitalworkplace-ai.vercel.app | ✅ Linked |
 
-### Latest Session (v1.2.4)
+### Latest Session (v1.2.5)
+**NPS & Sentiment Analysis Widget**
+
+Added combined NPS and Sentiment Analysis widget with full drill-down:
+- ✅ **NPSSentimentWidget created** (~936 lines) - combined dashboard
+- ✅ **NPS Score display** - color-coded gauge with Promoters/Passives/Detractors
+- ✅ **Sentiment breakdown** - Positive/Neutral/Negative with drill-down
+- ✅ **Interactive drill-down** - click any category to see customer details
+- ✅ **TypeScript fixes** - added NPSSentimentData interface
+- ✅ **Query detection** - patterns for NPS and sentiment queries
+- ✅ **Production tested** - verified on live site with all queries working
+- ✅ **117 queries verified** - full Demo Guide compliance
+
+### Previous Session (v1.2.4)
 **Semantic Matching Enhancement - Query Collision Prevention**
 
 Major improvements to semantic query matching system:
@@ -37,10 +50,32 @@ Major improvements to semantic query matching system:
 - All documentation aligned with `query-detection.ts` implementation
 
 ### Version Details
-- **Package**: support-iq@1.2.4
+- **Package**: support-iq@1.2.5
 - **Port**: 3003 (local development)
 - **Browser Tab**: dSQ | Support Portal
-- **Commit**: Pending
+- **Commits**: 16c507f (NPS widget), e0b7802 (build fixes)
+
+---
+
+## v1.2.5 Changes
+
+### NPS & Sentiment Analysis Widget
+| Feature | Description |
+|---------|-------------|
+| **NPSSentimentWidget** | Combined dashboard (~936 lines) |
+| **NPS Score** | Color-coded gauge 0-100 scale |
+| **NPS Categories** | Promoters/Passives/Detractors with drill-down |
+| **Sentiment Analysis** | Positive/Neutral/Negative with drill-down |
+| **Customer Details** | Company names, feedback comments |
+
+### Files Modified (v1.2.5)
+| File | Changes |
+|------|---------|
+| `src/components/widgets/NPSSentimentWidget.tsx` | NEW - Full widget implementation |
+| `src/components/widgets/WidgetRenderer.tsx` | Added NPS widget case |
+| `src/types/widget.ts` | Added 'nps-sentiment-analysis' type, NPSSentimentData |
+| `src/lib/semantic-query-patterns.ts` | Added NPS/sentiment patterns |
+| `src/lib/query-detection.ts` | Added NPS/sentiment detection |
 
 ---
 
@@ -246,7 +281,7 @@ NEXT_PUBLIC_DEMO_MODE=true
 ### Dashboard Button
 The Support IQ product card in Digital Workplace dashboard (`apps/main/src/app/dashboard/page.tsx`) links to:
 ```
-https://support-iq-pearl.vercel.app
+https://dsq.digitalworkplace.ai
 ```
 
 ### Cross-Project Search
@@ -312,4 +347,4 @@ curl http://localhost:3003/api/health
 *Version: 1.2.2 - Full Spectrum Audit Complete - Production Live*
 *By: Claude Opus 4.5 (Parallel Verification)*
 *GitHub: https://github.com/aldrinstellus/support-iq*
-*Production: https://support-iq-pearl.vercel.app*
+*Production: https://dsq.digitalworkplace.ai*

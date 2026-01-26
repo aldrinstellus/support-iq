@@ -1,9 +1,9 @@
 # Support IQ - Project Context
 
-**Version**: 1.2.4
+**Version**: 1.2.5
 **Last Updated**: 2026-01-26
-**Status**: Production Live - Semantic Matching Enhanced ✅
-**Deployed**: https://support-iq-pearl.vercel.app
+**Status**: Production Live - NPS & Sentiment Analysis Added ✅
+**Deployed**: https://dsq.digitalworkplace.ai
 
 ---
 
@@ -11,7 +11,7 @@
 
 | Resource | URL |
 |----------|-----|
-| **Production** | https://support-iq-pearl.vercel.app |
+| **Production** | https://dsq.digitalworkplace.ai |
 | **GitHub** | https://github.com/aldrinstellus/support-iq |
 | **Local Dev** | http://localhost:3003 |
 | **Parent App** | https://digitalworkplace-ai.vercel.app |
@@ -30,7 +30,7 @@ Support IQ (dSQ) is an AI-Enhanced Customer Support module for Digital Workplace
    - **ATC (SME)**: Small & Medium Enterprises
 
 2. **10 Role-Based Personas**: Each with tailored UI and widgets
-3. **54 Pre-Configured Demo Queries**: All verified and passing
+3. **117 Pre-Configured Demo Queries**: All verified and passing (Master Demo Guide)
 4. **AI Chat Interface**: Claude-powered responses with widget rendering
 5. **Live Integrations**: Zoho Desk, Supabase, real-time tickets
 
@@ -142,7 +142,29 @@ npm run dev:support    # If configured
 
 ---
 
-## Recent Updates (v1.2.4)
+## Recent Updates (v1.2.5)
+
+### NPS & Sentiment Analysis Widget
+New combined widget for customer feedback analysis:
+
+| Feature | Description |
+|---------|-------------|
+| **NPS Score** | Color-coded gauge (0-100) with Promoters/Passives/Detractors |
+| **Sentiment Analysis** | Positive/Neutral/Negative breakdown |
+| **Interactive Drill-Down** | Click any category to see customer details |
+| **Customer Feedback** | Company names, comments, and satisfaction data |
+
+### Query Detection (v1.2.5)
+| Query | Widget |
+|-------|--------|
+| "show nps score" | nps-sentiment-analysis |
+| "give me sentiment analysis" | nps-sentiment-analysis |
+| "customer feedback" | nps-sentiment-analysis |
+| "net promoter score" | nps-sentiment-analysis |
+
+---
+
+## v1.2.4 Changes
 
 ### Semantic Matching Enhancement
 Major improvements to prevent query collisions:
@@ -170,15 +192,15 @@ These standards are now documented in root `/CLAUDE.md` and apply to all Digital
 
 ---
 
-## Audit Status (v1.2.3)
+## Audit Status (v1.2.5)
 
-### Full Spectrum Audit Results
+### Full Spectrum Audit Results (Master Demo Guide)
 | Mode | Personas | Questions | Status |
 |------|----------|-----------|--------|
-| **Government** | 3 | 15 | ✅ 15/15 PASS |
-| **Project** | 3 | 16 | ✅ 16/16 PASS |
-| **ATC (SME)** | 4 | 23 | ✅ 23/23 PASS |
-| **TOTAL** | **10** | **54** | **✅ 54/54 PASS** |
+| **Government** | 3 | 33 | ✅ 33/33 PASS |
+| **Project** | 3 | 31 | ✅ 31/31 PASS |
+| **ATC (SME)** | 4 | 53 | ✅ 53/53 PASS |
+| **TOTAL** | **10** | **117** | **✅ 117/117 PASS** |
 
 ### Key Verifications
 - **100% Widget Match**: All queries trigger expected widgets
@@ -197,4 +219,4 @@ These standards are now documented in root `/CLAUDE.md` and apply to all Digital
 
 ---
 
-*Last verified: 2026-01-26 - Semantic Matching Enhanced*
+*Last verified: 2026-01-26 - NPS & Sentiment Analysis Added (v1.2.5)*

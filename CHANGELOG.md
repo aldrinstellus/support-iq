@@ -7,6 +7,72 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.2.5] - 2026-01-26
+
+### NPS & Sentiment Analysis Widget
+
+**Overview**: Added combined NPS (Net Promoter Score) and Sentiment Analysis widget with full interactive drill-down functionality. This widget consolidates customer feedback analysis into a single, comprehensive dashboard.
+
+### Added
+
+#### NPSSentimentWidget Component
+- **Location**: `src/components/widgets/NPSSentimentWidget.tsx`
+- **Lines**: ~936 lines of code
+- **Features**:
+  - NPS Score display with color-coded gauge (0-100 scale)
+  - Promoters/Passives/Detractors breakdown with interactive drill-down
+  - Sentiment Analysis (Positive/Neutral/Negative) with drill-down
+  - Customer feedback details view with company names and comments
+  - Responsive design for all screen sizes
+  - Smooth Framer Motion animations
+
+#### Widget Type Registration
+- Added `'nps-sentiment-analysis'` to WidgetType union in `src/types/widget.ts`
+- Added `NPSSentimentData` interface for type compatibility
+
+#### Query Detection Patterns
+- **File**: `src/lib/semantic-query-patterns.ts`
+  - Added patterns for NPS queries: "nps score", "net promoter", "customer feedback"
+  - Added patterns for sentiment queries: "sentiment analysis", "customer sentiment"
+- **File**: `src/lib/query-detection.ts`
+  - Added detection for combined NPS/Sentiment queries
+  - Fixed widgetData null issues with proper objects
+
+### Fixed
+
+#### TypeScript Build Error
+- **Issue**: `Type 'null' is not assignable to type 'WidgetData'`
+- **Cause**: Used `widgetData: null` in pattern definitions
+- **Fix**: Created `NPSSentimentData` interface and replaced null with proper objects:
+  ```typescript
+  widgetData: { title: 'NPS & Sentiment Analysis' }
+  ```
+- **Files Modified**:
+  - `src/lib/semantic-query-patterns.ts` (2 locations)
+  - `src/lib/query-detection.ts` (3 locations)
+
+### Widget Renderer Update
+- **File**: `src/components/widgets/WidgetRenderer.tsx`
+- Added case for `'nps-sentiment-analysis'` → `<NPSSentimentWidget />`
+- Imported NPSSentimentWidget component
+
+### Quality Metrics
+| Metric | Result |
+|--------|--------|
+| Total Questions | 117 |
+| Demo Guide Match | **117/117 (100%)** |
+| TypeScript Errors | 0 |
+| Production Build | Successful |
+| Production Test | Verified live on dsq.digitalworkplace.ai |
+
+### Deployment
+- **Commit**: 16c507f (initial NPS widget)
+- **Commit**: e0b7802 (TypeScript build fixes)
+- **Production URL**: https://dsq.digitalworkplace.ai/dsq/demo/atc-csm
+- **Test Queries**: "give me sentiment analysis", "show nps score", "customer feedback"
+
+---
+
 ## [1.2.4] - 2026-01-26
 
 ### Semantic Matching Enhancement - Query Collision Prevention
@@ -139,7 +205,7 @@ These standards now apply to ALL Digital Workplace AI apps:
 ### Verified
 - **Local Build**: ✅ Successful
 - **GitHub Push**: ✅ Commit pushed to main
-- **Vercel Production**: ✅ Live at https://support-iq-pearl.vercel.app
+- **Vercel Production**: ✅ Live at https://dsq.digitalworkplace.ai
 - **Production Test**: ✅ 54/54 PASS (100%)
 - **Vector Embeddings**: ✅ 100% coverage (356 items)
 - **TypeScript**: ✅ 0 errors
@@ -193,7 +259,7 @@ These standards now apply to ALL Digital Workplace AI apps:
 | **Documentation Index** | Outdated version | Updated to v1.2.2 |
 
 ### Deployment
-- **Production**: https://support-iq-pearl.vercel.app ✅
+- **Production**: https://dsq.digitalworkplace.ai ✅
 - **GitHub**: https://github.com/aldrinstellus/support-iq ✅
 - **Parent App Link**: https://digitalworkplace-ai.vercel.app → Support IQ button ✅
 

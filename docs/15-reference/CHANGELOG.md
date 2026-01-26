@@ -22,7 +22,7 @@
 - ✅ Cross-project knowledge search (348 knowledge_items)
 
 **Infrastructure**:
-- ✅ Vercel deployment: https://support-iq-pearl.vercel.app
+- ✅ Vercel deployment: https://dsq.digitalworkplace.ai
 - ✅ GitHub: https://github.com/aldrinstellus/support-iq
 - ✅ Health endpoint returning v1.1.0
 - ✅ OpenAI API key configured for embeddings

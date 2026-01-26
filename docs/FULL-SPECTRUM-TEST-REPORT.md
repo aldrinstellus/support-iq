@@ -23,7 +23,7 @@ All 10 personas across 3 modes have been verified against the Demo Guide (DEMO-G
 ## Test Environment
 
 - **Local Server**: http://localhost:3003 (HTTP 200)
-- **Production**: https://support-iq-pearl.vercel.app (HTTP 200)
+- **Production**: https://dsq.digitalworkplace.ai (HTTP 200)
 - **All Demo Pages**: Verified accessible (10/10)
 - **API Health**: Healthy, Supabase connected
 - **Anthropic API**: Configured and working
@@ -233,7 +233,7 @@ All 51 widget components exist and are properly exported:
 | Environment | URL | Status |
 |-------------|-----|--------|
 | **Local** | http://localhost:3003 | ✅ Running |
-| **Production** | https://support-iq-pearl.vercel.app | ✅ Deployed |
+| **Production** | https://dsq.digitalworkplace.ai | ✅ Deployed |
 
 ---
 

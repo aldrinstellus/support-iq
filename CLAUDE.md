@@ -34,20 +34,21 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **Support IQ (dSQ)** - AI-Enhanced Customer Support for Digital Workplace AI. Unified Multi-Mode System with ATC/Government/Project Personas.
 
-**Version**: 1.2.4
+**Version**: 1.2.5
 **Port**: 3003
 **Browser Tab**: dSQ | Support Portal
-**Status**: Production Live - Semantic Matching Enhanced ✅
+**Status**: Production Live - NPS & Sentiment Analysis Added ✅
 **Deployed**: 2026-01-26
 **GitHub**: https://github.com/aldrinstellus/support-iq
-**Production URL**: https://support-iq-pearl.vercel.app
+**Production URL**: https://dsq.digitalworkplace.ai
 
-### Key Features (v1.2.4)
+### Key Features (v1.2.5)
+- **NPS & Sentiment Analysis Widget**: Combined dashboard with interactive drill-down ✅
 - **Enhanced Semantic Matching**: 50% threshold, compound words, key term penalties ✅
-- **Demo Guide Compliance**: 54/54 questions match official Demo Guide specification ✅
+- **Demo Guide Compliance**: 117/117 questions match official Demo Guide specification ✅
 - **100% Widget Match**: All queries trigger exact widgets per Demo Guide PDF ✅
 - **100% Vector Embeddings**: 356/356 knowledge items with embeddings ✅
-- **Production Verified**: Live build tested with all 54 questions passing ✅
+- **Production Verified**: Live build tested with all 117 questions passing ✅
 - **Query Collision Prevention**: 75+ compound words prevent false positives ✅
 - **FloatingModeSwitcher**: Top-right dropdown with animated mode switching
 - **3 Modes**: Government, Project, ATC (SME)
@@ -77,6 +78,13 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 | **Project** | 3 | 16 | ✅ 16/16 PASS |
 | **ATC (SME)** | 4 | 23 | ✅ 23/23 PASS |
 | **TOTAL** | **10** | **54** | **✅ 54/54 PASS (Demo Guide Compliant)** |
+
+### v1.2.5 Features
+| Feature | Description |
+|---------|-------------|
+| NPS & Sentiment Analysis Widget | Combined dashboard showing NPS score and sentiment breakdown |
+| Interactive Drill-Down | Click Promoters/Passives/Detractors or Positive/Neutral/Negative for details |
+| Customer Feedback View | See individual customer feedback with company names and comments |
 
 ### v1.2.4 Fixes
 | Issue | Resolution |

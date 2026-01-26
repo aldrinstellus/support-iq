@@ -3,7 +3,7 @@
 **Version**: 1.2.2
 **Status**: ✅ Production Live - Full Spectrum Verified
 **Last Updated**: January 22, 2026
-**Production URL**: https://support-iq-pearl.vercel.app
+**Production URL**: https://dsq.digitalworkplace.ai
 **GitHub**: https://github.com/aldrinstellus/support-iq
 
 ---

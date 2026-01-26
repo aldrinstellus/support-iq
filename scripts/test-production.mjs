@@ -4,7 +4,7 @@
  * Tests all 54 demo questions against the live Vercel deployment
  */
 
-const PRODUCTION_URL = process.argv[2] || 'https://support-iq-pearl.vercel.app';
+const PRODUCTION_URL = process.argv[2] || 'https://dsq.digitalworkplace.ai';
 
 // All 54 demo questions with expected widgets (from Demo Guide)
 const demoGuideSpec = {
