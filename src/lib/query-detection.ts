@@ -1642,11 +1642,12 @@ function detectCORQuery(q: string): QueryMatch | null {
 
   // PRIORITY 0: Contract Status (MUST be checked BEFORE deliverables pattern)
   // Matches: "Show me the contract status", "contract status", "current contract status"
+  // IMPORTANT: Exclude queries with "deliverable" - those should go to deliverable-review-list
   if (
-    (q.includes('current') && q.includes('contract') && q.includes('status')) ||
+    (q.includes('current') && q.includes('contract') && q.includes('status') && !q.includes('deliverable')) ||
     (q.includes('contract status') && !q.includes('deliverable')) ||
-    (q.includes('show') && q.includes('contract') && q.includes('current')) ||
-    (q.includes('show') && q.includes('contract') && q.includes('status'))
+    (q.includes('show') && q.includes('contract') && q.includes('current') && !q.includes('deliverable')) ||
+    (q.includes('show') && q.includes('contract') && q.includes('status') && !q.includes('deliverable'))
   ) {
     return {
       widgetType: 'contract-performance-dashboard',

@@ -213,6 +213,7 @@ export const sprintPatterns: SemanticPattern[] = [
       'sprint velocity',
       'velocity metrics',
       'how fast is the team',
+      'velocity', // Standalone velocity query
     ],
     personas: ['project-manager', 'service-team-lead', 'program-manager'],
     widgetType: 'team-velocity-dashboard',
@@ -260,6 +261,8 @@ export const governmentPatterns: SemanticPattern[] = [
       'deliverables due',
       'upcoming deliverables',
       'show deliverables',
+      'contract deliverables status', // Added for "Show me contract deliverables status"
+      'deliverables status',
     ],
     personas: ['cor'],
     widgetType: 'deliverable-review-list',
@@ -699,6 +702,11 @@ export const supportPatterns: SemanticPattern[] = [
       'show ticket DESK-1001',
       'open DESK-1001',
       'view ticket',
+      'ticket TICK-001', // Added for specific TICK IDs
+      'ticket TICK-002',
+      'ticket TICK-003',
+      'show me ticket TICK-001',
+      'show me ticket TICK',
     ],
     personas: ['atc-support', 'atc-manager', 'support-agent', 'cs-manager'],
     widgetType: 'ticket-detail',

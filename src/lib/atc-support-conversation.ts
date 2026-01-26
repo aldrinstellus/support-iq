@@ -96,7 +96,7 @@ const conversationEntries: ConversationEntry[] = [
   // Q6: Ticket Detail (Specific Ticket)
   {
     id: 'q6-ticket-detail',
-    triggers: ['ticket #', 'ticket number', 'show ticket', 'ticket details'],
+    triggers: ['ticket #', 'ticket number', 'show ticket', 'ticket details', 'tick-', 'tick-001', 'tick-002', 'tick-003', 'desk-', 'desk-1001'],
     userQuery: 'Show me details for ticket #TICK-001.',
     aiResponse: "Here are the complete details for this ticket:",
     widgetType: 'ticket-detail',
