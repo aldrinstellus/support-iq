@@ -264,6 +264,20 @@ export interface AgentDashboardData {
     dueSoon: number;
     needsResponse: number;
   };
+  tickets: Array<{
+    id: string;
+    subject: string;
+    customer: string;
+    priority: 'critical' | 'high' | 'medium' | 'low';
+    status: 'open' | 'in-progress' | 'pending' | 'waiting';
+    createdAt: string;
+    dueAt?: string;
+    lastResponseAt?: string;
+    needsResponse: boolean;
+    isDueSoon: boolean;
+    slaStatus: 'ok' | 'warning' | 'breached';
+    category: string;
+  }>;
   priorities: Array<{
     type: string;
     severity: 'high' | 'medium' | 'low';
