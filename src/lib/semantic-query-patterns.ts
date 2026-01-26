@@ -49,7 +49,7 @@ import {
   riskRegisterDemo,
   codeReviewDemo,
 } from '@/data/demo-widget-data';
-import { doraMetricsDemo, renewalPipelineDemo, upsellOpportunitiesDemo } from '@/data/csm-widget-data';
+import { doraMetricsDemo, renewalPipelineDemo, upsellOpportunitiesDemo, productAdoptionMetricsDemo } from '@/data/csm-widget-data';
 
 export interface SemanticPattern {
   id: string;
@@ -854,11 +854,14 @@ export const csmPatterns: SemanticPattern[] = [
       'declining adoption',
       'product adoption declining',
       'usage trends',
+      'show product adoption',
+      'which customers are declining',
+      'customers declining adoption',
     ],
     personas: ['atc-csm'],
-    widgetType: 'analytics-dashboard',
-    widgetData: analyticsDashboardDemo,
-    responseText: 'Product adoption metrics and feature usage:',
+    widgetType: 'product-adoption-metrics',
+    widgetData: productAdoptionMetricsDemo,
+    responseText: 'Here is the product adoption analysis showing feature usage across your client base:',
   },
   {
     id: 'renewal-pipeline',

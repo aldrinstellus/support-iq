@@ -56,7 +56,7 @@ import {
   performanceTrendsDemo,
   sentimentAnalysisDemo,
 } from '@/data/demo-widget-data';
-import { doraMetricsDemo, renewalPipelineDemo, upsellOpportunitiesDemo } from '@/data/csm-widget-data';
+import { doraMetricsDemo, renewalPipelineDemo, upsellOpportunitiesDemo, productAdoptionMetricsDemo } from '@/data/csm-widget-data';
 
 export interface QueryMatch {
   widgetType: WidgetType | null;
@@ -1084,12 +1084,14 @@ function detectCSMQuery(q: string): QueryMatch | null {
   if (
     q.includes('product adoption') ||
     q.includes('feature usage') ||
-    (q.includes('adoption') && q.includes('metric'))
+    (q.includes('adoption') && q.includes('metric')) ||
+    (q.includes('declining') && q.includes('adoption')) ||
+    (q.includes('customers') && q.includes('declining'))
   ) {
     return {
       widgetType: 'product-adoption-metrics',
-      widgetData: null,
-      responseText: "Product adoption analysis across your client base:",
+      widgetData: productAdoptionMetricsDemo,
+      responseText: "Here is the product adoption analysis showing feature usage across your client base:",
     };
   }
 
