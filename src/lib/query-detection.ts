@@ -229,7 +229,7 @@ function detectCLevelQuery(q: string): QueryMatch | null {
   ) {
     return {
       widgetType: 'nps-sentiment-analysis',
-      widgetData: null,
+      widgetData: { title: 'NPS & Sentiment Analysis' },
       responseText: "Here's the combined NPS and sentiment analysis with customer feedback trends:",
     };
   }
@@ -1197,7 +1197,7 @@ function detectCSMQuery(q: string): QueryMatch | null {
   ) {
     return {
       widgetType: 'nps-sentiment-analysis',
-      widgetData: null,
+      widgetData: { title: 'NPS Survey Results' },
       responseText: "NPS survey results with sentiment analysis and customer feedback drill-down:",
     };
   }
@@ -1210,7 +1210,7 @@ function detectCSMQuery(q: string): QueryMatch | null {
   ) {
     return {
       widgetType: 'nps-sentiment-analysis',
-      widgetData: null,
+      widgetData: { title: 'Customer Feedback & Satisfaction' },
       responseText: "Combined NPS and sentiment analysis with detailed customer feedback:",
     };
   }

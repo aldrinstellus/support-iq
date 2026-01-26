@@ -665,7 +665,7 @@ export const supportPatterns: SemanticPattern[] = [
     ],
     personas: ['atc-executive', 'atc-csm', 'c-level'],
     widgetType: 'nps-sentiment-analysis',
-    widgetData: null,
+    widgetData: { title: 'NPS & Sentiment Analysis' },
     responseText: 'Combined NPS and sentiment analysis with customer feedback trends:',
   },
   {
@@ -914,7 +914,7 @@ export const csmPatterns: SemanticPattern[] = [
     ],
     personas: ['atc-csm'],
     widgetType: 'nps-sentiment-analysis',
-    widgetData: null,
+    widgetData: { title: 'NPS Survey Results' },
     responseText: 'NPS survey results with sentiment analysis and detailed customer feedback:',
   },
   {
