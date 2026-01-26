@@ -119,9 +119,9 @@ export function SimilarTicketsAnalysisWidget({ data }: { data: SimilarTicketsAna
           </h4>
           <p className="text-sm text-muted-foreground mt-1">
             {data.category} • {data.ticketsAnalyzed} tickets analyzed
-            {(data as Record<string, unknown>).referenceTicket && (
+            {data.referenceTicket && (
               <span className="ml-2 text-primary font-medium">
-                • Reference: {(data as Record<string, unknown>).referenceTicket as string}
+                • Reference: {data.referenceTicket}
               </span>
             )}
           </p>

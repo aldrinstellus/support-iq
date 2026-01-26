@@ -626,6 +626,7 @@ export interface SimilarTicketsAnalysisData {
   ticketsAnalyzed: number;
   avgResolutionTime: string;
   successRate: string;
+  referenceTicket?: string;
   commonPatterns: Array<{
     pattern: string;
     frequency: number;
