@@ -56,7 +56,7 @@ import {
   performanceTrendsDemo,
   sentimentAnalysisDemo,
 } from '@/data/demo-widget-data';
-import { doraMetricsDemo, renewalPipelineDemo } from '@/data/csm-widget-data';
+import { doraMetricsDemo, renewalPipelineDemo, upsellOpportunitiesDemo } from '@/data/csm-widget-data';
 
 export interface QueryMatch {
   widgetType: WidgetType | null;
@@ -1180,8 +1180,8 @@ function detectCSMQuery(q: string): QueryMatch | null {
   ) {
     return {
       widgetType: 'upsell-opportunities',
-      widgetData: null,
-      responseText: "Expansion and upsell opportunities across your client portfolio:",
+      widgetData: upsellOpportunitiesDemo,
+      responseText: "Here are accounts with strong upsell potential based on product usage:",
     };
   }
 

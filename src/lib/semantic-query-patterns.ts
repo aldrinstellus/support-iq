@@ -49,7 +49,7 @@ import {
   riskRegisterDemo,
   codeReviewDemo,
 } from '@/data/demo-widget-data';
-import { doraMetricsDemo, renewalPipelineDemo } from '@/data/csm-widget-data';
+import { doraMetricsDemo, renewalPipelineDemo, upsellOpportunitiesDemo } from '@/data/csm-widget-data';
 
 export interface SemanticPattern {
   id: string;
@@ -886,11 +886,13 @@ export const csmPatterns: SemanticPattern[] = [
       'growth opportunities',
       'ready for upgrade',
       'premium tier upgrade',
+      'show upsell',
+      'show me upsell',
     ],
     personas: ['atc-csm'],
-    widgetType: 'customer-risk-list',
-    widgetData: customerRiskListDemo,
-    responseText: 'Expansion and upsell opportunities:',
+    widgetType: 'upsell-opportunities',
+    widgetData: upsellOpportunitiesDemo,
+    responseText: 'Here are accounts with strong upsell potential based on product usage:',
   },
   {
     id: 'nps-feedback',
