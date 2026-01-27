@@ -711,8 +711,23 @@ body > div[style*="z-index: 2147483647"] {
   * {
     @apply border-border outline-ring/50;
   }
+
+  /* CRITICAL: Ensure full viewport coverage on all devices */
+  html {
+    width: 100%;
+    min-height: 100%;
+    min-height: 100dvh;
+    overflow-x: hidden;
+  }
+
   body {
     @apply bg-background text-foreground;
+    width: 100%;
+    min-height: 100%;
+    min-height: 100dvh;
+    overflow-x: hidden;
+    margin: 0;
+    padding: 0;
   }
 
   /* Note: WCAG workaround removed - Teal-600 (#0d9488) now has 4.5:1 contrast natively */
