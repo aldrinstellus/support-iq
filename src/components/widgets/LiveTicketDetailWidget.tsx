@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { Loader2, AlertCircle, Clock, User, Mail, Phone, Calendar, Tag, MessageSquare, Paperclip } from 'lucide-react';
 import { getApiBasePath } from '@/lib/api-utils';
+import DOMPurify from 'dompurify';
 
 interface LiveTicketDetailProps {
   ticketNumber: string;
@@ -315,7 +316,7 @@ export function LiveTicketDetailWidget({ ticketNumber }: LiveTicketDetailProps) 
           <h5 className="text-sm font-semibold mb-3 text-foreground">Description</h5>
           <div
             className="text-sm text-foreground/90 leading-relaxed prose prose-sm max-w-none"
-            dangerouslySetInnerHTML={{ __html: ticket.description }}
+            dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(ticket.description) }}
           />
         </div>
       )}
@@ -382,7 +383,7 @@ export function LiveTicketDetailWidget({ ticketNumber }: LiveTicketDetailProps) 
                   {conv.content && (
                     <div
                       className="text-sm text-foreground/80 mt-2 p-3 rounded bg-muted/30 prose prose-sm max-w-none"
-                      dangerouslySetInnerHTML={{ __html: conv.content }}
+                      dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(conv.content) }}
                     />
                   )}
                   {conv.attachments && conv.attachments.length > 0 && (
