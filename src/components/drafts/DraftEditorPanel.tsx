@@ -27,9 +27,11 @@ import {
   CheckCircle
 } from 'lucide-react';
 import { EscalateTicketModal } from '@/components/modals/EscalateTicketModal';
+import { migratePlainTextToHtml } from '@/lib/draft-content-utils';
 
 interface DraftEditorPanelProps {
   ticketNumber: string;
+  onJiraTicketCreated?: (jiraTicketId: string) => void;
 }
 
 interface Draft {
@@ -40,7 +42,7 @@ interface Draft {
   status: 'pending' | 'sent';
 }
 
-export function DraftEditorPanel({ ticketNumber }: DraftEditorPanelProps) {
+export function DraftEditorPanel({ ticketNumber, onJiraTicketCreated }: DraftEditorPanelProps) {
   const [draft, setDraft] = useState<Draft | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
@@ -53,6 +55,7 @@ export function DraftEditorPanel({ ticketNumber }: DraftEditorPanelProps) {
   const [toast, setToast] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
   const [showEscalateModal, setShowEscalateModal] = useState(false);
   const [isJiraTicketCreated, setIsJiraTicketCreated] = useState(false);
+  const [jiraTicketId, setJiraTicketId] = useState<string | null>(null);
 
   // TipTap editor configuration
   const editor = useEditor({
@@ -109,7 +112,12 @@ export function DraftEditorPanel({ ticketNumber }: DraftEditorPanelProps) {
   // Update editor content when draft loads (only if pending)
   useEffect(() => {
     if (editor && draft && draft.status === 'pending') {
-      editor.commands.setContent(draft.content);
+      // Use robust migration function to handle plain text, markdown, and HTML
+      const htmlContent = migratePlainTextToHtml(draft.content);
+
+      editor.commands.setContent(htmlContent);
+      console.log('[Draft] Raw content from DB:', draft.content);
+      console.log('[Draft] Converted HTML:', htmlContent);
     }
   }, [editor, draft]);
 
@@ -186,10 +194,11 @@ export function DraftEditorPanel({ ticketNumber }: DraftEditorPanelProps) {
       // Extract numeric ticket ID
       const numericTicketNumber = ticketNumber.replace(/^TICK-?/i, '');
 
-      // Get final draft content from editor
+      // Get final draft content from editor as HTML (preserves all formatting)
       const finalDraft = editor.getHTML();
 
       console.log('[Draft] Calling n8n webhook to send message');
+      console.log('[Draft] Final HTML with all formatting:', finalDraft);
       console.log('[Draft] Payload:', {
         ticket_id: numericTicketNumber,
         final_draft: finalDraft
@@ -288,10 +297,14 @@ export function DraftEditorPanel({ ticketNumber }: DraftEditorPanelProps) {
       // Response is an array with one object containing modified_draft
       if (Array.isArray(data) && data.length > 0 && data[0].modified_draft) {
         const modifiedDraft = data[0].modified_draft;
-        console.log('[Draft] Updating editor with modified draft');
+        console.log('[Draft] Raw regenerated draft from webhook:', modifiedDraft);
 
-        // Update editor with modified draft
-        editor.commands.setContent(modifiedDraft);
+        // Use the same migration function to ensure consistent formatting
+        const htmlContent = migratePlainTextToHtml(modifiedDraft);
+        console.log('[Draft] Converted HTML for editor:', htmlContent);
+
+        // Update editor with properly formatted HTML
+        editor.commands.setContent(htmlContent);
 
         // Close regenerate input
         setShowRegenerateInput(false);
@@ -485,6 +498,14 @@ export function DraftEditorPanel({ ticketNumber }: DraftEditorPanelProps) {
             checkJiraTicketStatus();
           }}
           ticketNumber={ticketNumber}
+          onJiraTicketCreated={(newJiraTicketId) => {
+            setIsJiraTicketCreated(true);
+            setJiraTicketId(newJiraTicketId);
+            // Notify parent component (LiveTicketDetailWidget)
+            if (onJiraTicketCreated) {
+              onJiraTicketCreated(newJiraTicketId);
+            }
+          }}
         />
       </>
     );
@@ -720,6 +741,14 @@ export function DraftEditorPanel({ ticketNumber }: DraftEditorPanelProps) {
           checkJiraTicketStatus();
         }}
         ticketNumber={ticketNumber}
+        onJiraTicketCreated={(newJiraTicketId) => {
+          setIsJiraTicketCreated(true);
+          setJiraTicketId(newJiraTicketId);
+          // Notify parent component (LiveTicketDetailWidget)
+          if (onJiraTicketCreated) {
+            onJiraTicketCreated(newJiraTicketId);
+          }
+        }}
       />
     </>
   );

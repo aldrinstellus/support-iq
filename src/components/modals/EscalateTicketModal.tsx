@@ -27,6 +27,7 @@ interface EscalateTicketModalProps {
   isOpen: boolean;
   onClose: () => void;
   ticketNumber: string;
+  onJiraTicketCreated?: (jiraTicketId: string) => void;
 }
 
 type Platform = 'jira' | 'zendesk' | 'servicenow';
@@ -147,7 +148,7 @@ const proseMirrorToAdf = (pmJson: any): any => {
   };
 };
 
-export function EscalateTicketModal({ isOpen, onClose, ticketNumber }: EscalateTicketModalProps) {
+export function EscalateTicketModal({ isOpen, onClose, ticketNumber, onJiraTicketCreated }: EscalateTicketModalProps) {
   const [platform, setPlatform] = useState<Platform>('jira');
   const [title, setTitle] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -322,6 +323,11 @@ export function EscalateTicketModal({ isOpen, onClose, ticketNumber }: EscalateT
 
         // Optimistically disable the escalate button
         setIsJiraTicketCreated(true);
+
+        // Notify parent component with the jiraTicketId
+        if (onJiraTicketCreated) {
+          onJiraTicketCreated(result[0].jiraTicketId);
+        }
 
         // Close modal on success
         onClose();

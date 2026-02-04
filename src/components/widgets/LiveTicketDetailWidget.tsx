@@ -76,6 +76,7 @@ interface ZohoTicketDetail {
   commentCount: number;
   threadCount: number;
   attachmentCount: number;
+  jiraTicketId?: string | null;
 }
 
 export function LiveTicketDetailWidget({ ticketNumber }: LiveTicketDetailProps) {
@@ -412,23 +413,44 @@ export function LiveTicketDetailWidget({ ticketNumber }: LiveTicketDetailProps) 
 
       {/* Draft Response Editor */}
       <div className="glass-card rounded-lg border border-border bg-card/70 p-4 backdrop-blur-md">
-        <DraftEditorPanel ticketNumber={ticket.ticketNumber} />
+        <DraftEditorPanel
+          ticketNumber={ticket.ticketNumber}
+          onJiraTicketCreated={(jiraTicketId) => {
+            // Optimistically update ticket with jiraTicketId
+            setTicket(prev => prev ? { ...prev, jiraTicketId } : null);
+          }}
+        />
       </div>
 
-      {/* Link to Zoho Desk */}
-      {ticket.webUrl && (
-        <div className="flex justify-center">
-          <a
-            href={ticket.webUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors text-sm font-medium"
-          >
-            Open in Zoho Desk
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-            </svg>
-          </a>
+      {/* Links to Zoho Desk and Jira */}
+      {(ticket.webUrl || ticket.jiraTicketId) && (
+        <div className="flex justify-center gap-3">
+          {ticket.webUrl && (
+            <a
+              href={ticket.webUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors text-sm font-medium"
+            >
+              Open in Zoho Desk
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+              </svg>
+            </a>
+          )}
+          {ticket.jiraTicketId && (
+            <a
+              href={`https://atcdemoapp.atlassian.net/jira/software/projects/KAN/list?jql=project%20%3D%20KAN%20ORDER%20BY%20created%20DESC&selectedIssue=${ticket.jiraTicketId}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium"
+            >
+              Open Jira Ticket
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+              </svg>
+            </a>
+          )}
         </div>
       )}
     </div>

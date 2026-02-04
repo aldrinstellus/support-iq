@@ -6,6 +6,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { ZohoDeskClient } from '@/lib/integrations/zoho-desk';
 import { ZohoConversation as ImportedZohoConversation } from '@/types/zoho';
+import { createClient } from '@supabase/supabase-js';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -170,6 +171,36 @@ export async function GET(
       // Continue without conversations
     }
 
+    // Fetch Jira escalation status from Supabase
+    let isJiraTicketCreated = false;
+    let jiraTicketId: string | null = null;
+    try {
+      const supabase = createClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL || '',
+        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ''
+      );
+
+      const { data: ticketData } = await supabase
+        .from('tickets_demo')
+        .select('isJiraTicketCreated, jiraTicketId')
+        .eq('ticket_number', parseInt(numericTicketNumber, 10))
+        .single();
+
+      if (ticketData) {
+        if (ticketData.isJiraTicketCreated === true) {
+          isJiraTicketCreated = true;
+          console.log('[API /tickets/[ticketNumber]] Ticket already escalated to Jira');
+        }
+        if (ticketData.jiraTicketId) {
+          jiraTicketId = ticketData.jiraTicketId;
+          console.log('[API /tickets/[ticketNumber]] Jira ticket ID:', jiraTicketId);
+        }
+      }
+    } catch (error: unknown) {
+      console.warn('[API /tickets/[ticketNumber]] Failed to fetch Jira status from Supabase:', error);
+      // Continue without Jira status
+    }
+
     // Transform to detailed ticket format
     const detailedTicket = {
       // Basic Info
@@ -251,6 +282,10 @@ export async function GET(
       commentCount: ticket.commentCount || 0,
       threadCount: ticket.threadCount || 0,
       attachmentCount: ticket.attachmentCount || 0,
+
+      // Jira escalation status
+      isJiraTicketCreated,
+      jiraTicketId,
     };
 
     return NextResponse.json({

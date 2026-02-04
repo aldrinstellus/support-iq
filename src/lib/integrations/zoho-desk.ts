@@ -17,30 +17,63 @@ const DEFAULT_BASE_URL = 'https://desk.zoho.com';
 const TOKEN_API_URL = 'https://accounts.zoho.com/oauth/v2/token';
 
 /**
- * Zoho Desk API Client
+ * Global Token Manager (Singleton)
+ * Prevents race conditions when multiple components request tokens simultaneously
  */
-export class ZohoDeskClient {
-  private config: ZohoDeskConfig;
+class ZohoTokenManager {
+  private static instance: ZohoTokenManager;
   private accessToken: string | null = null;
   private tokenExpiry: number | null = null;
+  private refreshPromise: Promise<string> | null = null;
+  private config: ZohoDeskConfig | null = null;
 
-  constructor(config: ZohoDeskConfig) {
-    this.config = {
-      ...config,
-      baseUrl: config.baseUrl || DEFAULT_BASE_URL,
-    };
+  private constructor() {}
+
+  static getInstance(): ZohoTokenManager {
+    if (!ZohoTokenManager.instance) {
+      ZohoTokenManager.instance = new ZohoTokenManager();
+    }
+    return ZohoTokenManager.instance;
   }
 
-  /**
-   * Get valid access token (refresh if expired)
-   */
-  private async getAccessToken(): Promise<string> {
+  setConfig(config: ZohoDeskConfig) {
+    this.config = config;
+  }
+
+  async getAccessToken(): Promise<string> {
+    if (!this.config) {
+      throw new Error('Token manager not configured');
+    }
+
     // Check if current token is still valid
     if (this.accessToken && this.tokenExpiry && Date.now() < this.tokenExpiry) {
       return this.accessToken;
     }
 
-    // Refresh token
+    // If a refresh is already in progress, wait for it
+    if (this.refreshPromise) {
+      console.log('[Zoho] Token refresh already in progress, waiting...');
+      return this.refreshPromise;
+    }
+
+    // Start new refresh
+    this.refreshPromise = this.refreshToken();
+
+    try {
+      const token = await this.refreshPromise;
+      return token;
+    } finally {
+      this.refreshPromise = null;
+    }
+  }
+
+  private async refreshToken(): Promise<string> {
+    if (!this.config) {
+      throw new Error('Token manager not configured');
+    }
+
+    console.log('[Zoho] Refreshing access token...');
+
     const params = new URLSearchParams({
       refresh_token: this.config.refreshToken,
       client_id: this.config.clientId,
@@ -53,8 +86,19 @@ export class ZohoDeskClient {
     });
 
     if (!response.ok) {
-      const error: ZohoErrorResponse = await response.json();
-      throw new Error(`Zoho OAuth failed: ${error.message || response.statusText}`);
+      const errorText = await response.text();
+      let errorMessage = response.statusText;
+
+      try {
+        const error: ZohoErrorResponse = JSON.parse(errorText);
+        errorMessage = error.message || errorMessage;
+      } catch {
+        // If JSON parsing fails, use the text response
+        errorMessage = errorText || errorMessage;
+      }
+
+      console.error('[Zoho] OAuth refresh failed:', errorMessage);
+      throw new Error(`Zoho OAuth failed: ${errorMessage}`);
     }
 
     const data: ZohoTokenResponse = await response.json();
@@ -63,7 +107,35 @@ export class ZohoDeskClient {
     this.accessToken = data.access_token;
     this.tokenExpiry = Date.now() + (data.expires_in * 1000) - 60000; // 1 min buffer
 
+    console.log('[Zoho] Token refreshed successfully, expires in', data.expires_in, 'seconds');
+
     return this.accessToken;
+  }
+}
+
+/**
+ * Zoho Desk API Client
+ */
+export class ZohoDeskClient {
+  private config: ZohoDeskConfig;
+  private tokenManager: ZohoTokenManager;
+
+  constructor(config: ZohoDeskConfig) {
+    this.config = {
+      ...config,
+      baseUrl: config.baseUrl || DEFAULT_BASE_URL,
+    };
+
+    // Use singleton token manager
+    this.tokenManager = ZohoTokenManager.getInstance();
+    this.tokenManager.setConfig(this.config);
+  }
+
+  /**
+   * Get valid access token (refresh if expired)
+   */
+  private async getAccessToken(): Promise<string> {
+    return this.tokenManager.getAccessToken();
   }
 
   /**
