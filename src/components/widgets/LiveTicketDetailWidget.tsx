@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { Loader2, AlertCircle, Clock, User, Mail, Phone, Calendar, Tag, MessageSquare, Paperclip } from 'lucide-react';
 import { getApiBasePath } from '@/lib/api-utils';
 import DOMPurify from 'dompurify';
+import { DraftEditorPanel } from '@/components/drafts/DraftEditorPanel';
 
 interface LiveTicketDetailProps {
   ticketNumber: string;
@@ -408,6 +409,11 @@ export function LiveTicketDetailWidget({ ticketNumber }: LiveTicketDetailProps) 
           </div>
         </div>
       )}
+
+      {/* Draft Response Editor */}
+      <div className="glass-card rounded-lg border border-border bg-card/70 p-4 backdrop-blur-md">
+        <DraftEditorPanel ticketNumber={ticket.ticketNumber} />
+      </div>
 
       {/* Link to Zoho Desk */}
       {ticket.webUrl && (

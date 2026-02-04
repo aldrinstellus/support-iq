@@ -4,7 +4,7 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { getZohoDeskClient } from '@/lib/integrations/zoho-desk';
+import { ZohoDeskClient } from '@/lib/integrations/zoho-desk';
 import { ZohoConversation as ImportedZohoConversation } from '@/types/zoho';
 
 export const runtime = 'nodejs';
@@ -124,7 +124,19 @@ export async function GET(
       );
     }
 
-    const zohoClient = getZohoDeskClient();
+    // Extract just the number from TICK-XXX format
+    // If ticketNumber is "TICK-409", extract "409"
+    // If it's already just "409", use as-is
+    const numericTicketNumber = ticketNumber.replace(/^TICK-?/i, '');
+    console.log('[API /tickets/[ticketNumber]] Original:', ticketNumber, '→ Numeric:', numericTicketNumber);
+
+    // Create fresh Zoho client instance (matches /api/tickets/route.ts pattern)
+    const zohoClient = new ZohoDeskClient({
+      orgId: Number(process.env.ZOHO_ORG_ID) || 0,
+      clientId: process.env.ZOHO_CLIENT_ID || '',
+      clientSecret: process.env.ZOHO_CLIENT_SECRET || '',
+      refreshToken: process.env.ZOHO_REFRESH_TOKEN || '',
+    });
 
     // First, search for the ticket by ticket number
     // Zoho API requires us to get the list and filter by ticketNumber
@@ -132,8 +144,10 @@ export async function GET(
       `/api/v1/tickets?limit=100&sortBy=-createdTime`
     );
 
-    // Find the ticket with matching ticketNumber
-    const ticket = searchResponse.data?.find((t: ZohoTicket) => t.ticketNumber === ticketNumber);
+    // Find the ticket with matching ticketNumber (compare numeric part only)
+    const ticket = searchResponse.data?.find((t: ZohoTicket) =>
+      t.ticketNumber === numericTicketNumber || t.ticketNumber === ticketNumber
+    );
 
     if (!ticket) {
       // Return mock data instead of 404 (demo mode fallback)
