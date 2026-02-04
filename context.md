@@ -1,8 +1,8 @@
 # Support IQ - Project Context
 
-**Version**: 1.2.5
+**Version**: 1.2.7
 **Last Updated**: 2026-01-26
-**Status**: Production Live - NPS & Sentiment Analysis Added ✅
+**Status**: Production Live - Universal Tickets + Cache Prevention ✅
 **Deployed**: https://dsq.digitalworkplace.ai
 
 ---
@@ -232,6 +232,52 @@ Full protocol: `docs/06-features/CONVERSATION-MANAGEMENT.md`
 
 ---
 
+## Cache Prevention Configuration (v1.2.7)
+
+**CRITICAL**: Permanent cache-busting prevents stale deployments.
+
+### What's Configured
+| Config | Location | Purpose |
+|--------|----------|---------|
+| `generateBuildId` | `next.config.ts` | Unique build ID with timestamp |
+| `Cache-Control` headers | `next.config.ts` | Prevents browser caching of HTML |
+
+### Implementation
+```typescript
+// next.config.ts
+generateBuildId: async () => {
+  return `build-${Date.now()}`;
+},
+
+async headers() {
+  return [
+    {
+      source: '/((?!_next/static|_next/image|favicon.ico).*)',
+      headers: [
+        { key: 'Cache-Control', value: 'no-store, must-revalidate' },
+      ],
+    },
+  ];
+}
+```
+
+### Verification
+```bash
+curl -I https://dsq.digitalworkplace.ai/dsq/demo/atc-executive
+# Should see: cache-control: no-store, must-revalidate
+```
+
+### What This Prevents
+- Stale JavaScript after deployments
+- Browser showing old content after code changes
+- Need for users to hard-refresh manually
+
+### Documentation
+Full standards: `/docs/QUERY_DETECTION_STANDARDS.md` (Section 10)
+Global standards: `/CLAUDE.md` (Global Standards section)
+
+---
+
 ## Support & Maintenance
 
 **Maintainer**: Aldo (aldrinstellus)
@@ -241,4 +287,4 @@ Full protocol: `docs/06-features/CONVERSATION-MANAGEMENT.md`
 
 ---
 
-*Last verified: 2026-01-26 - Session Reset Protocol & User Isolation Added (v1.2.5)*
+*Last verified: 2026-01-26 - Cache Prevention Configuration Added (v1.2.7)*

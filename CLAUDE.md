@@ -34,18 +34,20 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **Support IQ (dSQ)** - AI-Enhanced Customer Support for Digital Workplace AI. Unified Multi-Mode System with ATC/Government/Project Personas.
 
-**Version**: 1.2.5
+**Version**: 1.2.7
 **Port**: 3003
 **Browser Tab**: dSQ | Support Portal
-**Status**: Production Live - NPS & Sentiment Analysis Added ✅
+**Status**: Production Live - Universal Tickets + Cache Prevention ✅
 **Deployed**: 2026-01-26
 **GitHub**: https://github.com/aldrinstellus/support-iq
 **Production URL**: https://dsq.digitalworkplace.ai
 
-### Key Features (v1.2.5)
+### Key Features (v1.2.7)
+- **Universal Ticket System**: TICK-XXX format works across all personas ✅
+- **Cache Prevention**: `generateBuildId` + `Cache-Control` headers prevent stale deployments ✅
 - **NPS & Sentiment Analysis Widget**: Combined dashboard with interactive drill-down ✅
 - **Enhanced Semantic Matching**: 50% threshold, compound words, key term penalties ✅
-- **Demo Guide Compliance**: 117/117 questions match official Demo Guide specification ✅
+- **Demo Guide Compliance**: 116/116 questions match official Demo Guide specification ✅
 - **100% Widget Match**: All queries trigger exact widgets per Demo Guide PDF ✅
 - **100% Vector Embeddings**: 356/356 knowledge items with embeddings ✅
 - **Production Verified**: Live build tested with all 117 questions passing ✅
@@ -73,6 +75,52 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 **Preserved**: `sana-theme`, `selected-mode`
 
 **Full Documentation**: `docs/06-features/CONVERSATION-MANAGEMENT.md`
+
+### Cache Prevention Configuration (v1.2.7)
+
+**CRITICAL**: Both DSQ and Main apps have permanent cache-busting to prevent stale deployments.
+
+| Configuration | Location | Purpose |
+|---------------|----------|---------|
+| **generateBuildId** | `next.config.ts` | Creates unique build ID with timestamp |
+| **Cache-Control headers** | `next.config.ts` | Prevents browser caching of HTML pages |
+
+**Implementation in `next.config.ts`**:
+```typescript
+// Force cache busting on each build
+generateBuildId: async () => {
+  return `build-${Date.now()}`;
+},
+
+// Cache control headers - prevent browser caching of HTML pages
+async headers() {
+  return [
+    {
+      source: '/((?!_next/static|_next/image|favicon.ico).*)',
+      headers: [
+        { key: 'Cache-Control', value: 'no-store, must-revalidate' },
+      ],
+    },
+  ];
+}
+```
+
+**What this prevents**:
+- Stale JavaScript after deployments
+- Browser showing old content after code changes
+- Need for users to hard-refresh manually
+
+**What gets cached** (intentionally):
+- `_next/static/*` - Static assets (JS, CSS bundles)
+- `_next/image/*` - Optimized images
+- `favicon.ico` - Site icon
+
+**Verification**:
+```bash
+# Check response headers
+curl -I https://dsq.digitalworkplace.ai/dsq/demo/atc-executive
+# Should see: cache-control: no-store, must-revalidate (or similar)
+```
 
 ### Semantic Matching Standards (v1.2.4)
 | Setting | Value | Purpose |

@@ -1,8 +1,8 @@
 # Support IQ (dSQ) - Savepoint
 
-**Last Updated**: 2026-01-26 23:45 +04
+**Last Updated**: 2026-01-26 23:55 +04
 **Version**: 1.2.7
-**Status**: Universal Ticket System (TICK-XXX) Deployed ✅
+**Status**: Universal Ticket System + Cache Prevention Deployed ✅
 
 ---
 
@@ -15,8 +15,37 @@
 | **GitHub** | https://github.com/aldrinstellus/support-iq | ✅ Current |
 | **Health** | https://dsq.digitalworkplace.ai/api/health | ✅ Healthy |
 | **Parent App** | https://digitalworkplace-ai.vercel.app | ✅ Linked |
+| **Cache Headers** | Both apps | ✅ Configured |
 
-### Latest Session - Universal Ticket System (v1.2.7)
+### Latest Session - Cache Prevention Configuration (v1.2.7)
+
+**Cache-Busting Headers Deployed** to prevent stale deployments:
+
+| App | Config | Headers |
+|-----|--------|---------|
+| **DSQ** | `next.config.ts` | `no-store, must-revalidate` |
+| **Main** | `next.config.ts` | `no-store, must-revalidate` |
+
+**What was configured**:
+1. `generateBuildId` - Creates unique build ID with timestamp
+2. `Cache-Control` headers - Prevents browser caching of HTML pages
+3. Security headers preserved (X-Content-Type-Options, X-Frame-Options, etc.)
+
+**Files Modified**:
+| File | Changes |
+|------|---------|
+| `/apps/support-iq/next.config.ts` | Added cache-control headers (line 37-43) |
+| `/apps/main/next.config.ts` | Added generateBuildId + cache-control headers |
+| `/apps/support-iq/CLAUDE.md` | Added cache prevention documentation |
+| `/docs/QUERY_DETECTION_STANDARDS.md` | Added deployment section |
+
+**Commits Deployed**:
+- DSQ: `2396ed0` - Add cache-control headers
+- Main: `ebf516b` - Add cache-control headers
+
+---
+
+### Previous Session - Universal Ticket System (v1.2.7)
 
 **NEW: Standardized TICK-XXX Ticket Detection**
 
