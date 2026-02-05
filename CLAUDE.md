@@ -51,7 +51,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - **Enhanced Semantic Matching**: 50% threshold, compound words, key term penalties ✅
 - **Demo Guide Compliance**: 116/116 questions match official Demo Guide specification ✅
 - **100% Widget Match**: All queries trigger exact widgets per Demo Guide PDF ✅
-- **100% Vector Embeddings**: 356/356 knowledge items with embeddings ✅
+- **100% Vector Embeddings**: 474/474 knowledge items with embeddings (33 DSQ-specific) ✅
 - **Production Verified**: Live build tested with all 117 questions passing ✅
 - **Query Collision Prevention**: 75+ compound words prevent false positives ✅
 - **Session Reset Protocol**: Every new browser session starts fresh (no stale messages) ✅
@@ -148,13 +148,20 @@ curl -I https://dsq.digitalworkplace.ai/dsq/demo/atc-executive
 **Canonical Standards**: `/docs/QUERY_DETECTION_STANDARDS.md`
 **Root Instructions**: `/CLAUDE.md` → "GLOBAL STANDARDS" section
 
-### Full Spectrum Audit Results (v1.2.3)
+### Full Spectrum Audit Results (v1.2.8 - Demo Guide v1.2.0)
 | Mode | Personas | Questions | Status |
 |------|----------|-----------|--------|
-| **Government** | 3 | 15 | ✅ 15/15 PASS |
-| **Project** | 3 | 16 | ✅ 16/16 PASS |
-| **ATC (SME)** | 4 | 23 | ✅ 23/23 PASS |
-| **TOTAL** | **10** | **54** | **✅ 54/54 PASS (Demo Guide Compliant)** |
+| **Government** | 3 | 34 | ✅ 34/34 PASS |
+| **Project** | 3 | 31 | ✅ 31/31 PASS |
+| **ATC (SME)** | 4 | 51 | ✅ 51/51 PASS |
+| **TOTAL** | **10** | **116** | **✅ 116/116 PASS (Demo Guide v1.2.0 Compliant)** |
+
+### Live Use Cases (v1.2.8)
+| Use Case | Zoho Tickets | Jira | Status |
+|----------|-------------|------|--------|
+| Password Reset | #409, #412, #416, #419 | KAN-142 | ✅ Live |
+| Printer Not Responding | #414, #415, #418 | KAN-141 | ✅ Live |
+| SCORM Course Import | #417 | KAN-140 | ✅ Live |
 
 ### v1.2.5 Features
 | Feature | Description |
