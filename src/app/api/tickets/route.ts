@@ -41,13 +41,15 @@ export async function GET(req: NextRequest) {
     }
 
     // Build API URL with optional department filter
-    let apiUrl = `/api/v1/tickets?limit=${limit}&sortBy=-createdTime`;
+    // include=contacts,assignee to get nested contact/assignee objects
+    let apiUrl = `/api/v1/tickets?limit=${limit}&sortBy=createdTime&include=contacts,assignee`;
 
     // Add department filter if configured
     if (process.env.ZOHO_DEPARTMENT_ID) {
       apiUrl += `&departmentId=${process.env.ZOHO_DEPARTMENT_ID}`;
-      console.log('[Zoho API] Filtering by department:', process.env.ZOHO_DEPARTMENT_ID);
     }
+
+    console.log('[Zoho API] Fetching tickets:', apiUrl);
 
     // Fetch tickets from Zoho Desk
     interface ZohoTicket {
@@ -56,8 +58,12 @@ export async function GET(req: NextRequest) {
       subject?: string;
       priority?: string;
       status?: string;
-      assignee?: { name?: string };
-      contact?: { name?: string; email?: string };
+      statusType?: string;
+      assignee?: { firstName?: string; lastName?: string; name?: string; email?: string };
+      assigneeId?: string;
+      contact?: { firstName?: string; lastName?: string; name?: string; email?: string };
+      contactId?: string;
+      email?: string;
       createdTime?: string;
       modifiedTime?: string;
       dueDate?: string;
@@ -68,22 +74,30 @@ export async function GET(req: NextRequest) {
     const response = await zoho.request<{ data: ZohoTicket[] }>(apiUrl);
 
     // Transform Zoho tickets to our format
-    const tickets = response.data.map((ticket: ZohoTicket) => ({
-      id: ticket.id,
-      ticketNumber: ticket.ticketNumber,
-      summary: ticket.subject || 'No subject',
-      priority: ticket.priority || 'Medium',
-      status: ticket.status || 'Open',
-      assignedAgent: ticket.assignee?.name || null,
-      reporter: ticket.contact?.name || 'Unknown',
-      reporterEmail: ticket.contact?.email || '',
-      createdDate: ticket.createdTime,
-      lastUpdated: ticket.modifiedTime,
-      category: ticket.category || null,
-      channel: ticket.channel || 'Web',
-      aiProcessed: false,
-      aiClassification: null,
-    }));
+    const tickets = response.data.map((ticket: ZohoTicket) => {
+      const assigneeName = ticket.assignee?.name
+        || (ticket.assignee?.firstName ? `${ticket.assignee.firstName} ${ticket.assignee.lastName || ''}`.trim() : null);
+      const contactName = ticket.contact?.name
+        || (ticket.contact?.firstName ? `${ticket.contact.firstName} ${ticket.contact.lastName || ''}`.trim() : null);
+      const contactEmail = ticket.contact?.email || ticket.email || '';
+
+      return {
+        id: ticket.id,
+        ticketNumber: ticket.ticketNumber,
+        summary: ticket.subject || 'No subject',
+        priority: ticket.priority || 'None',
+        status: ticket.status || ticket.statusType || 'Open',
+        assignedAgent: assigneeName || null,
+        reporter: contactName || 'Unknown',
+        reporterEmail: contactEmail,
+        createdDate: ticket.createdTime,
+        lastUpdated: ticket.modifiedTime,
+        category: ticket.category || null,
+        channel: ticket.channel || 'Web',
+        aiProcessed: false,
+        aiClassification: null,
+      };
+    });
 
     return NextResponse.json({
       success: true,
