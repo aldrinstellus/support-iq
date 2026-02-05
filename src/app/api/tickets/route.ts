@@ -76,9 +76,11 @@ export async function GET(req: NextRequest) {
     // Transform Zoho tickets to our format
     const tickets = response.data.map((ticket: ZohoTicket) => {
       const assigneeName = ticket.assignee?.name
-        || (ticket.assignee?.firstName ? `${ticket.assignee.firstName} ${ticket.assignee.lastName || ''}`.trim() : null);
+        || [ticket.assignee?.firstName, ticket.assignee?.lastName].filter(Boolean).join(' ')
+        || null;
       const contactName = ticket.contact?.name
-        || (ticket.contact?.firstName ? `${ticket.contact.firstName} ${ticket.contact.lastName || ''}`.trim() : null);
+        || [ticket.contact?.firstName, ticket.contact?.lastName].filter(Boolean).join(' ')
+        || null;
       const contactEmail = ticket.contact?.email || ticket.email || '';
 
       return {
