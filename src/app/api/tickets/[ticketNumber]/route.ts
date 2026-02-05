@@ -128,7 +128,7 @@ export async function GET(
     // Extract just the number from TICK-XXX format
     // If ticketNumber is "TICK-409", extract "409"
     // If it's already just "409", use as-is
-    const numericTicketNumber = ticketNumber.replace(/^TICK-?/i, '');
+    const numericTicketNumber = ticketNumber.replace(/^(TICK|DESK)-?/i, '');
     console.log('[API /tickets/[ticketNumber]] Original:', ticketNumber, '→ Numeric:', numericTicketNumber);
 
     // Create fresh Zoho client instance (matches /api/tickets/route.ts pattern)
@@ -139,16 +139,28 @@ export async function GET(
       refreshToken: process.env.ZOHO_REFRESH_TOKEN || '',
     });
 
-    // First, search for the ticket by ticket number
-    // Zoho API requires us to get the list and filter by ticketNumber
-    const searchResponse = await zohoClient.request<ZohoTicketResponse>(
-      `/api/v1/tickets?limit=100&sortBy=-createdTime`
-    );
+    // Search for the ticket by ticket number
+    let ticket: ZohoTicket | undefined;
 
-    // Find the ticket with matching ticketNumber (compare numeric part only)
-    const ticket = searchResponse.data?.find((t: ZohoTicket) =>
-      t.ticketNumber === numericTicketNumber || t.ticketNumber === ticketNumber
-    );
+    // Approach 1: Use Zoho search API
+    try {
+      const searchResponse = await zohoClient.request<ZohoTicketResponse>(
+        `/api/v1/tickets/search?ticketNumber=${numericTicketNumber}`
+      );
+      ticket = searchResponse.data?.[0];
+    } catch {
+      // Search API may not be available — fall back to list
+    }
+
+    // Approach 2: Fall back to listing with filter
+    if (!ticket) {
+      const listResponse = await zohoClient.request<ZohoTicketResponse>(
+        `/api/v1/tickets?limit=100&sortBy=-createdTime`
+      );
+      ticket = listResponse.data?.find((t: ZohoTicket) =>
+        t.ticketNumber === numericTicketNumber || t.ticketNumber === ticketNumber
+      );
+    }
 
     if (!ticket) {
       // Return mock data instead of 404 (demo mode fallback)

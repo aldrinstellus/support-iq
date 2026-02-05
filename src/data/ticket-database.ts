@@ -471,15 +471,10 @@ export function normalizeTicketId(input: string): string | null {
     return `TICK-${num}`;
   }
 
-  // Pattern 3: DESK-XXXX format (map to our tickets)
-  const deskPattern = cleaned.match(/DESK-?(\d{1,4})/);
+  // Pattern 3: DESK-XXXX format (Zoho ticket number)
+  const deskPattern = cleaned.match(/DESK-?(\d{1,5})/);
   if (deskPattern) {
-    // Map DESK-1001 to TICK-001, DESK-1002 to TICK-002, etc.
-    const deskNum = parseInt(deskPattern[1], 10);
-    if (deskNum >= 1001 && deskNum <= 1010) {
-      const tickNum = (deskNum - 1000).toString().padStart(3, '0');
-      return `TICK-${tickNum}`;
-    }
+    return deskPattern[1]; // Raw Zoho ticket number (e.g., "1001")
   }
 
   return null;

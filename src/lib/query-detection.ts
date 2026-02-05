@@ -88,11 +88,11 @@ export type PersonaId =
 function detectUniversalTicket(q: string, _personaId: PersonaId): QueryMatch | null {
   // Check if query is asking about a specific ticket
   const ticketPatterns = [
-    /\bticket\s*#?\s*(\d{1,3})\b/i,           // "ticket 001", "ticket #001", "ticket 1"
+    /\bticket\s*#?\s*(\d{1,5})\b/i,           // "ticket 1001", "ticket #1001"
     /\btick[- ]?(\d{1,3})\b/i,                 // "TICK-001", "TICK001", "tick 001"
-    /\bdesk[- ]?(\d{1,4})\b/i,                 // "DESK-1001"
-    /\bshow\s+(?:me\s+)?(?:ticket\s*)?(\d{3})\b/i,  // "show me 001", "show 001"
-    /\b(\d{3})\s*ticket\b/i,                   // "001 ticket"
+    /\bdesk[- ]?(\d{1,5})\b/i,                 // "DESK-1001" (Zoho live)
+    /\bshow\s+(?:me\s+)?(?:ticket\s*)?(\d{3,5})\b/i,  // "show me 1001"
+    /\b(\d{3,5})\s*ticket\b/i,                 // "1001 ticket"
   ];
 
   let ticketId: string | null = null;
