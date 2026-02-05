@@ -1,8 +1,8 @@
 # Support IQ (dSQ) - Savepoint
 
-**Last Updated**: 2026-01-26 23:55 +04
-**Version**: 1.2.7
-**Status**: Universal Ticket System + Cache Prevention Deployed ✅
+**Last Updated**: 2026-02-05
+**Version**: 1.2.8
+**Status**: Live Zoho Ticket Lookup Fixed (DESK-1001 → Zoho #1001) ✅
 
 ---
 
@@ -17,7 +17,33 @@
 | **Parent App** | https://digitalworkplace-ai.vercel.app | ✅ Linked |
 | **Cache Headers** | Both apps | ✅ Configured |
 
-### Latest Session - Cache Prevention Configuration (v1.2.7)
+### Latest Session - Fix DESK-1001 Live Zoho Ticket Lookup (v1.2.8)
+
+**Issue**: "Show ticket DESK-1001" mapped DESK-1001 → TICK-001 → searched Zoho for "001" → not found → fell back to mock data.
+
+**Root Cause**: `normalizeTicketId()` in `ticket-database.ts` subtracted 1000 from DESK numbers (designed for mock data).
+
+**Fix**: DESK-1001 now correctly resolves to Zoho ticket #1001.
+
+**Changes Made**:
+| File | Change |
+|------|--------|
+| `src/data/ticket-database.ts` | DESK pattern returns raw number ("1001") instead of TICK-001 |
+| `src/lib/query-detection.ts` | Regex expanded from 3-4 digits to 5 digits for Zoho ticket numbers |
+| `src/app/api/tickets/[ticketNumber]/route.ts` | Strips both TICK- and DESK- prefixes |
+| `src/app/api/tickets/[ticketNumber]/route.ts` | Zoho search API as primary lookup, list as fallback |
+
+**Demo Flow (After Fix)**:
+1. Customer emails support desk → Zoho Desk creates ticket (e.g., #1001)
+2. Agent says "Show me my tickets" → LiveTicketListWidget → `/api/tickets` → sees ticket list ✅
+3. Agent says "Show ticket DESK-1001" → extracts "1001" → `/api/tickets/1001` → Zoho search → full ticket detail ✅
+
+**Commit**: `e0db135` — fix: DESK-1001 now fetches live Zoho ticket instead of mock data
+**Build**: 0 TypeScript errors, 0 ESLint warnings, clean Turbopack build
+
+---
+
+### Previous Session - Cache Prevention Configuration (v1.2.7)
 
 **Cache-Busting Headers Deployed** to prevent stale deployments:
 
@@ -479,15 +505,14 @@ curl http://localhost:3003/api/health
 
 | Priority | Task | Status |
 |----------|------|--------|
+| ✅ | DESK-1001 live Zoho lookup | **COMPLETED** - Deployed to production |
 | ✅ | Session reset race condition | **COMPLETED** - Sync script deployed |
 | ✅ | User isolation (different users) | **COMPLETED** - User tracking deployed |
-| ✅ | Documentation updates | **COMPLETED** - All docs updated |
-| - | Production verification | Needs live test on dsq.digitalworkplace.ai |
+| - | Verify DESK-1001 on production | Test "Show ticket DESK-1001" on dsq.digitalworkplace.ai |
 
 ### Next Session
-1. Verify session reset works on production (close browser, reopen)
-2. Test user isolation (different users on same device)
-3. Monitor console for `[SessionReset:Sync]` logs
+1. Verify "Show ticket DESK-1001" works on production with real Zoho ticket
+2. Test various formats: "ticket 1001", "DESK-1001", "ticket #1001"
 
 ---
 
@@ -495,14 +520,15 @@ curl http://localhost:3003/api/health
 
 | Commit | Message |
 |--------|---------|
-| `e9123bf` | Add user isolation - different users get clean sessions |
-| `f0cbb84` | Fix session reset race condition - enforce clean slate per session |
-| `42c6b1b` | Standardize production URL to dsq.digitalworkplace.ai |
+| `e0db135` | fix: DESK-1001 now fetches live Zoho ticket instead of mock data |
+| `19abb56` | docs: update dSQ savepoint to v1.2.8 with Zoho integration docs |
+| `841a5c3` | fix: improve Zoho contact name mapping for reporter field |
+| `9a285f3` | fix: show real Zoho Desk tickets instead of mock data |
 
 ---
 
-*Savepoint created: 2026-01-26 22:15 +04*
-*Version: 1.2.5 - Session Reset & User Isolation Deployed*
+*Savepoint created: 2026-02-05*
+*Version: 1.2.8 - Live Zoho Ticket Lookup Fixed*
 *By: Claude Opus 4.5*
 *GitHub: https://github.com/aldrinstellus/support-iq*
 *Production: https://dsq.digitalworkplace.ai*

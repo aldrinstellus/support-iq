@@ -96,8 +96,8 @@ const conversationEntries: ConversationEntry[] = [
   // Q6: Ticket Detail (Specific Ticket)
   {
     id: 'q6-ticket-detail',
-    triggers: ['ticket #', 'ticket number', 'show ticket', 'ticket details', 'tick-', 'tick-001', 'tick-002', 'tick-003', 'desk-', 'desk-1001'],
-    userQuery: 'Show me details for ticket #TICK-001.',
+    triggers: ['ticket #', 'ticket number', 'show ticket', 'ticket details', 'tick-', 'desk-', 'desk-1001', 'ticket 1001', '1001'],
+    userQuery: 'Show me details for ticket DESK-1001.',
     aiResponse: "Here are the complete details for this ticket:",
     widgetType: 'ticket-detail',
     widgetData: ticketDetailDemo,
@@ -169,12 +169,12 @@ const conversationEntries: ConversationEntry[] = [
       'similar issues',
     ],
     userQuery: 'Find similar tickets.',
-    aiResponse: "Here are similar tickets and resolution patterns from ticket #001:",
+    aiResponse: "Here are similar tickets and resolution patterns:",
     widgetType: 'similar-tickets-analysis',
     widgetData: {
       ...similarTicketsAnalysisDemo,
-      title: 'Similar Tickets to #001 - Resolution Patterns',
-      referenceTicket: '#001',
+      title: 'Similar Tickets - Resolution Patterns',
+      referenceTicket: 'current',
     },
   },
 
