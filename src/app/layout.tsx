@@ -30,6 +30,9 @@ export const metadata: Metadata = {
   title: "dSQ | Support Portal",
   description: "AI-powered enterprise support portal - Digital Workplace AI",
   keywords: ["support", "ticketing", "AI", "dashboard", "analytics", "enterprise", "digital workplace"],
+  icons: {
+    icon: "/favicon.png",
+  },
 };
 
 // Script to set theme before React hydrates (prevents flash)

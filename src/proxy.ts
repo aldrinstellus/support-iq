@@ -42,10 +42,10 @@ export function proxy(_request: NextRequest) {
   const cspHeader = `
     default-src 'self';
     script-src 'self' 'unsafe-inline' 'unsafe-eval' https://vercel.live;
-    style-src 'self' 'unsafe-inline';
+    style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
     img-src 'self' data: https: blob:;
-    font-src 'self' data:;
-    connect-src 'self' https://api.anthropic.com https://api.dicebear.com https://*.supabase.co wss://*.supabase.co https://vercel.live wss://ws-*.pusher.com https://auzmor.app.n8n.cloud;
+    font-src 'self' data: https://fonts.gstatic.com;
+    connect-src 'self' https://api.anthropic.com https://api.dicebear.com https://*.supabase.co wss://*.supabase.co https://vercel.live wss://*.pusher.com https://auzmor.app.n8n.cloud;
     frame-src 'self' https://vercel.live;
     object-src 'none';
     base-uri 'self';
@@ -77,6 +77,6 @@ export const config = {
      * - favicon.ico (favicon file)
      * - public folder files
      */
-    '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico)$).*)',
+    '/((?!_next/static|_next/image|favicon.ico|icon|apple-icon|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico)$).*)',
   ],
 };
