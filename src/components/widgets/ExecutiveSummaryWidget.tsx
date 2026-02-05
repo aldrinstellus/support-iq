@@ -68,7 +68,7 @@ export function ExecutiveSummaryWidget({ data }: { data: ExecutiveSummaryData })
   };
 
   // Calculate counts for each status
-  const statusCounts = {
+  const _statusCounts = {
     success: data.sections.filter(s => s.status === 'success').length,
     warning: data.sections.filter(s => s.status === 'warning').length,
     critical: data.sections.filter(s => s.status === 'critical').length,

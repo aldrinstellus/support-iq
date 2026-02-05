@@ -11,7 +11,7 @@ import { findBestMatch as findATCManagerMatch } from './atc-manager-conversation
 import { findBestMatch as findATCSupportMatch } from './atc-support-conversation';
 import { findBestMatch as findATCCSMMatch } from './atc-csm-conversation';
 // V1.3.1: Standardized ticket database
-import { extractTicketIdFromQuery, getTicketById, getTicketSummaries } from '@/data/ticket-database';
+import { extractTicketIdFromQuery, getTicketById } from '@/data/ticket-database';
 import {
   executiveSummaryDemo,
   customerRiskProfileDemo,
@@ -85,7 +85,7 @@ export type PersonaId =
  * Works across all personas and modes
  * Returns ticket detail with full data from ticket database
  */
-function detectUniversalTicket(q: string, personaId: PersonaId): QueryMatch | null {
+function detectUniversalTicket(q: string, _personaId: PersonaId): QueryMatch | null {
   // Check if query is asking about a specific ticket
   const ticketPatterns = [
     /\bticket\s*#?\s*(\d{1,3})\b/i,           // "ticket 001", "ticket #001", "ticket 1"
@@ -134,7 +134,7 @@ function detectUniversalTicket(q: string, personaId: PersonaId): QueryMatch | nu
 /**
  * Generate persona-appropriate response text for ticket display
  */
-function getTicketResponseText(ticket: ReturnType<typeof getTicketById>, personaId: PersonaId): string {
+function _getTicketResponseText(ticket: ReturnType<typeof getTicketById>, personaId: PersonaId): string {
   if (!ticket) return '';
 
   const baseInfo = `Here are the details for ${ticket.ticketId}:`;

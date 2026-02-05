@@ -45,7 +45,7 @@ interface Draft {
 export function DraftEditorPanel({ ticketNumber, onJiraTicketCreated }: DraftEditorPanelProps) {
   const [draft, setDraft] = useState<Draft | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [isSaving, setIsSaving] = useState(false);
+  const [_isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [saveStatus, setSaveStatus] = useState<'idle' | 'saving' | 'saved'>('idle');
   const [showRegenerateInput, setShowRegenerateInput] = useState(false);
@@ -55,7 +55,7 @@ export function DraftEditorPanel({ ticketNumber, onJiraTicketCreated }: DraftEdi
   const [toast, setToast] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
   const [showEscalateModal, setShowEscalateModal] = useState(false);
   const [isJiraTicketCreated, setIsJiraTicketCreated] = useState(false);
-  const [jiraTicketId, setJiraTicketId] = useState<string | null>(null);
+  const [_jiraTicketId, setJiraTicketId] = useState<string | null>(null);
 
   // TipTap editor configuration
   const editor = useEditor({
@@ -86,6 +86,7 @@ export function DraftEditorPanel({ ticketNumber, onJiraTicketCreated }: DraftEdi
   useEffect(() => {
     fetchDraft();
     checkJiraTicketStatus();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ticketNumber]);
 
   // Check if Jira ticket was already created
@@ -146,8 +147,8 @@ export function DraftEditorPanel({ ticketNumber, onJiraTicketCreated }: DraftEdi
   };
 
   // Debounced auto-save (2 seconds)
-  const handleAutoSave = useCallback(
-    debounce(async (content: string) => {
+  const handleAutoSave = useCallback((content: string) => {
+    const debouncedSave = debounce(async (_contentToSave: string) => {
       setSaveStatus('saving');
       setIsSaving(true);
 
@@ -177,9 +178,9 @@ export function DraftEditorPanel({ ticketNumber, onJiraTicketCreated }: DraftEdi
       } finally {
         setIsSaving(false);
       }
-    }, 2000),
-    [ticketNumber]
-  );
+    }, 2000);
+    debouncedSave(content);
+  }, [ticketNumber]);
 
   // Send response via n8n webhook
   const handleSendResponse = async () => {

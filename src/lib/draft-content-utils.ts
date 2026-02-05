@@ -21,7 +21,7 @@ export function isHtmlContent(content: string): boolean {
  * @param str - String to escape
  * @returns Escaped string safe for HTML
  */
-function escapeHtml(str: string): string {
+function _escapeHtml(str: string): string {
   return str
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')

@@ -9,7 +9,6 @@ import {
   Target,
   TrendingUp,
   Flag,
-  ArrowRight,
   CircleDot,
   AlertCircle,
   ChevronRight,
@@ -370,7 +369,7 @@ export function MilestoneTrackingDashboardWidget({ data }: { data: MilestoneTrac
           Phase Progress
         </h4>
         <div className="space-y-4">
-          {data.phases.map((phase, idx) => (
+          {data.phases.map((phase, _idx) => (
             <div
               key={phase.id}
               className={`border-l-4 ${getPhaseStatusColor(phase.status)} rounded-r-lg p-4 bg-muted/20`}
@@ -517,9 +516,9 @@ export function MilestoneTrackingDashboardWidget({ data }: { data: MilestoneTrac
             Critical Path Items
           </h4>
           <div className="space-y-2">
-            {data.criticalPathItems.map((item, idx) => (
+            {data.criticalPathItems.map((item, _idx) => (
               <div
-                key={idx}
+                key={_idx}
                 className="p-3 rounded-lg border border-border bg-muted/20 flex items-start justify-between"
               >
                 <div className="flex-1">

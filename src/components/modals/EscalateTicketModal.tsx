@@ -19,7 +19,6 @@ import {
   Underline as UnderlineIcon,
   List,
   ListOrdered,
-  Link as LinkIcon,
   AlertCircle,
 } from 'lucide-react';
 
@@ -53,7 +52,7 @@ const cleanHtmlContent = (html: string): string => {
  * Convert ProseMirror JSON to Atlassian Document Format (ADF)
  * Preserves all formatting including underline, bold, italic, etc.
  */
-const proseMirrorToAdf = (pmJson: any): any => {
+const proseMirrorToAdf = (pmJson: unknown): unknown => {
   // Map ProseMirror node types to ADF node types
   const mapNodeType = (type: string): string => {
     const mapping: Record<string, string> = {
@@ -92,53 +91,56 @@ const proseMirrorToAdf = (pmJson: any): any => {
   ]);
 
   // Node types that are leaf nodes (no content)
-  const leafNodes = new Set(['text', 'hardBreak', 'rule']);
+  const _leafNodes = new Set(['text', 'hardBreak', 'rule']);
 
   // Recursively convert nodes
-  const convertNode = (node: any): any => {
-    const mappedType = mapNodeType(node.type);
-    const adfNode: any = {
+  const convertNode = (node: Record<string, unknown>): Record<string, unknown> => {
+    const mappedType = mapNodeType(node.type as string);
+    const adfNode: Record<string, unknown> = {
       type: mappedType,
     };
 
+    const nodeAttrs = node.attrs as Record<string, unknown> | undefined;
+    const nodeContent = node.content as Record<string, unknown>[] | undefined;
+    const nodeMarks = node.marks as Record<string, unknown>[] | undefined;
+    const nodeText = node.text as string | undefined;
+
     // Add attributes based on node type
-    if (node.type === 'heading' && node.attrs?.level) {
-      adfNode.attrs = { level: node.attrs.level };
+    if (node.type === 'heading' && nodeAttrs?.level) {
+      adfNode.attrs = { level: nodeAttrs.level };
     } else if (node.type === 'orderedList') {
-      adfNode.attrs = { order: node.attrs?.order || 1 };
-    } else if (node.attrs) {
-      // Copy other attributes
-      adfNode.attrs = { ...node.attrs };
+      adfNode.attrs = { order: (nodeAttrs?.order as number) || 1 };
+    } else if (nodeAttrs) {
+      adfNode.attrs = { ...nodeAttrs };
     }
 
     // Handle content (child nodes) - only for non-leaf nodes
-    if (contentNodes.has(node.type)) {
-      if (node.content && Array.isArray(node.content) && node.content.length > 0) {
-        adfNode.content = node.content.map(convertNode).filter((n: any) => n !== null);
+    if (contentNodes.has(node.type as string)) {
+      if (nodeContent && Array.isArray(nodeContent) && nodeContent.length > 0) {
+        adfNode.content = nodeContent.map(convertNode).filter((n: unknown) => n !== null);
       } else {
-        // Empty content array for block nodes
         adfNode.content = [];
       }
     }
 
     // Convert marks (formatting) - only for text nodes
-    if (node.marks && Array.isArray(node.marks) && node.marks.length > 0) {
-      adfNode.marks = node.marks.map((mark: any) => ({
-        type: mapMarkType(mark.type),
-        ...(mark.attrs && { attrs: mark.attrs }),
+    if (nodeMarks && Array.isArray(nodeMarks) && nodeMarks.length > 0) {
+      adfNode.marks = nodeMarks.map((mark: Record<string, unknown>) => ({
+        type: mapMarkType(mark.type as string),
+        ...(mark.attrs ? { attrs: mark.attrs as Record<string, unknown> } : {}),
       }));
     }
 
     // Add text content - only for text nodes
     if (node.type === 'text') {
-      adfNode.text = node.text || '';
+      adfNode.text = nodeText || '';
     }
 
     return adfNode;
   };
 
   // Convert root doc node
-  const adf = convertNode(pmJson);
+  const adf = convertNode(pmJson as Record<string, unknown>);
 
   // Ensure version is set at root level
   return {
@@ -149,13 +151,13 @@ const proseMirrorToAdf = (pmJson: any): any => {
 };
 
 export function EscalateTicketModal({ isOpen, onClose, ticketNumber, onJiraTicketCreated }: EscalateTicketModalProps) {
-  const [platform, setPlatform] = useState<Platform>('jira');
+  const [platform, _setPlatform] = useState<Platform>('jira');
   const [title, setTitle] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isLoadingTicket, setIsLoadingTicket] = useState(false);
   const [isLoadingContent, setIsLoadingContent] = useState(false);
   const [jiraContent, setJiraContent] = useState<string | null>(null);
-  const [isJiraTicketCreated, setIsJiraTicketCreated] = useState(false);
+  const [_isJiraTicketCreated, setIsJiraTicketCreated] = useState(false);
   const [toast, setToast] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
 
   // TipTap editor for description with Jira ADF support

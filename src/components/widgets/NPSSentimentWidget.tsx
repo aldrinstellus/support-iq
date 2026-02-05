@@ -9,7 +9,6 @@ import {
   TrendingUp,
   TrendingDown,
   Users,
-  Star,
   ThumbsUp,
   ThumbsDown,
   AlertTriangle,

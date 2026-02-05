@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { BarChart3, ChevronRight, Clock, CheckCircle2, AlertTriangle, XCircle, TrendingUp, TrendingDown, X } from 'lucide-react';
+import { BarChart3, ChevronRight, Clock, CheckCircle2, AlertTriangle, TrendingUp, TrendingDown, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   BarChart,
