@@ -34,15 +34,17 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **Support IQ (dSQ)** - AI-Enhanced Customer Support for Digital Workplace AI. Unified Multi-Mode System with ATC/Government/Project Personas.
 
-**Version**: 1.2.7
+**Version**: 1.2.8
 **Port**: 3003
 **Browser Tab**: dSQ | Support Portal
-**Status**: Production Live - Universal Tickets + Cache Prevention ✅
-**Deployed**: 2026-01-26
+**Status**: Production Live - Live Zoho Tickets + Clean Build ✅
+**Deployed**: 2026-02-05
 **GitHub**: https://github.com/aldrinstellus/support-iq
 **Production URL**: https://dsq.digitalworkplace.ai
 
-### Key Features (v1.2.7)
+### Key Features (v1.2.8)
+- **Live Zoho Desk Tickets**: Real tickets from Zoho Desk API (no more mock data) ✅
+- **Clean Build**: 0 TypeScript errors, 0 ESLint warnings ✅
 - **Universal Ticket System**: TICK-XXX format works across all personas ✅
 - **Cache Prevention**: `generateBuildId` + `Cache-Control` headers prevent stale deployments ✅
 - **NPS & Sentiment Analysis Widget**: Combined dashboard with interactive drill-down ✅
@@ -60,6 +62,17 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - **Supabase Integration**: 15 DSQ tables + 348 knowledge items with 100% embedding coverage
 - **Theme Toggle**: Dark/light mode with smooth animations
 - **Fully Responsive**: Mobile, tablet, and desktop breakpoints
+
+### Zoho Desk Integration (v1.2.8)
+
+| Component | Details |
+|-----------|---------|
+| **API Route** | `/api/tickets` — fetches from Zoho Desk API with OAuth |
+| **Client** | `src/lib/integrations/zoho-desk.ts` — ZohoDeskClient with singleton token manager |
+| **Widget** | `TicketListDemo.tsx` — renders live ticket table with stats |
+| **Env Vars** | `ZOHO_CLIENT_ID`, `ZOHO_CLIENT_SECRET`, `ZOHO_REFRESH_TOKEN`, `ZOHO_ORG_ID`, `ZOHO_DEPARTMENT_ID` |
+| **Fallback** | Returns mock data if Zoho credentials missing or API fails |
+| **Production** | 10 real tickets showing, `source: "zoho-desk"` |
 
 ### Session Reset Protocol (v1.2.5)
 
