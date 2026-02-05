@@ -4,8 +4,9 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { getZohoDeskClient } from '@/lib/integrations/zoho-desk';
+import { ZohoDeskClient } from '@/lib/integrations/zoho-desk';
 import { ZohoConversation as ImportedZohoConversation } from '@/types/zoho';
+import { createClient } from '@supabase/supabase-js';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -124,7 +125,19 @@ export async function GET(
       );
     }
 
-    const zohoClient = getZohoDeskClient();
+    // Extract just the number from TICK-XXX format
+    // If ticketNumber is "TICK-409", extract "409"
+    // If it's already just "409", use as-is
+    const numericTicketNumber = ticketNumber.replace(/^TICK-?/i, '');
+    console.log('[API /tickets/[ticketNumber]] Original:', ticketNumber, '→ Numeric:', numericTicketNumber);
+
+    // Create fresh Zoho client instance (matches /api/tickets/route.ts pattern)
+    const zohoClient = new ZohoDeskClient({
+      orgId: Number(process.env.ZOHO_ORG_ID) || 0,
+      clientId: process.env.ZOHO_CLIENT_ID || '',
+      clientSecret: process.env.ZOHO_CLIENT_SECRET || '',
+      refreshToken: process.env.ZOHO_REFRESH_TOKEN || '',
+    });
 
     // First, search for the ticket by ticket number
     // Zoho API requires us to get the list and filter by ticketNumber
@@ -132,8 +145,10 @@ export async function GET(
       `/api/v1/tickets?limit=100&sortBy=-createdTime`
     );
 
-    // Find the ticket with matching ticketNumber
-    const ticket = searchResponse.data?.find((t: ZohoTicket) => t.ticketNumber === ticketNumber);
+    // Find the ticket with matching ticketNumber (compare numeric part only)
+    const ticket = searchResponse.data?.find((t: ZohoTicket) =>
+      t.ticketNumber === numericTicketNumber || t.ticketNumber === ticketNumber
+    );
 
     if (!ticket) {
       // Return mock data instead of 404 (demo mode fallback)
@@ -154,6 +169,36 @@ export async function GET(
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
       console.warn('[API /tickets/[ticketNumber]] Failed to fetch conversations:', errorMessage);
       // Continue without conversations
+    }
+
+    // Fetch Jira escalation status from Supabase
+    let isJiraTicketCreated = false;
+    let jiraTicketId: string | null = null;
+    try {
+      const supabase = createClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL || '',
+        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ''
+      );
+
+      const { data: ticketData } = await supabase
+        .from('tickets_demo')
+        .select('isJiraTicketCreated, jiraTicketId')
+        .eq('ticket_number', parseInt(numericTicketNumber, 10))
+        .single();
+
+      if (ticketData) {
+        if (ticketData.isJiraTicketCreated === true) {
+          isJiraTicketCreated = true;
+          console.log('[API /tickets/[ticketNumber]] Ticket already escalated to Jira');
+        }
+        if (ticketData.jiraTicketId) {
+          jiraTicketId = ticketData.jiraTicketId;
+          console.log('[API /tickets/[ticketNumber]] Jira ticket ID:', jiraTicketId);
+        }
+      }
+    } catch (error: unknown) {
+      console.warn('[API /tickets/[ticketNumber]] Failed to fetch Jira status from Supabase:', error);
+      // Continue without Jira status
     }
 
     // Transform to detailed ticket format
@@ -237,6 +282,10 @@ export async function GET(
       commentCount: ticket.commentCount || 0,
       threadCount: ticket.threadCount || 0,
       attachmentCount: ticket.attachmentCount || 0,
+
+      // Jira escalation status
+      isJiraTicketCreated,
+      jiraTicketId,
     };
 
     return NextResponse.json({

@@ -40,6 +40,15 @@ export async function GET(req: NextRequest) {
       });
     }
 
+    // Build API URL with optional department filter
+    let apiUrl = `/api/v1/tickets?limit=${limit}&sortBy=-createdTime`;
+
+    // Add department filter if configured
+    if (process.env.ZOHO_DEPARTMENT_ID) {
+      apiUrl += `&departmentId=${process.env.ZOHO_DEPARTMENT_ID}`;
+      console.log('[Zoho API] Filtering by department:', process.env.ZOHO_DEPARTMENT_ID);
+    }
+
     // Fetch tickets from Zoho Desk
     interface ZohoTicket {
       id: string;
@@ -56,9 +65,7 @@ export async function GET(req: NextRequest) {
       channel?: string;
     }
 
-    const response = await zoho.request<{ data: ZohoTicket[] }>(
-      `/api/v1/tickets?limit=${limit}&sortBy=-createdTime`
-    );
+    const response = await zoho.request<{ data: ZohoTicket[] }>(apiUrl);
 
     // Transform Zoho tickets to our format
     const tickets = response.data.map((ticket: ZohoTicket) => ({

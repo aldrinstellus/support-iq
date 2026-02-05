@@ -115,28 +115,20 @@ function detectUniversalTicket(q: string, personaId: PersonaId): QueryMatch | nu
     return null;
   }
 
-  // Get ticket data from database
-  const ticket = getTicketById(ticketId);
-
-  if (!ticket) {
-    // Ticket ID extracted but not found in database - return helpful message
-    return {
-      widgetType: null,
-      widgetData: null,
-      responseText: `I couldn't find ticket ${ticketId} in our system. Valid tickets are TICK-001 through TICK-010. Would you like me to show you the ticket list instead?`,
-    };
-  }
-
-  // Get persona-appropriate response text based on role
-  const responseText = getTicketResponseText(ticket, personaId);
-
-  console.log(`[Universal Ticket Detection] Query: "${q}" → ${ticketId} → Found: ${ticket.subject}`);
+  // PRIORITY 1: Try to fetch from Zoho first (live data)
+  // Return live-ticket-detail widget which will fetch from Zoho API
+  // The API route already has fallback to mock data if Zoho fails
+  console.log(`[Universal Ticket Detection] Query: "${q}" → Ticket: ${ticketId} → Trying Zoho first`);
 
   return {
-    widgetType: 'ticket-detail',
-    widgetData: ticket,
-    responseText,
+    widgetType: 'live-ticket-detail',
+    widgetData: { ticketNumber: ticketId },
+    responseText: `Fetching details for ticket #${ticketId} from Zoho Desk...`,
   };
+
+  // FALLBACK: Mock database (commented out - now handled by API route)
+  // If Zoho fails, the API route (/api/tickets/[ticketNumber]) will automatically
+  // return mock data. See src/app/api/tickets/[ticketNumber]/route.ts line 138-145
 }
 
 /**
