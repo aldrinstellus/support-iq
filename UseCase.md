@@ -57,3 +57,24 @@
  3. The Ticket Detail Widget will contain the ticket details, conversation history and the AI generated draft for the support agent to review
  4. The draft will detail instructions on how to import a SCORM course on Auzmor Learn
  5. TThe Support Agent then clicks on the 'Send Response' button to send the AI generated draft as an email response to the customer.
+
+
+### App Intervention - Agent updates Course data on Learn
+
+- Description : Course status is stuck in In Progress despite completion
+
+ Steps to run : 
+ 1. Send an email detailing the login issue to the support email account - demohelp@auzmorsupport.zohodesk.com.
+    Example : 
+    "Hi ,
+     I recently completed a course on Auzmor Learn, but it still shows as In Progress instead of Completed. Could you please help check this and update the status accordingly?
+     Course Name : Business Learning
+     Thank you"
+
+ 2. Support Agent can ask the Dashboard to "Show me Ticket-XXXX"
+ 3. The Ticket Detail Widget will contain the ticket details, conversation history and the AI generated draft for the support agent to review
+ 4. The agent will then check the database logs and other monitoring tools like Smartlook and determine the cause of the discrepancy - an incorrect database migration during    scheduled maintenance
+ 5. The Agent will automatically update the status of the course in the database
+ 6. The drafted response will explain the root cause of the data mismatch
+ 7. The Support Agent then clicks on the 'Send Response' button to send the AI generated draft as an email response to the customer.
+ 8. The Support Agent can then check the concerned Course on Learn and verify it has indeed been marked as Completed
