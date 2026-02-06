@@ -319,7 +319,7 @@ export async function GET(
       // Conversations/Timeline
       conversations: conversations.map((conv: ImportedZohoConversation) => ({
         id: conv.id,
-        direction: conv.direction?.toUpperCase() || 'INTERNAL', // in -> INCOMING, out -> OUTGOING
+        direction: mapDirection(conv.direction), // in -> INCOMING, out -> OUTGOING
         summary: conv.summary || '',
         content: conv.content || conv.summary || '',
         contentType: conv.contentType || 'plainText',
@@ -474,6 +474,21 @@ function getMockTicketDetail(ticketNumber: string) {
     threadCount: 1,
     attachmentCount: 0,
   };
+}
+
+/**
+ * Map Zoho conversation direction to display format
+ */
+function mapDirection(zohoDirection: string | undefined): string {
+  const direction = (zohoDirection || '').toLowerCase();
+
+  if (direction === 'in') {
+    return 'INCOMING';
+  } else if (direction === 'out') {
+    return 'OUTGOING';
+  }
+
+  return 'INTERNAL';
 }
 
 /**

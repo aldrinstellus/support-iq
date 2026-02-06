@@ -97,6 +97,38 @@ export function LiveTicketDetailWidget({ ticketNumber }: LiveTicketDetailProps) 
     });
   };
 
+  const sanitizeAndNormalizeContent = (content: string): string => {
+    // First pass: sanitize but keep structure
+    let sanitized = DOMPurify.sanitize(content);
+
+    // Second pass: manually strip problematic attributes
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = sanitized;
+
+    // Remove all style attributes
+    tempDiv.querySelectorAll('[style]').forEach((el) => {
+      el.removeAttribute('style');
+    });
+
+    // Remove color attributes from font tags
+    tempDiv.querySelectorAll('font[color], [color]').forEach((el) => {
+      el.removeAttribute('color');
+    });
+
+    // Remove bgcolor attributes
+    tempDiv.querySelectorAll('[bgcolor]').forEach((el) => {
+      el.removeAttribute('bgcolor');
+    });
+
+    const result = tempDiv.innerHTML;
+
+    // Debug: Log to see what we're rendering
+    console.log('[LiveTicketDetail] Original:', content.substring(0, 150));
+    console.log('[LiveTicketDetail] Sanitized:', result.substring(0, 150));
+
+    return result;
+  };
+
   useEffect(() => {
     const fetchTicketDetails = async () => {
       try {
@@ -330,8 +362,8 @@ export function LiveTicketDetailWidget({ ticketNumber }: LiveTicketDetailProps) 
         <div className="glass-card rounded-lg border border-border bg-card/70 p-4 backdrop-blur-md">
           <h5 className="text-sm font-semibold mb-3 text-foreground">Description</h5>
           <div
-            className="text-sm text-foreground/90 leading-relaxed prose prose-sm max-w-none"
-            dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(ticket.description) }}
+            className="text-sm text-foreground/90 leading-relaxed prose prose-sm max-w-none conversation-content"
+            dangerouslySetInnerHTML={{ __html: sanitizeAndNormalizeContent(ticket.description) }}
           />
         </div>
       )}
@@ -395,10 +427,10 @@ export function LiveTicketDetailWidget({ ticketNumber }: LiveTicketDetailProps) 
                   {conv.content && (
                     <div className="mt-2">
                       <div
-                        className={`text-sm text-foreground/80 p-3 rounded bg-muted/30 prose prose-sm max-w-none ${
+                        className={`text-sm p-3 rounded bg-muted/30 prose prose-sm max-w-none conversation-content ${
                           expandedConversations.has(conv.id) ? '' : 'line-clamp-3'
                         }`}
-                        dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(conv.content) }}
+                        dangerouslySetInnerHTML={{ __html: sanitizeAndNormalizeContent(conv.content) }}
                       />
                       <button
                         onClick={() => toggleConversationExpansion(conv.id)}
