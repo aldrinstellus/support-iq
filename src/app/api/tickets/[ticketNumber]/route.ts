@@ -11,6 +11,14 @@ import { createClient } from '@supabase/supabase-js';
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
+// Simple in-memory cache for ticket data
+const ticketCache = new Map<string, {
+  data: any;
+  timestamp: number;
+}>();
+
+const CACHE_TTL = 5 * 60 * 1000; // 5 minutes
+
 interface RouteContext {
   params: Promise<{
     ticketNumber: string;
@@ -131,6 +139,19 @@ export async function GET(
     const numericTicketNumber = ticketNumber.replace(/^(TICK|DESK)-?/i, '');
     console.log('[API /tickets/[ticketNumber]] Original:', ticketNumber, '→ Numeric:', numericTicketNumber);
 
+    // CHECK CACHE FIRST
+    const cacheKey = numericTicketNumber;
+    const cached = ticketCache.get(cacheKey);
+
+    if (cached && (Date.now() - cached.timestamp) < CACHE_TTL) {
+      console.log('[API /tickets] Returning cached data for:', numericTicketNumber);
+      return NextResponse.json({
+        success: true,
+        ticket: cached.data,
+        source: 'cache'
+      });
+    }
+
     // Create fresh Zoho client instance (matches /api/tickets/route.ts pattern)
     const zohoClient = new ZohoDeskClient({
       orgId: Number(process.env.ZOHO_ORG_ID) || 0,
@@ -172,14 +193,45 @@ export async function GET(
       });
     }
 
-    // Fetch conversations/threads for the ticket
+    // Fetch conversations/threads for the ticket WITH full content
     let conversations: ImportedZohoConversation[] = [];
     try {
+      console.log('[API /tickets] Fetching conversations for ticket:', ticket.id);
       const conversationsResponse = await zohoClient.getConversations(ticket.id);
-      conversations = conversationsResponse.data || [];
+      const conversationSummaries = conversationsResponse.data || [];
+
+      console.log('[API /tickets] Found', conversationSummaries.length, 'threads, fetching full content...');
+
+      // Fetch full content for each thread in parallel
+      const threadPromises = conversationSummaries.map(async (conv) => {
+        try {
+          console.log('[API /tickets] Fetching thread:', conv.id);
+          const threadResponse = await zohoClient.getThread(ticket.id, conv.id);
+
+          // Merge full content into conversation object
+          return {
+            ...conv,
+            content: threadResponse.content || conv.summary, // Full content from thread API
+            contentType: threadResponse.contentType || 'plainText', // Track if it's HTML or plain text
+            summary: conv.summary, // Keep original summary
+          };
+        } catch (err) {
+          console.warn(`[API /tickets] Failed to fetch thread ${conv.id}:`, err);
+          // Fallback to summary if individual thread fetch fails
+          return {
+            ...conv,
+            content: conv.summary, // Use summary as fallback
+          };
+        }
+      });
+
+      // Wait for all threads to complete
+      conversations = await Promise.all(threadPromises);
+      console.log('[API /tickets] Successfully fetched full content for', conversations.length, 'threads');
+
     } catch (error: unknown) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-      console.warn('[API /tickets/[ticketNumber]] Failed to fetch conversations:', errorMessage);
+      console.warn('[API /tickets] Failed to fetch conversations:', errorMessage);
       // Continue without conversations
     }
 
@@ -299,6 +351,13 @@ export async function GET(
       isJiraTicketCreated,
       jiraTicketId,
     };
+
+    // CACHE THE RESULT
+    ticketCache.set(cacheKey, {
+      data: detailedTicket,
+      timestamp: Date.now()
+    });
+    console.log('[API /tickets] Cached ticket data for:', numericTicketNumber);
 
     return NextResponse.json({
       success: true,
