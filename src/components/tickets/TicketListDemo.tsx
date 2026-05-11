@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Loader2, RefreshCw, AlertCircle } from 'lucide-react';
+import { Loader2, RefreshCw, AlertCircle, ChevronLeft, ChevronRight } from 'lucide-react';
 import { getApiBasePath } from '@/lib/api-utils';
 
 interface Ticket {
@@ -38,20 +38,25 @@ export function TicketListDemo({
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
+  // Pagination state — `from` is the 0-based offset of the first ticket on this page.
+  // `hasMore` mirrors the API's hasMore signal (best-effort since Zoho doesn't return a total count).
+  const [from, setFrom] = useState(0);
+  const [hasMore, setHasMore] = useState(false);
 
-  const fetchTickets = async (e?: React.MouseEvent) => {
+  const fetchTickets = async (e?: React.MouseEvent, opts?: { fromOverride?: number }) => {
     // Prevent event bubbling to parent elements (important for chat widget context)
     if (e) {
       e.preventDefault();
       e.stopPropagation();
     }
 
+    const nextFrom = opts?.fromOverride ?? from;
     try {
       setLoading(true);
       setError(null);
 
       const basePath = getApiBasePath();
-      const response = await fetch(`${basePath}/api/tickets?limit=${limit}`);
+      const response = await fetch(`${basePath}/api/tickets?limit=${limit}&from=${nextFrom}`);
 
       if (!response.ok) {
         throw new Error('Failed to fetch tickets');
@@ -61,7 +66,9 @@ export function TicketListDemo({
 
       if (data.success) {
         setTickets(data.tickets);
+        setHasMore(Boolean(data.pagination?.hasMore));
         setLastUpdated(new Date());
+        if (opts?.fromOverride !== undefined) setFrom(opts.fromOverride);
       } else {
         throw new Error(data.error || 'Unknown error');
       }
@@ -74,14 +81,27 @@ export function TicketListDemo({
   };
 
   useEffect(() => {
-    fetchTickets();
+    // Reset to page 0 when the parent changes `limit` or `autoRefresh`, then fetch.
+    fetchTickets(undefined, { fromOverride: 0 });
 
     if (autoRefresh) {
-      const interval = setInterval(() => fetchTickets(), refreshInterval);
+      const interval = setInterval(() => fetchTickets(undefined, { fromOverride: 0 }), refreshInterval);
       return () => clearInterval(interval);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [autoRefresh, refreshInterval, limit]);
+
+  const goPrev = (e?: React.MouseEvent) => {
+    if (from === 0) return;
+    fetchTickets(e, { fromOverride: Math.max(0, from - limit) });
+  };
+  const goNext = (e?: React.MouseEvent) => {
+    if (!hasMore) return;
+    fetchTickets(e, { fromOverride: from + limit });
+  };
+
+  const pageStart = tickets.length === 0 ? 0 : from + 1;
+  const pageEnd = from + tickets.length;
 
   const getPriorityColor = (priority: string) => {
     switch (priority) {
@@ -147,8 +167,8 @@ export function TicketListDemo({
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-2xl font-bold text-foreground">Live Zoho Desk Tickets</h2>
-          <p className="text-sm text-muted-foreground mt-1">
-            Showing {tickets.length} recent tickets
+          <p className="text-sm text-muted-foreground mt-1" suppressHydrationWarning>
+            Showing tickets {pageStart}–{pageEnd} (newest first)
             {lastUpdated && (
               <span className="ml-2">
                 • Last updated {lastUpdated.toLocaleTimeString()}
@@ -191,6 +211,37 @@ export function TicketListDemo({
           </p>
         </div>
       </div>
+
+      {/* Pagination controls — visible whenever there's at least one page boundary to cross. */}
+      {(from > 0 || hasMore) && (
+        <div className="flex items-center justify-between gap-3 px-1">
+          <div className="text-sm text-muted-foreground">
+            Page {Math.floor(from / limit) + 1}
+          </div>
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={(e) => goPrev(e)}
+              disabled={loading || from === 0}
+              className="flex items-center gap-1 px-3 py-1.5 rounded-md border border-border text-sm hover:bg-muted/40 disabled:opacity-40 disabled:cursor-not-allowed"
+              aria-label="Previous page"
+            >
+              <ChevronLeft className="h-4 w-4" />
+              Previous
+            </button>
+            <button
+              type="button"
+              onClick={(e) => goNext(e)}
+              disabled={loading || !hasMore}
+              className="flex items-center gap-1 px-3 py-1.5 rounded-md border border-border text-sm hover:bg-muted/40 disabled:opacity-40 disabled:cursor-not-allowed"
+              aria-label="Next page"
+            >
+              Next
+              <ChevronRight className="h-4 w-4" />
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Tickets Table */}
       <div className="rounded-lg border border-border bg-card">

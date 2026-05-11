@@ -12,14 +12,22 @@ export const dynamic = 'force-dynamic';
 
 /**
  * GET /api/tickets
- * Fetches tickets from Zoho Desk API
- * Query params: limit (default: 20)
+ * Fetches tickets from Zoho Desk API.
+ *
+ * Query params:
+ *   limit  (default: 20)  — page size
+ *   from   (default: 0)   — pagination offset (Zoho `from` is 1-based; we accept 0-based and add 1)
+ *
+ * Response now includes `pagination` metadata so the widget can render next/prev controls.
  */
 export async function GET(req: NextRequest) {
   try {
-    // Get limit from query params
+    // Get pagination params from query
     const { searchParams } = new URL(req.url);
     const limit = parseInt(searchParams.get('limit') || '20', 10);
+    const fromParam = parseInt(searchParams.get('from') || '0', 10);
+    // Zoho's `from` index is 1-based — clients pass 0-based offsets so we add 1.
+    const zohoFrom = Math.max(1, fromParam + 1);
 
     // Initialize Zoho Desk client with credentials from .env.local
     const zoho = new ZohoDeskClient({
@@ -32,17 +40,22 @@ export async function GET(req: NextRequest) {
     // Check if Zoho credentials are configured
     if (!process.env.ZOHO_ORG_ID || !process.env.ZOHO_CLIENT_ID || !process.env.ZOHO_CLIENT_SECRET || !process.env.ZOHO_REFRESH_TOKEN) {
       // Return mock data if Zoho is not configured
+      const mockSlice = getMockTickets(limit, fromParam);
       return NextResponse.json({
         success: true,
-        tickets: getMockTickets(limit),
+        tickets: mockSlice.tickets,
         source: 'mock',
-        message: 'Using mock data - Zoho credentials not configured'
+        message: 'Using mock data - Zoho credentials not configured',
+        pagination: mockSlice.pagination,
       });
     }
 
-    // Build API URL with optional department filter
-    // include=contacts,assignee to get nested contact/assignee objects
-    let apiUrl = `/api/v1/tickets?limit=${limit}&sortBy=createdTime&include=contacts,assignee`;
+    // Build API URL with optional department filter.
+    // - sortBy=-createdTime → newest first (negative prefix reverses Zoho's default ascending order).
+    //   Previously `sortBy=createdTime` returned oldest first which hid all new tickets behind the 20-row limit.
+    // - from is Zoho's 1-based offset for pagination.
+    // - include=contacts,assignee to get nested contact/assignee objects.
+    let apiUrl = `/api/v1/tickets?limit=${limit}&from=${zohoFrom}&sortBy=-createdTime&include=contacts,assignee`;
 
     // Add department filter if configured
     if (process.env.ZOHO_DEPARTMENT_ID) {
@@ -105,7 +118,15 @@ export async function GET(req: NextRequest) {
       success: true,
       tickets,
       source: 'zoho-desk',
-      count: tickets.length
+      count: tickets.length,
+      pagination: {
+        from: fromParam,
+        limit,
+        returned: tickets.length,
+        // hasMore is best-effort: Zoho doesn't return a total count, so we infer "more pages
+        // probably exist" when the page is full. A short page means we hit the end.
+        hasMore: tickets.length === limit,
+      },
     });
 
   } catch (error: unknown) {
@@ -115,21 +136,25 @@ export async function GET(req: NextRequest) {
     // Return mock data on error instead of failing completely
     const { searchParams } = new URL(req.url);
     const limit = parseInt(searchParams.get('limit') || '20', 10);
+    const fromParam = parseInt(searchParams.get('from') || '0', 10);
 
+    const mockSlice = getMockTickets(limit, fromParam);
     return NextResponse.json({
       success: true,
-      tickets: getMockTickets(limit),
+      tickets: mockSlice.tickets,
       source: 'mock',
       message: `Zoho API error: ${errorMessage}. Using mock data.`,
-      error: errorMessage
+      error: errorMessage,
+      pagination: mockSlice.pagination,
     });
   }
 }
 
 /**
- * Generate mock tickets for demo/fallback purposes
+ * Generate mock tickets for demo/fallback purposes — now slices by `from` offset
+ * so paginated requests against the mock fallback also work.
  */
-function getMockTickets(limit: number) {
+function getMockTickets(limit: number, from: number = 0) {
   const now = Date.now();
   const mockTickets = [
     {
@@ -294,5 +319,16 @@ function getMockTickets(limit: number) {
     }
   ];
 
-  return mockTickets.slice(0, Math.min(limit, mockTickets.length));
+  const start = Math.max(0, from);
+  const end = Math.min(start + limit, mockTickets.length);
+  const slice = mockTickets.slice(start, end);
+  return {
+    tickets: slice,
+    pagination: {
+      from: start,
+      limit,
+      returned: slice.length,
+      hasMore: end < mockTickets.length,
+    },
+  };
 }
